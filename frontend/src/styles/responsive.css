@@ -21,7 +21,7 @@
    ───────────────────────────────────────────── */
 
 @media (max-width: 1024px) {
-  main section,
+  main section:not(.hero-full),
   .gutter {
     padding-left: 32px !important;
     padding-right: 32px !important;
@@ -29,7 +29,7 @@
 }
 
 @media (max-width: 768px) {
-  main section,
+  main section:not(.hero-full),
   .gutter {
     padding-left: 20px !important;
     padding-right: 20px !important;
@@ -37,7 +37,7 @@
 }
 
 @media (max-width: 560px) {
-  main section,
+  main section:not(.hero-full),
   .gutter {
     padding-left: 16px !important;
     padding-right: 16px !important;
@@ -79,7 +79,11 @@
    stay too large on a narrow phone.
    ───────────────────────────────────────────── */
 
-/* The trust stat row: drop the dividers once the items wrap onto own lines. */
+/* The trust figures.
+   On a wide screen they read as one rule-separated line. Once that line no
+   longer fits, the dividers stop making sense and a stacked text list looks
+   like an afterthought — so below 640px each figure becomes its own small
+   tile in a 2x2 grid, matching the card language used elsewhere. */
 @media (max-width: 760px) {
   .trust-stats > div {
     border-left: none !important;
@@ -87,17 +91,82 @@
   }
 }
 
-@media (max-width: 560px) {
+@media (max-width: 640px) {
   .trust-stats {
-    flex-direction: column !important;
-    align-items: flex-start !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
     gap: 10px !important;
+    margin-bottom: 34px !important;
   }
   .trust-stats > div {
-    padding: 0 !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center;
+    gap: 7px !important;
+    padding: 20px 12px !important;
+    border: 1px solid rgba(255, 255, 255, 0.09) !important;
+    border-radius: 12px;
+    background: linear-gradient(165deg, #141414 0%, #0d0d0d 55%, #090909 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.07),
+      0 10px 24px rgba(0, 0, 0, 0.5);
   }
+  /* The longer labels need to breathe inside a half-width tile. */
+  .trust-stats .label-caps {
+    font-size: 9px !important;
+    letter-spacing: 0.16em !important;
+    line-height: 1.5;
+  }
+}
+
+@media (max-width: 560px) {
   .trust-grid > div {
     padding: 24px 20px 22px !important;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   Header
+   The booking button now shares the bar with the brand mark, so the lockup
+   sheds its tagline and tightens up rather than wrapping onto three lines.
+   ───────────────────────────────────────────── */
+
+@media (max-width: 560px) {
+  .nav-brand-name {
+    font-size: 14px !important;
+    letter-spacing: 0.12em !important;
+  }
+  .nav-brand-tagline {
+    display: none !important;
+  }
+  .nav-mobile-actions {
+    gap: 10px !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .nav-brand-name {
+    font-size: 12.5px !important;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   Service cards
+   ───────────────────────────────────────────── */
+
+/* "Learn More" is revealed on hover, which never fires on a touch screen —
+   it would otherwise sit there as invisible dead space. Show it outright. */
+@media (hover: none) {
+  .service-grid > div > p:last-child {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+@media (max-width: 560px) {
+  .service-grid > div {
+    padding: 26px 22px 24px !important;
   }
 }
 

@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import { pillOutline } from '@/components/ui/buttonStyles'
+import { cardTopRule, raisedCard } from '@/components/ui/cardStyles'
 import { homeServices } from '@/data/services'
 import { fleet } from '@/data/fleet'
 import { partnersRowOne, partnersRowTwo } from '@/data/partners'
 import PartnerCard from '@/components/ui/PartnerCard'
+import HomeHero from '@/components/sections/HomeHero'
 import TrustStrip from '@/components/sections/TrustStrip'
 import QuickLinks from '@/components/sections/QuickLinks'
 import type { Page } from '@/app/routes'
@@ -18,123 +20,7 @@ export default function Home({ navigate }: HomeProps) {
     <div style={{ background: 'var(--ink)', minHeight: '100vh' }}>
 
       {/* ── HERO ── */}
-      <section style={{ position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
-        {/* Background photo — very dark overlay like the reference */}
-        <div style={{
-          position: 'absolute', inset: 0,
-          backgroundImage: 'url(https://images.unsplash.com/photo-1771350368994-9d87f0d8431f?w=1920&h=1080&fit=crop&auto=format)',
-          backgroundSize: 'cover', backgroundPosition: 'center 30%',
-        }} />
-        {/* Overlay — left-heavy so text stays readable, right reveals the city */}
-        <div style={{ position: 'absolute', inset: 0, background: 'rgba(3,3,3,0.52)' }} />
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(105deg, rgba(3,3,3,0.72) 0%, rgba(3,3,3,0.38) 55%, rgba(3,3,3,0.10) 100%)' }} />
-        {/* Bottom fade */}
-        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 200, background: 'linear-gradient(to top, #030303 0%, transparent 100%)' }} />
-
-        <div className="gutter" style={{ position: 'relative', maxWidth: 1380, margin: '0 auto', padding: '0 48px', paddingTop: 'clamp(88px, 12vh, 140px)', paddingBottom: 'clamp(88px, 12vh, 140px)', width: '100%' }}>
-          <div style={{ maxWidth: 720 }}>
-
-            {/* Headline */}
-            <h1 style={{ margin: '0 0 4px', lineHeight: 0.92 }}>
-              <span style={{
-                display: 'block',
-                fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(38px, 5.6vw, 76px)',
-                fontWeight: 700,
-                color: '#FFFFFF',
-                letterSpacing: '-0.02em',
-                lineHeight: 0.95,
-                textShadow: '0 2px 40px rgba(0,0,0,0.5)',
-              }}>Experience<br />the Capital City<br />of Africa</span>
-            </h1>
-            <h1 style={{ margin: '0 0 clamp(20px, 3vh, 36px)', lineHeight: 1 }}>
-              <span style={{
-                display: 'block',
-                fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(27px, 3.9vw, 53px)',
-                fontWeight: 600,
-                fontStyle: 'italic',
-                color: 'rgba(255,255,255,0.82)',
-                letterSpacing: '-0.01em',
-                textShadow: '0 2px 30px rgba(0,0,0,0.4)',
-              }}>in Class.</span>
-            </h1>
-
-            {/* Divider */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 0, marginBottom: 'clamp(16px, 2.5vh, 28px)' }}>
-              <div style={{ height: 1.5, width: 56, background: 'linear-gradient(to right, transparent, #FFFFFF)' }} />
-              <div style={{ width: 7, height: 7, background: '#FFFFFF', transform: 'rotate(45deg)', margin: '0 10px', flexShrink: 0 }} />
-              <div style={{ height: 1.5, width: 56, background: 'linear-gradient(to left, transparent, #FFFFFF)' }} />
-            </div>
-
-            {/* Body copy */}
-            <p style={{
-              fontFamily: 'var(--font-body)', fontSize: 16, fontWeight: 400,
-              color: 'rgba(255,255,255,0.72)', lineHeight: 1.75,
-              marginBottom: 'clamp(24px, 4vh, 48px)', maxWidth: 540,
-            }}>
-              Premium chauffeur and transportation services in Addis Ababa, designed for travelers, executives, businesses, events and unforgettable journeys.
-            </p>
-
-            {/* CTA buttons — rectangular, like the reference */}
-            <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', alignItems: 'center' }}>
-              <button
-                onClick={() => navigate('booking')}
-                style={{
-                  background: 'var(--gold-gradient)', color: '#060606',
-                  border: 'none', cursor: 'pointer',
-                  fontFamily: 'var(--font-body)', fontSize: 11, fontWeight: 800,
-                  letterSpacing: '0.2em', textTransform: 'uppercase',
-                  padding: '16px 40px', borderRadius: 2,
-                  boxShadow: '0 2px 24px rgba(255,255,255,0.10)',
-                  transition: 'box-shadow 0.2s, transform 0.15s',
-                }}
-                onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 6px 40px rgba(255,255,255,0.18)'; e.currentTarget.style.transform = 'translateY(-2px)' }}
-                onMouseLeave={e => { e.currentTarget.style.boxShadow = '0 2px 24px rgba(255,255,255,0.10)'; e.currentTarget.style.transform = 'translateY(0)' }}
-              >Book Your Ride</button>
-              <button
-                onClick={() => navigate('explore')}
-                style={{
-                  background: 'transparent', color: '#FFFFFF',
-                  border: '1.5px solid #FFFFFF', cursor: 'pointer',
-                  fontFamily: 'var(--font-body)', fontSize: 11, fontWeight: 700,
-                  letterSpacing: '0.2em', textTransform: 'uppercase',
-                  padding: '15px 40px', borderRadius: 2,
-                  transition: 'background 0.2s, color 0.2s',
-                }}
-                onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)' }}
-                onMouseLeave={e => { e.currentTarget.style.background = 'transparent' }}
-              >Explore Addis</button>
-              <button
-                onClick={() => navigate('booking')}
-                style={{
-                  background: 'transparent', color: 'rgba(255,255,255,0.88)',
-                  border: '1.5px solid rgba(255,255,255,0.42)', cursor: 'pointer',
-                  fontFamily: 'var(--font-body)', fontSize: 11, fontWeight: 700,
-                  letterSpacing: '0.2em', textTransform: 'uppercase',
-                  padding: '15px 40px', borderRadius: 2,
-                  transition: 'background 0.2s, border-color 0.2s, color 0.2s',
-                }}
-                onMouseEnter={e => { e.currentTarget.style.borderColor = '#FFFFFF'; e.currentTarget.style.color = '#FFFFFF'; e.currentTarget.style.background = 'rgba(255,255,255,0.06)' }}
-                onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.42)'; e.currentTarget.style.color = 'rgba(255,255,255,0.88)'; e.currentTarget.style.background = 'transparent' }}
-              >Get Quote</button>
-            </div>
-          </div>
-        </div>
-
-        {/* Scroll indicator — bottom center */}
-        <div style={{
-          position: 'absolute', bottom: 32, left: '50%', transform: 'translateX(-50%)',
-          display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8,
-          color: 'rgba(255,255,255,0.7)',
-        }}>
-          <span style={{ fontFamily: 'var(--font-body)', fontSize: 9, fontWeight: 700, letterSpacing: '0.28em', textTransform: 'uppercase' }}>Scroll</span>
-          <div style={{ width: 1.5, height: 36, background: 'linear-gradient(to bottom, #FFFFFF, transparent)', animation: 'scrollLine 1.8s ease infinite' }} />
-        </div>
-        <style>{`
-          @keyframes scrollLine { 0%{opacity:1;transform:scaleY(1) translateY(0)} 100%{opacity:0;transform:scaleY(0.5) translateY(12px)} }
-        `}</style>
-      </section>
+      <HomeHero navigate={navigate} />
 
       {/* ── TRUST STRIP ── */}
       <TrustStrip />
@@ -164,35 +50,42 @@ export default function Home({ navigate }: HomeProps) {
           </div>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(290px, 1fr))', gap: 2 }}>
-          {homeServices.map((s, i) => (
-            <div key={i}
-              onClick={() => navigate(s.page)}
-              onMouseEnter={() => setHovSvc(i)}
-              onMouseLeave={() => setHovSvc(null)}
-              style={{
-                padding: '44px 38px', cursor: 'pointer',
-                background: hovSvc === i ? '#181818' : '#111111',
-                borderBottom: `2px solid ${hovSvc === i ? '#FFFFFF' : 'transparent'}`,
-                borderTop: `1px solid ${hovSvc === i ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.08)'}`,
-                transition: 'all 0.2s',
-                position: 'relative',
-              }}
-            >
-              {hovSvc === i && <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'var(--gold-gradient)' }} />}
-              <div style={{ fontSize: 26, marginBottom: 20, color: '#FFFFFF', opacity: hovSvc === i ? 1 : 0.55, transition: 'opacity 0.2s' }}>{s.icon}</div>
-              <h3 style={{
-                fontFamily: 'var(--font-display)', fontSize: 21, fontWeight: 700, lineHeight: 1.2, marginBottom: 12,
-                color: hovSvc === i ? '#FFFFFF' : '#FFFFFF',
-                transition: 'color 0.2s',
-              }}>{s.title}</h3>
-              <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 13, lineHeight: 1.7 }}>{s.subtitle}</p>
-              <p style={{
-                color: '#FFFFFF', fontSize: 11, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase',
-                marginTop: 24, opacity: hovSvc === i ? 1 : 0, transition: 'opacity 0.2s',
-              }}>Learn More →</p>
-            </div>
-          ))}
+        <div className="service-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 18 }}>
+          {homeServices.map((s, i) => {
+            const active = hovSvc === i
+            return (
+              <div key={i}
+                onClick={() => navigate(s.page)}
+                onMouseEnter={() => setHovSvc(i)}
+                onMouseLeave={() => setHovSvc(null)}
+                style={{ ...raisedCard(active), padding: '34px 30px 30px', cursor: 'pointer' }}
+              >
+                <div style={cardTopRule(active)} />
+
+                <div style={{
+                  fontSize: 24, marginBottom: 18, color: '#FFFFFF',
+                  opacity: active ? 1 : 0.5, transition: 'opacity 0.3s',
+                }}>{s.icon}</div>
+
+                <h3 style={{
+                  fontFamily: 'var(--font-display)', fontSize: 20, fontWeight: 700,
+                  lineHeight: 1.25, margin: '0 0 10px', color: '#FFFFFF',
+                }}>{s.title}</h3>
+
+                <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 13, lineHeight: 1.7, margin: 0 }}>{s.subtitle}</p>
+
+                {/* Sits in the flow so the card does not resize on hover. */}
+                <p style={{
+                  color: '#FFFFFF', fontSize: 10.5, fontWeight: 700,
+                  letterSpacing: '0.14em', textTransform: 'uppercase',
+                  margin: '22px 0 0',
+                  opacity: active ? 1 : 0,
+                  transform: active ? 'translateX(0)' : 'translateX(-6px)',
+                  transition: 'opacity 0.3s, transform 0.3s',
+                }}>Learn More →</p>
+              </div>
+            )
+          })}
         </div>
       </section>
 

@@ -49,8 +49,8 @@ path is missing, or when the repository contradicts this guide.
 - `src/pages/*.tsx` — one component per page, each taking `{ navigate }`
 - `src/components/layout/` — `Nav`, `Footer`, `SiteLayout`
 - `src/components/sections/` — self-contained page sections a page composes
-  (`TrustStrip`, `QuickLinks`). Reach for this when a section grows past a
-  screenful of JSX inside a page
+  (`HomeHero`, `TrustStrip`, `QuickLinks`). Reach for this when a section
+  grows past a screenful of JSX inside a page
 - `src/components/ui/` — shared presentational pieces and the pill button
   style objects
 - `src/config/site.ts` — brand name, tagline, contact details, socials, header
@@ -63,7 +63,10 @@ path is missing, or when the repository contradicts this guide.
   nothing calls it yet
 - `src/lib/utils/`, `src/hooks/` — small shared helpers
 - `src/types/index.ts` — domain types shared across features
-- `src/styles/tokens.css` — design tokens; `src/styles/index.css` — globals
+- `src/styles/tokens.css` — design tokens; `src/styles/index.css` — globals;
+  `src/styles/responsive.css` — **all mobile adaptation lives here**, not in
+  per-page `<style>` blocks. Most phones in Ethiopia are the primary target,
+  so check every change at 375px
 - `src/assets/images/` — bundled partner logos
 
 `frontend/README.md` covers conventions and the list of known placeholders.

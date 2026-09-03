@@ -15,7 +15,7 @@ src/
 ├── assets/images/        # bundled partner logos
 ├── components/
 │   ├── layout/           # Nav, Footer, SiteLayout
-│   ├── sections/         # whole page sections (TrustStrip, QuickLinks)
+│   ├── sections/         # whole page sections (HomeHero, TrustStrip, QuickLinks)
 │   └── ui/               # shared presentational pieces + button style objects
 ├── config/
 │   ├── site.ts           # brand, contact details, socials, header nav
@@ -24,13 +24,14 @@ src/
 ├── features/
 │   ├── booking/          # booking wizard options
 │   └── admin/            # admin console mock data + View type
-├── hooks/                # useScrolled
+├── hooks/                # useScrolled, useMediaQuery
 ├── lib/
 │   ├── api/              # fetch wrapper + endpoint map (nothing calls it yet)
 │   └── utils/            # formatCurrency, formatDateTime, initialsOf
 ├── pages/                # one component per page
 ├── styles/
 │   ├── index.css         # fonts, Tailwind import, global rules
+│   ├── responsive.css    # all mobile adaptation, in one place
 │   └── tokens.css        # the design tokens
 └── types/                # domain types shared across features
 ```

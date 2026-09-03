@@ -43,14 +43,14 @@ export default function Nav({ current, navigate }: NavProps) {
               </svg>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-              <span style={{
+              <span className="nav-brand-name" style={{
                 fontFamily: 'var(--font-display)', fontSize: 17, fontWeight: 700,
-                letterSpacing: '0.18em', textTransform: 'uppercase',
+                letterSpacing: '0.18em', textTransform: 'uppercase', whiteSpace: 'nowrap',
                 background: 'var(--gold-gradient-h)',
                 WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
                 lineHeight: 1,
               }}>{site.name.toUpperCase()}</span>
-              <span style={{ fontFamily: 'var(--font-body)', fontSize: 8, fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.78)' }}>
+              <span className="nav-brand-tagline" style={{ fontFamily: 'var(--font-body)', fontSize: 8, fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.78)' }}>
                 {site.tagline}
               </span>
             </div>
@@ -95,10 +95,28 @@ export default function Nav({ current, navigate }: NavProps) {
             </button>
           </div>
 
-          {/* Hamburger */}
-          <button onClick={() => setOpen(!open)} className="show-mobile" style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'none', flexDirection: 'column', gap: 5, padding: 4 }} aria-label="Menu">
-            {[0,1,2].map(i => <span key={i} style={{ display: 'block', width: 22, height: 2, background: '#FFFFFF' }} />)}
-          </button>
+          {/* Mobile: a compact booking CTA sits beside the hamburger, so the
+              primary action is reachable without opening the menu. */}
+          <div className="show-mobile nav-mobile-actions" style={{ display: 'none', alignItems: 'center', gap: 14 }}>
+            <button
+              onClick={() => navigate(primaryCta.page)}
+              style={{
+                background: 'var(--gold-gradient)',
+                color: '#060606',
+                border: 'none', cursor: 'pointer',
+                fontFamily: 'var(--font-body)', fontSize: 10, fontWeight: 800,
+                letterSpacing: '0.14em', textTransform: 'uppercase',
+                padding: '10px 18px',
+                borderRadius: 50,
+                boxShadow: '0 2px 16px rgba(255,255,255,0.14)',
+                whiteSpace: 'nowrap',
+              }}
+            >{primaryCta.label}</button>
+
+            <button onClick={() => setOpen(!open)} style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', flexDirection: 'column', gap: 5, padding: 4 }} aria-label="Menu" aria-expanded={open}>
+              {[0,1,2].map(i => <span key={i} style={{ display: 'block', width: 22, height: 2, background: '#FFFFFF' }} />)}
+            </button>
+          </div>
         </div>
       </div>
 

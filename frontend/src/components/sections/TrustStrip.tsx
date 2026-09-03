@@ -1,15 +1,15 @@
 import { useState } from 'react'
 import { trustBadges } from '@/data/trust'
 import { differentiators } from '@/data/services'
+import { cardTopRule, raisedCard } from '@/components/ui/cardStyles'
 
 /**
  * "Why Addis Limo" — the trust section, directly beneath the home hero.
  *
  * Three layers, smallest to largest: a compact heading, a slim row of
- * headline figures, then the six reasons as raised cards. Each card is a
- * gradient tile with a lit inset hairline along its top edge and a deep drop
- * shadow, so it reads as a physical edge against the black page; on hover it
- * lifts, the shadow deepens and a gradient rule draws across the top.
+ * headline figures, then the six reasons as raised cards. The card treatment
+ * itself lives in `components/ui/cardStyles.ts`, shared with the service grid
+ * on the home page.
  */
 export default function TrustStrip() {
   const [hovered, setHovered] = useState<number | null>(null)
@@ -118,34 +118,10 @@ export default function TrustStrip() {
                 key={t.n}
                 onMouseEnter={() => setHovered(i)}
                 onMouseLeave={() => setHovered(null)}
-                style={{
-                  position: 'relative',
-                  overflow: 'hidden',
-                  padding: '30px 28px 28px',
-                  borderRadius: 14,
-                  background: active
-                    ? 'linear-gradient(165deg, #1B1B1B 0%, #101010 55%, #0B0B0B 100%)'
-                    : 'linear-gradient(165deg, #141414 0%, #0D0D0D 55%, #090909 100%)',
-                  border: `1px solid ${active ? 'rgba(255,255,255,0.26)' : 'rgba(255,255,255,0.09)'}`,
-                  // Inset hairline on the top edge reads as a lit bevel; the
-                  // outer shadows lift the card off the page.
-                  boxShadow: active
-                    ? 'inset 0 1px 0 rgba(255,255,255,0.16), inset 0 -1px 0 rgba(0,0,0,0.6), 0 26px 55px rgba(0,0,0,0.72), 0 3px 10px rgba(0,0,0,0.5)'
-                    : 'inset 0 1px 0 rgba(255,255,255,0.07), inset 0 -1px 0 rgba(0,0,0,0.5), 0 14px 32px rgba(0,0,0,0.55)',
-                  transform: active ? 'translateY(-6px)' : 'translateY(0)',
-                  transition:
-                    'transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, background 0.3s ease',
-                }}
+                style={{ ...raisedCard(active), padding: '30px 28px 28px' }}
               >
                 {/* Gradient rule that draws in from the left on hover. */}
-                <div
-                  style={{
-                    position: 'absolute', top: 0, left: 0,
-                    width: active ? '100%' : '0%', height: 2,
-                    background: 'var(--gold-gradient-h)',
-                    transition: 'width 0.4s ease',
-                  }}
-                />
+                <div style={cardTopRule(active)} />
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14 }}>
                   <span
