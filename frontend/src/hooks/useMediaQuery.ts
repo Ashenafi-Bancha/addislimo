@@ -19,10 +19,19 @@ export function useMediaQuery(query: string): boolean {
 
   useEffect(() => {
     const mql = window.matchMedia(query)
-    const onChange = () => setMatches(mql.matches)
-    onChange()
-    mql.addEventListener('change', onChange)
-    return () => mql.removeEventListener('change', onChange)
+    const sync = () => setMatches(mql.matches)
+    sync()
+    mql.addEventListener('change', sync)
+    // A second signal, for belt and braces: `change` is the correct event and
+    // fires on real resize and orientation change, but listening to `resize`
+    // too costs nothing and covers browsers where it is unreliable. Note that
+    // headless viewport emulation typically dispatches neither, so a layout
+    // that branches on this will only look right after a reload there.
+    window.addEventListener('resize', sync)
+    return () => {
+      mql.removeEventListener('change', sync)
+      window.removeEventListener('resize', sync)
+    }
   }, [query])
 
   return matches

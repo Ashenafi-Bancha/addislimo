@@ -156,20 +156,24 @@ export default function HomeHero({ navigate }: HomeHeroProps) {
       >
         Explore Addis
       </button>
-      <button
-        onClick={() => navigate('booking')}
-        style={{
-          ...ctaBase,
-          background: 'transparent',
-          color: 'rgba(255,255,255,0.88)',
-          border: '1.5px solid rgba(255,255,255,0.42)',
-          transition: 'background 0.2s, border-color 0.2s, color 0.2s',
-        }}
-        onMouseEnter={e => { e.currentTarget.style.borderColor = '#FFFFFF'; e.currentTarget.style.color = '#FFFFFF'; e.currentTarget.style.background = 'rgba(255,255,255,0.06)' }}
-        onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.42)'; e.currentTarget.style.color = 'rgba(255,255,255,0.88)'; e.currentTarget.style.background = 'transparent' }}
-      >
-        Get Quote
-      </button>
+      {/* Three stacked full-width buttons crowd a phone, and "Get Quote" goes
+          to the same place as "Book Your Ride", so it is desktop only. */}
+      {!isMobile && (
+        <button
+          onClick={() => navigate('booking')}
+          style={{
+            ...ctaBase,
+            background: 'transparent',
+            color: 'rgba(255,255,255,0.88)',
+            border: '1.5px solid rgba(255,255,255,0.42)',
+            transition: 'background 0.2s, border-color 0.2s, color 0.2s',
+          }}
+          onMouseEnter={e => { e.currentTarget.style.borderColor = '#FFFFFF'; e.currentTarget.style.color = '#FFFFFF'; e.currentTarget.style.background = 'rgba(255,255,255,0.06)' }}
+          onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.42)'; e.currentTarget.style.color = 'rgba(255,255,255,0.88)'; e.currentTarget.style.background = 'transparent' }}
+        >
+          Get Quote
+        </button>
+      )}
     </div>
   )
 
