@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { categories, destinations, type Category } from '@/data/destinations'
+import { cardTopRule, raisedCard } from '@/components/ui/cardStyles'
 import type { Page } from '@/app/routes'
 
 interface Props { navigate: (p: Page) => void }
@@ -81,16 +82,18 @@ export default function ExploreAddis({ navigate }: Props) {
         <p style={{ color: 'rgba(255,255,255,0.70)', fontSize: 13, marginBottom: 32 }}>
           {filtered.length} experience{filtered.length !== 1 ? 's' : ''} · Private chauffeur available for all destinations
         </p>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 16 }}>
-          {filtered.map((d, i) => (
+        <div className="destination-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 18 }}>
+          {filtered.map((d, i) => {
+            const active = hovered === i
+            return (
             <div
               key={i}
-              className="card-hover"
               onMouseEnter={() => setHovered(i)}
               onMouseLeave={() => setHovered(null)}
-              style={{ background: 'var(--surface-2)', overflow: 'hidden', cursor: 'pointer', position: 'relative' }}
+              style={{ ...raisedCard(active), cursor: 'pointer' }}
             >
-              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'var(--gold-gradient)' }} />
+              {/* Above the photo, so the rule is not clipped by it. */}
+              <div style={{ ...cardTopRule(active), zIndex: 2 }} />
               <div style={{ height: 200, overflow: 'hidden', position: 'relative', background: '#090909' }}>
                 <img
                   src={d.img}
@@ -98,7 +101,7 @@ export default function ExploreAddis({ navigate }: Props) {
                   style={{
                     width: '100%', height: '100%', objectFit: 'cover',
                     transition: 'transform 0.5s',
-                    transform: hovered === i ? 'scale(1.06)' : 'scale(1)',
+                    transform: active ? 'scale(1.06)' : 'scale(1)',
                   }}
                 />
                 <div style={{ position: 'absolute', top: 14, left: 14 }}>
@@ -114,8 +117,8 @@ export default function ExploreAddis({ navigate }: Props) {
                 <h3 style={{
                   fontFamily: 'var(--font-display)',
                   fontSize: 19, fontWeight: 600,
-                  color: hovered === i ? '#FFFFFF' : '#FFFFFF',
-                  marginBottom: 8, transition: 'color 0.2s', lineHeight: 1.2,
+                  color: '#FFFFFF',
+                  marginBottom: 8, lineHeight: 1.2,
                 }}>{d.name}</h3>
                 <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.75)', lineHeight: 1.65, marginBottom: 20 }}>{d.desc}</p>
                 <button
@@ -130,7 +133,8 @@ export default function ExploreAddis({ navigate }: Props) {
                 >Book a Ride</button>
               </div>
             </div>
-          ))}
+            )
+          })}
         </div>
       </section>
 

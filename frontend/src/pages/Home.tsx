@@ -138,26 +138,22 @@ export default function Home({ navigate }: HomeProps) {
           >Request a Vehicle</button>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 18 }}>
-          {fleet.map((v, i) => (
+        <div className="fleet-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 18 }}>
+          {fleet.map((v, i) => {
+            const active = hovVeh === i
+            return (
             <div key={i}
               onMouseEnter={() => setHovVeh(i)}
               onMouseLeave={() => setHovVeh(null)}
-              style={{
-                background: '#111111', overflow: 'hidden', cursor: 'pointer',
-                border: `1px solid ${hovVeh === i ? 'rgba(255,255,255,0.35)' : 'rgba(255,255,255,0.1)'}`,
-                boxShadow: hovVeh === i ? '0 16px 60px rgba(0,0,0,0.6)' : 'none',
-                transform: hovVeh === i ? 'translateY(-4px)' : 'none',
-                transition: 'all 0.3s',
-                position: 'relative',
-              }}
+              style={{ ...raisedCard(active), cursor: 'pointer' }}
             >
-              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'var(--gold-gradient)' }} />
+              {/* Above the photo, so the rule is not clipped by it. */}
+              <div style={{ ...cardTopRule(active), zIndex: 2 }} />
               <div style={{ height: 230, overflow: 'hidden', background: '#0a0a0a' }}>
-                <img src={v.img} alt={v.name} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s', transform: hovVeh === i ? 'scale(1.06)' : 'scale(1)' }} />
+                <img src={v.img} alt={v.name} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s', transform: active ? 'scale(1.06)' : 'scale(1)' }} />
               </div>
               <div style={{ padding: '26px 28px' }}>
-                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 700, color: hovVeh === i ? '#FFFFFF' : '#FFFFFF', marginBottom: 8, transition: 'color 0.2s' }}>{v.name}</h3>
+                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 700, color: '#FFFFFF', marginBottom: 8 }}>{v.name}</h3>
                 <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.72)', marginBottom: 18, lineHeight: 1.6 }}>{v.desc}</p>
                 <div style={{ display: 'flex', gap: 24, borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: 16 }}>
                   <div>
@@ -171,7 +167,8 @@ export default function Home({ navigate }: HomeProps) {
                 </div>
               </div>
             </div>
-          ))}
+            )
+          })}
         </div>
       </section>
 
