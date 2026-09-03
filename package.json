@@ -1,0 +1,20 @@
+{
+  "name": "addislimo",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Addis Limo — premium chauffeur and transportation platform for Addis Ababa. Monorepo: React frontend (live) + Node/Express + Postgres backend (planned).",
+  "scripts": {
+    "dev": "pnpm --filter @addislimo/frontend dev",
+    "build": "pnpm --filter @addislimo/frontend build",
+    "preview": "pnpm --filter @addislimo/frontend preview",
+    "typecheck": "pnpm --filter @addislimo/frontend typecheck",
+    "format": "oxfmt"
+  },
+  "devDependencies": {
+    "oxfmt": "^0.2.0"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

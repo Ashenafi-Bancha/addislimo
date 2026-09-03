@@ -1,0 +1,155 @@
+/* Global stylesheet. Imported once, from `src/main.tsx`. */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap');
+
+/* Tailwind v4 — utilities are available in JSX alongside the inline styles. */
+@import 'tailwindcss';
+
+/* Brand tokens. Must come after the Tailwind import. */
+@import './tokens.css';
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--ink);
+  color: var(--ivory);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Text utilities ── */
+.text-gold { color: #FFFFFF; }
+
+.gold-text {
+  background: var(--gold-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Label caps ── */
+.label-caps {
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+}
+
+/* ── Divider ornament ── */
+.gold-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+}
+.gold-line::before,
+.gold-line::after {
+  content: '';
+  flex: 1;
+  max-width: 60px;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(255,255,255,0.35), transparent);
+}
+.gold-line-inner {
+  color: rgba(255,255,255,0.50);
+  font-size: 10px;
+}
+
+/* Stars */
+.stars {
+  color: rgba(255,255,255,0.75);
+  font-size: 12px;
+  letter-spacing: 2px;
+}
+
+/* ── Inputs ── */
+.input-gold {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255,255,255,0.18);
+  color: var(--ivory);
+  font-family: var(--font-body);
+  transition: border-color 0.25s;
+  outline: none;
+  width: 100%;
+  padding: 10px 0;
+  font-size: 14px;
+}
+.input-gold:focus { border-bottom-color: rgba(255,255,255,0.65); }
+.input-gold option { background: #111111; color: var(--ivory); }
+
+/* ── Booking glass panel ── */
+.booking-glass {
+  background: rgba(8,8,8,0.96);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255,255,255,0.14);
+  box-shadow: 0 0 60px rgba(255,255,255,0.02), inset 0 1px 0 rgba(255,255,255,0.07);
+}
+
+/* ── Cards ── */
+.card-hover {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 24px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.10);
+}
+
+/* ── Border card ── */
+.gold-card {
+  background: var(--surface);
+  border: 1px solid rgba(255,255,255,0.08);
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+.gold-card:hover {
+  border-color: rgba(255,255,255,0.22);
+  box-shadow: 0 0 30px rgba(255,255,255,0.04);
+}
+
+/* ── Step dots ── */
+.step-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.15); transition: background 0.2s; }
+.step-dot.active { background: #FFFFFF; }
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--surface); }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.25); border-radius: 3px; }
+
+/* ── Page fade-in ── */
+.page-enter { animation: pageFade 0.35s ease; }
+@keyframes pageFade {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Pill button base ── */
+.btn-pill {
+  border-radius: var(--radius-pill);
+}
+
+/* ── Ornamental separator ── */
+.ornament {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.ornament::before,
+.ornament::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(255,255,255,0.25), transparent);
+}
+
+/* ── Pulse ── */
+@keyframes goldPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); }
+  50%       { box-shadow: 0 0 20px 4px rgba(255,255,255,0.08); }
+}

@@ -1,0 +1,44 @@
+/**
+ * Design tokens — the black/white/silver palette, type scale and radii.
+ *
+ * Every component references these through `var(--token)` rather than
+ * hard-coding hex values, so a rebrand is a change to this one file.
+ * Note: the `--gold-*` names are historical. The palette is currently
+ * white/silver; the variable names were kept so the brand can be swapped
+ * back to gold without touching a single component.
+ */
+
+:root {
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'Manrope', system-ui, sans-serif;
+
+  /* Accent system — white/silver */
+  --gold:         #FFFFFF;
+  --gold-light:   #FFFFFF;
+  --gold-bright:  #FFFFFF;
+  --gold-dark:    rgba(255,255,255,0.65);
+  --gold-deep:    rgba(255,255,255,0.38);
+  --gold-muted:   rgba(255,255,255,0.22);
+
+  /* Gradients — clean white sheen */
+  --gold-gradient:   linear-gradient(135deg, #FFFFFF 0%, rgba(225,225,225,0.92) 50%, #FFFFFF 100%);
+  --gold-gradient-h: linear-gradient(90deg, #FFFFFF 0%, rgba(230,230,230,0.90) 50%, #FFFFFF 100%);
+  --gold-sheen:      #FFFFFF;
+
+  /* Black system */
+  --ink:       #060606;
+  --charcoal:  #0E0E0E;
+  --surface:   #111111;
+  --surface-2: #181818;
+  --surface-3: #1E1E1E;
+  --border:    rgba(255,255,255,0.10);
+  --border-hi: rgba(255,255,255,0.22);
+
+  /* Text — all lifted for legibility on black */
+  --ivory:       #FFFFFF;
+  --ivory-dim:   rgba(255,255,255,0.85);
+  --ivory-muted: rgba(255,255,255,0.62);
+  --muted:       rgba(255,255,255,0.40);
+
+  --radius-pill: 50px;
+}
