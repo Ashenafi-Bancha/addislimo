@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import type { Page, RouteDefinition } from '@/app/routes'
+import BackToHome from '@/components/ui/BackToHome'
 import Footer from './Footer'
 import Nav from './Nav'
 
@@ -31,8 +32,11 @@ export default function SiteLayout({ chrome, page, navigate, children }: SiteLay
     >
       {withChrome && <Nav current={page} navigate={navigate} />}
 
-      {/* Keyed on the page so the fade-in replays on every navigation. */}
-      <main key={page} className="page-enter">
+      {/* Keyed on the page so the fade-in replays on every navigation.
+          `position: relative` anchors the absolutely positioned back link. */}
+      <main key={page} className="page-enter" style={{ position: 'relative' }}>
+        {/* Admin pages carry their own "Back to Site" link in the sidebar. */}
+        {withChrome && page !== 'home' && <BackToHome navigate={navigate} />}
         {children}
       </main>
 

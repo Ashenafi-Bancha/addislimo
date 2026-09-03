@@ -1,0 +1,210 @@
+/**
+ * Mobile adaptation.
+ *
+ * The site is styled with inline `style` objects inherited from the Figma
+ * Make export, so every override here needs `!important` to win against them.
+ * Matching inline values with attribute selectors is the pattern already used
+ * in Nav, Footer, Home, About and Corporate — this file generalises it so the
+ * rules live in one place instead of nine `<style>` blocks.
+ *
+ * Breakpoints
+ *   1024px  tablet / small laptop
+ *    900px  large phone landscape, footer already switches here
+ *    768px  phone
+ *    560px  small phone
+ */
+
+/* ─────────────────────────────────────────────
+   Page gutters
+   Every page section carries a 48px or 32px inline gutter. Only the
+   horizontal padding is overridden, so vertical rhythm is untouched.
+   ───────────────────────────────────────────── */
+
+@media (max-width: 1024px) {
+  main section,
+  .gutter {
+    padding-left: 32px !important;
+    padding-right: 32px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  main section,
+  .gutter {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+}
+
+@media (max-width: 560px) {
+  main section,
+  .gutter {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+}
+
+/* Sections with very generous vertical padding get pulled in on phones so a
+   reader is not scrolling through empty space between blocks. */
+@media (max-width: 768px) {
+  .section-tall {
+    padding-top: 60px !important;
+    padding-bottom: 60px !important;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   Two-column inline grids collapse to one
+   ───────────────────────────────────────────── */
+
+@media (max-width: 820px) {
+  [style*="grid-template-columns: 1fr 1fr;"],
+  [style*="grid-template-columns: 1fr 2fr;"],
+  [style*="grid-template-columns: 2fr 1fr;"],
+  [style*="grid-template-columns: repeat(3, 1fr);"] {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Long inline gaps between columns are wasted vertical space once stacked. */
+@media (max-width: 820px) {
+  [style*="gap: 64px 80px"] {
+    gap: 40px !important;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   Typography
+   The display headings use vw-based clamps that read well on desktop but
+   stay too large on a narrow phone.
+   ───────────────────────────────────────────── */
+
+/* The trust stat row: drop the dividers once the items wrap onto own lines. */
+@media (max-width: 760px) {
+  .trust-stats > div {
+    border-left: none !important;
+    padding: 0 14px !important;
+  }
+}
+
+@media (max-width: 560px) {
+  .trust-stats {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+  }
+  .trust-stats > div {
+    padding: 0 !important;
+  }
+  .trust-grid > div {
+    padding: 24px 20px 22px !important;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   Back to Home
+   ───────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  .back-to-home {
+    top: 84px !important;
+    left: 20px !important;
+    padding: 8px 14px 8px 11px !important;
+    font-size: 9.5px !important;
+  }
+}
+
+@media (max-width: 560px) {
+  .back-to-home {
+    left: 16px !important;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   Booking wizard
+   Five step markers do not fit across a phone, so the labels drop away and
+   the markers shrink to numbered dots.
+   ───────────────────────────────────────────── */
+
+@media (max-width: 640px) {
+  .step-label {
+    display: none !important;
+  }
+  .step-marker {
+    width: 28px !important;
+    height: 28px !important;
+    font-size: 11px !important;
+  }
+  .booking-panel {
+    padding: 26px 20px !important;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   Admin console
+   The sidebar stacks above the content and becomes a horizontal scroller.
+   ───────────────────────────────────────────── */
+
+@media (max-width: 900px) {
+  .admin-shell {
+    flex-direction: column !important;
+  }
+  .admin-sidebar {
+    width: 100% !important;
+    position: static !important;
+    height: auto !important;
+    border-right: none !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  }
+  .admin-nav {
+    display: flex !important;
+    overflow-x: auto !important;
+    gap: 4px;
+    padding: 10px 12px !important;
+  }
+  .admin-nav > button {
+    width: auto !important;
+    white-space: nowrap !important;
+    border-left: none !important;
+    border-bottom: 2px solid transparent !important;
+  }
+  /* Vertical rules between nav groups make no sense once the nav is a row. */
+  .admin-nav > div {
+    display: none !important;
+  }
+  .admin-content {
+    padding: 28px 20px !important;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   Overflow guards
+   Nothing should be able to scroll the page sideways.
+   ───────────────────────────────────────────── */
+
+html,
+body {
+  overflow-x: hidden;
+}
+
+img,
+video {
+  max-width: 100%;
+}
+
+/* Wide content scrolls inside its own container instead of stretching the page. */
+.scroll-x {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ─────────────────────────────────────────────
+   Touch targets
+   ───────────────────────────────────────────── */
+
+@media (hover: none) {
+  button,
+  a {
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0.08);
+  }
+}

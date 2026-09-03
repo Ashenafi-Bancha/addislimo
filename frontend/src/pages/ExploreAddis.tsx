@@ -54,7 +54,7 @@ export default function ExploreAddis({ navigate }: Props) {
 
       {/* Category filter */}
       <section style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', background: 'var(--surface)', position: 'sticky', top: 72, zIndex: 50 }}>
-        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 32px' }}>
+        <div className="gutter" style={{ maxWidth: 1280, margin: '0 auto', padding: '0 32px' }}>
           <div style={{ display: 'flex', gap: 2, overflowX: 'auto', scrollbarWidth: 'none' }}>
             {categories.map(c => (
               <button

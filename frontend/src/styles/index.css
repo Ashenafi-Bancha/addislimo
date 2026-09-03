@@ -9,6 +9,9 @@
 /* Brand tokens. Must come after the Tailwind import. */
 @import './tokens.css';
 
+/* Mobile adaptation. Last, so its overrides win. */
+@import './responsive.css';
+
 * { box-sizing: border-box; }
 
 html { scroll-behavior: smooth; }

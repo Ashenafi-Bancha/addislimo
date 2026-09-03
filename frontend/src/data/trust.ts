@@ -1,15 +1,13 @@
-import { destinations } from './destinations'
-import { serviceCatalog } from './service-catalog'
 import { contact } from '@/config/site'
 
 /**
  * The trust strip that sits directly under the home hero.
  *
- * Two of the four figures are counted from the real catalogue rather than
- * typed in, so they can never drift out of date when the client adds a
- * service or a destination. The other two are commitments the site already
- * makes elsewhere (the 24/7 line in `config/site.ts`, the meet-and-greet
- * promise on the Airport Transfer page).
+ * The figures are rounded claims requested by the client rather than live
+ * counts. For reference, the catalogue currently holds 11 services
+ * (`data/service-catalog.ts`) and 69 destinations (`data/destinations.ts`),
+ * so "70+" is one entry ahead of what the site actually lists — worth either
+ * adding a destination or confirming the real number with the client.
  */
 
 export interface TrustBadge {
@@ -24,13 +22,13 @@ export interface TrustBadge {
 export const trustBadges: TrustBadge[] = [
   {
     icon: '◈',
-    value: String(serviceCatalog.length),
+    value: '10+',
     label: 'Services',
     desc: 'Airport, corporate, summit, expat, events and city transfers.',
   },
   {
     icon: '◉',
-    value: String(destinations.length),
+    value: '70+',
     label: 'Curated Experiences',
     desc: 'Museums, parks, hiking, markets, malls and cultural dining.',
   },

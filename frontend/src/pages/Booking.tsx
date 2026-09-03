@@ -64,7 +64,7 @@ export default function Booking({ navigate }: Props) {
             return (
               <div key={i} style={{ display: 'flex', alignItems: 'center', flex: i < stepLabels.length - 1 ? 1 : 'none' }}>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
-                  <div style={{
+                  <div className="step-marker" style={{
                     width: 36, height: 36,
                     background: done ? '#FFFFFF' : active ? 'transparent' : 'transparent',
                     border: `1px solid ${done || active ? '#FFFFFF' : 'rgba(247,245,240,0.15)'}`,
@@ -73,7 +73,7 @@ export default function Booking({ navigate }: Props) {
                     color: done ? '#0B0B0B' : active ? '#FFFFFF' : 'rgba(255,255,255,0.30)',
                     transition: 'all 0.2s',
                   }}>{done ? '✓' : n}</div>
-                  <span style={{
+                  <span className="step-label" style={{
                     fontSize: 10, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase',
                     color: active ? '#FFFFFF' : done ? 'rgba(255,255,255,0.6)' : 'rgba(247,245,240,0.25)',
                   }}>{label}</span>
@@ -91,7 +91,7 @@ export default function Booking({ navigate }: Props) {
         </div>
 
         {/* Step content */}
-        <div style={{ background: 'var(--surface-2)', padding: '40px 40px', minHeight: 320 }}>
+        <div className="booking-panel" style={{ background: 'var(--surface-2)', padding: '40px 40px', minHeight: 320 }}>
           {/* Step 1: Service */}
           {step === 1 && (
             <div>

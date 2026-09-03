@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { pillOutline } from '@/components/ui/buttonStyles'
-import { differentiators, homeServices } from '@/data/services'
+import { homeServices } from '@/data/services'
 import { fleet } from '@/data/fleet'
 import { partnersRowOne, partnersRowTwo } from '@/data/partners'
 import PartnerCard from '@/components/ui/PartnerCard'
@@ -31,7 +31,7 @@ export default function Home({ navigate }: HomeProps) {
         {/* Bottom fade */}
         <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 200, background: 'linear-gradient(to top, #030303 0%, transparent 100%)' }} />
 
-        <div style={{ position: 'relative', maxWidth: 1380, margin: '0 auto', padding: '0 48px', paddingTop: 'clamp(88px, 12vh, 140px)', paddingBottom: 'clamp(88px, 12vh, 140px)', width: '100%' }}>
+        <div className="gutter" style={{ position: 'relative', maxWidth: 1380, margin: '0 auto', padding: '0 48px', paddingTop: 'clamp(88px, 12vh, 140px)', paddingBottom: 'clamp(88px, 12vh, 140px)', width: '100%' }}>
           <div style={{ maxWidth: 720 }}>
 
             {/* Headline */}
@@ -206,7 +206,7 @@ export default function Home({ navigate }: HomeProps) {
         <div style={{ position: 'absolute', inset: 0, background: 'rgba(3,3,3,0.80)' }} />
         <div style={{ position: 'absolute', left: 0, top: '12%', height: '76%', width: 3, background: 'var(--gold-gradient)' }} />
 
-        <div style={{ position: 'relative', maxWidth: 1380, margin: '0 auto', padding: '0 48px', height: '100%', display: 'flex', alignItems: 'center' }}>
+        <div className="gutter" style={{ position: 'relative', maxWidth: 1380, margin: '0 auto', padding: '0 48px', height: '100%', display: 'flex', alignItems: 'center' }}>
           <div style={{ maxWidth: 580, paddingLeft: 32 }}>
             <div style={{ display: 'flex', gap: 3, color: 'var(--gold-bright)', fontSize: 13, marginBottom: 18 }}>
               {['★','★','★','★','★'].map((s,i)=><span key={i}>{s}</span>)}
@@ -282,36 +282,6 @@ export default function Home({ navigate }: HomeProps) {
         </div>
       </section>
 
-      {/* ── TRUST ── */}
-      <section style={{ background: '#0A0A0A', padding: '96px 48px', borderTop: '1px solid rgba(255,255,255,0.1)', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-        <div style={{ maxWidth: 1380, margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: 72 }}>
-            <div style={{ display: 'flex', gap: 3, color: 'var(--gold-bright)', fontSize: 14, justifyContent: 'center', marginBottom: 18 }}>
-              {['★','★','★','★','★'].map((s,i)=><span key={i}>{s}</span>)}
-            </div>
-            <p className="label-caps" style={{ marginBottom: 12 }}>Why Addis Limo</p>
-            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(28px, 4vw, 46px)', fontWeight: 700, color: '#FFFFFF', marginBottom: 4 }}>Reliable.</h2>
-            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(24px, 3.5vw, 40px)', fontWeight: 600, fontStyle: 'italic', background: 'var(--gold-gradient-h)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', marginBottom: 4 }}>Refined.</h2>
-            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(28px, 4vw, 46px)', fontWeight: 700, color: '#FFFFFF' }}>Ready.</h2>
-          </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '36px 52px' }}>
-            {differentiators.map((t, i) => (
-              <div key={i} style={{ display: 'flex', gap: 22, alignItems: 'flex-start' }}>
-                <div style={{ flexShrink: 0 }}>
-                  <div style={{ fontFamily: 'var(--font-display)', fontSize: 12, fontWeight: 700, background: 'var(--gold-gradient)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', letterSpacing: '0.05em' }}>{t.n}</div>
-                  <div style={{ width: 2, height: 44, background: 'var(--gold-gradient)', marginTop: 8 }} />
-                </div>
-                <div>
-                  <h4 style={{ fontFamily: 'var(--font-display)', fontSize: 18, fontWeight: 700, color: '#FFFFFF', marginBottom: 8 }}>{t.label}</h4>
-                  <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.72)', lineHeight: 1.75 }}>{t.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ── TRUSTED BY ── */}
       <section style={{
         padding: '100px 0',
@@ -321,7 +291,7 @@ export default function Home({ navigate }: HomeProps) {
         overflow: 'hidden',
       }}>
         {/* Heading */}
-        <div style={{ textAlign: 'center', marginBottom: 64, padding: '0 48px' }}>
+        <div className="gutter" style={{ textAlign: 'center', marginBottom: 64, padding: '0 48px' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 16, marginBottom: 20 }}>
             <div style={{ height: 1, width: 48, background: 'linear-gradient(to right, transparent, rgba(212,175,90,0.5))' }} />
             <p className="label-caps" style={{ color: '#FFFFFF', fontSize: 9, letterSpacing: '0.3em' }}>Our Partners</p>

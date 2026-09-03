@@ -12,9 +12,9 @@ export default function AdminDashboard({ navigate }: Props) {
   const totalRevenue = bookings.reduce((s, b) => s + b.amount, 0)
 
   return (
-    <div style={{ background: 'var(--ink)', minHeight: '100vh', display: 'flex', paddingTop: 72 }}>
+    <div className="admin-shell" style={{ background: 'var(--ink)', minHeight: '100vh', display: 'flex', paddingTop: 72 }}>
       {/* Sidebar */}
-      <aside style={{
+      <aside className="admin-sidebar" style={{
         width: 220, background: 'var(--surface)', flexShrink: 0,
         borderRight: '1px solid rgba(255,255,255,0.1)',
         display: 'flex', flexDirection: 'column',
@@ -25,7 +25,7 @@ export default function AdminDashboard({ navigate }: Props) {
           <p className="label-caps" style={{ color: '#FFFFFF', fontSize: 9, marginBottom: 4 }}>Admin Panel</p>
           <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.75)' }}>Addis Limo Operations</p>
         </div>
-        <nav style={{ padding: '16px 12px', flex: 1 }}>
+        <nav className="admin-nav" style={{ padding: '16px 12px', flex: 1 }}>
           {(['dashboard', 'bookings', 'partners', 'commissions', 'divider', 'customers', 'vehicles', 'drivers', 'services', 'pricing', 'divider', 'payments', 'invoices', 'reviews', 'divider', 'analytics', 'settings'] as const).map((item, i) => {
             if (item === 'divider') return <div key={i} style={{ height: 1, background: 'rgba(255,255,255,0.05)', margin: '8px 0' }} />
             const isActive = view === item
@@ -68,7 +68,7 @@ export default function AdminDashboard({ navigate }: Props) {
       </aside>
 
       {/* Main content */}
-      <main style={{ flex: 1, padding: '40px 40px', overflowY: 'auto' }}>
+      <div className="admin-content" style={{ flex: 1, padding: '40px 40px', overflowY: 'auto' }}>
         {/* Dashboard */}
         {view === 'dashboard' && (
           <div>
@@ -377,7 +377,7 @@ export default function AdminDashboard({ navigate }: Props) {
             </div>
           </div>
         )}
-      </main>
+      </div>
     </div>
   )
 }
