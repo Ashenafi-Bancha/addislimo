@@ -12,7 +12,8 @@ import Services from '@/pages/Services'
 import { useRouter } from './router'
 import { routes, type Page } from './routes'
 
-type PageComponent = (props: { navigate: (page: Page) => void }) => React.ReactElement
+/** `null` is allowed so a guarded page can render nothing while it redirects. */
+type PageComponent = (props: { navigate: (page: Page) => void }) => React.ReactElement | null
 
 /**
  * Every page id maps to exactly one component. `routes.ts` decides the URL and
@@ -30,7 +31,14 @@ const pageComponents: Record<Page, PageComponent> = {
   contact: About,
   confirmation: Confirmation,
   'admin-login': AdminLogin,
+  // The console reads the current page itself to pick a section.
   admin: AdminDashboard,
+  'admin-bookings': AdminDashboard,
+  'admin-partners': AdminDashboard,
+  'admin-fleet': AdminDashboard,
+  'admin-customers': AdminDashboard,
+  'admin-finance': AdminDashboard,
+  'admin-settings': AdminDashboard,
 }
 
 export default function App() {

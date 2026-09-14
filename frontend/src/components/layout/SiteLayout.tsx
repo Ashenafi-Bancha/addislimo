@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import type { Page, RouteDefinition } from '@/app/routes'
+import { isAdminConsolePage, type Page, type RouteDefinition } from '@/app/routes'
 import BackToHome from '@/components/ui/BackToHome'
 import Footer from './Footer'
 import Nav from './Nav'
@@ -32,9 +32,15 @@ export default function SiteLayout({ chrome, page, navigate, children }: SiteLay
     >
       {withChrome && <Nav current={page} navigate={navigate} />}
 
-      {/* Keyed on the page so the fade-in replays on every navigation.
+      {/* Keyed on the page so the fade-in replays on every navigation — except
+          inside the admin console, where switching sections must keep the
+          shell mounted rather than flash and remount the sidebar.
           `position: relative` anchors the absolutely positioned back link. */}
-      <main key={page} className="page-enter" style={{ position: 'relative' }}>
+      <main
+        key={isAdminConsolePage(page) ? 'admin-console' : page}
+        className="page-enter"
+        style={{ position: 'relative' }}
+      >
         {/* Admin pages carry their own "Back to Site" link in the sidebar. */}
         {withChrome && page !== 'home' && <BackToHome navigate={navigate} />}
         {children}

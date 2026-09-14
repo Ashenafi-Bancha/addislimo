@@ -80,21 +80,33 @@ export interface BookingDraft {
 
 /** A booking as the API will return it. */
 export interface Booking {
+  /** Human-facing reference, e.g. `AL-XK9281`. */
   id: string
-  customer: string
-  service: string
+  customerName: string
+  customerEmail: string
+  customerPhone: string
+  serviceId: ServiceId
   pickup: string
-  dest: string
-  /** ISO-ish `YYYY-MM-DD HH:mm` for now; will become a real timestamp. */
-  date: string
-  partner: string
-  vehicle: string
-  driver: string
+  destination: string
+  /** ISO timestamp of the scheduled pickup. */
+  scheduledAt: string
+  /** ISO timestamp of when the booking was made. */
+  createdAt: string
+  passengers: number
+  /** Fleet partner fulfilling the trip. */
+  partnerId: string
+  /** `null` until dispatch assigns one. */
+  driverId: string | null
+  vehicleId: string | null
   /** Gross booking value in ETB. */
   amount: number
-  /** Addis Limo's cut in ETB. */
+  /**
+   * Addis Limo's cut in ETB, fixed when the booking was priced. Changing the
+   * default commission rate later does not rewrite it.
+   */
   commission: number
   status: BookingStatus
+  notes?: string
 }
 
 /** A partner hotel, airline or fleet operator shown as social proof. */

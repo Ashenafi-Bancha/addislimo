@@ -1,0 +1,181 @@
+/**
+ * Admin console interaction styles.
+ *
+ * Hover, focus and motion for the console live here because inline `style`
+ * objects cannot express `:hover`, `:focus-visible` or `@keyframes`. Layout and
+ * colour stay inline in the components, matching the rest of the codebase.
+ * Mobile adaptation for the console is in responsive.css with everything else.
+ */
+
+/* ── Navigation ── */
+
+.admin-nav-item:hover {
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: #ffffff !important;
+}
+
+.admin-nav-item[aria-current='page']:hover {
+  background: rgba(255, 255, 255, 0.09) !important;
+}
+
+/* ── Rows and cards that open something ── */
+
+.admin-row {
+  cursor: pointer;
+  transition: background 0.12s;
+}
+
+.admin-row:hover,
+.admin-row:focus-visible {
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.admin-row:focus-visible {
+  outline: none;
+  box-shadow: inset 2px 0 0 #ffffff;
+}
+
+.admin-stat-action {
+  transition: border-color 0.15s, transform 0.15s;
+}
+
+.admin-stat-action:hover {
+  border-color: var(--admin-hairline-strong) !important;
+}
+
+/* ── Buttons ── */
+
+.admin-btn:hover {
+  filter: brightness(1.12);
+}
+
+.admin-btn-secondary:hover,
+.admin-icon-btn:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.22) !important;
+  color: #ffffff !important;
+}
+
+.admin-btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.06) !important;
+  color: #ffffff !important;
+}
+
+.admin-btn-danger:hover {
+  background: rgba(208, 59, 59, 0.14) !important;
+  border-color: var(--status-critical) !important;
+}
+
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed !important;
+}
+
+/* ── Form controls ── */
+
+.admin-input:focus,
+.admin-console select:focus,
+.admin-console textarea:focus {
+  border-color: rgba(255, 255, 255, 0.5) !important;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.08);
+}
+
+.admin-input::placeholder,
+.admin-console textarea::placeholder {
+  color: rgba(255, 255, 255, 0.32);
+}
+
+/* Clear-search button replaces the browser's own. */
+.admin-input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+}
+
+.admin-console select option {
+  background: #111111;
+  color: #ffffff;
+}
+
+/* ── Keyboard focus, everywhere in the console ── */
+
+.admin-console button:focus-visible,
+.admin-console a:focus-visible,
+.admin-console [role='tab']:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px #070707, 0 0 0 4px rgba(255, 255, 255, 0.7);
+}
+
+/* ── Scroll containers ── */
+
+.admin-scroll-x::-webkit-scrollbar {
+  display: none;
+}
+
+.admin-table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ── Visually hidden, still read by screen readers ── */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── Motion ── */
+
+@keyframes adminPulse {
+  0% { transform: scale(0.6); opacity: 0.55; }
+  70% { transform: scale(1.6); opacity: 0; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+@keyframes adminFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes adminSlideIn {
+  from { transform: translateX(24px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes adminSlideInLeft {
+  from { transform: translateX(-24px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes adminToastIn {
+  from { transform: translateY(8px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes adminPop {
+  from { transform: translateY(-4px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.admin-pulse { animation: adminPulse 1.8s ease-out infinite; }
+.admin-fade-in { animation: adminFadeIn 0.18s ease-out; }
+.admin-slide-in { animation: adminSlideIn 0.22s ease-out; }
+.admin-slide-in-left { animation: adminSlideInLeft 0.22s ease-out; }
+.admin-toast-in { animation: adminToastIn 0.2s ease-out; }
+.admin-pop { animation: adminPop 0.14s ease-out; }
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-pulse,
+  .admin-fade-in,
+  .admin-slide-in,
+  .admin-slide-in-left,
+  .admin-toast-in,
+  .admin-pop {
+    animation: none;
+  }
+}

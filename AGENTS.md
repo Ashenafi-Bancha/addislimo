@@ -57,8 +57,12 @@ path is missing, or when the repository contradicts this guide.
   nav. **Contact info and copy belong here, never inline in a component**
 - `src/config/env.ts` — typed access to `VITE_*` variables
 - `src/data/` — static site copy: services, fleet, destinations, partners
-- `src/features/booking/`, `src/features/admin/` — feature-scoped options and
-  mock data
+- `src/features/booking/` — booking wizard options
+- `src/features/admin/` — the operations console: seed data, a shared
+  in-memory store whose actions mirror future API calls, selectors that compute
+  every figure, and `layout/`, `ui/`, `views/`. Every `/admin/*` route renders
+  `pages/AdminDashboard.tsx`. See the "Admin console" section of
+  `frontend/README.md` before changing it
 - `src/lib/api/` — `fetch` wrapper and endpoint map for the future backend;
   nothing calls it yet
 - `src/lib/utils/`, `src/hooks/` — small shared helpers

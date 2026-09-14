@@ -1,249 +1,255 @@
-import { useState } from 'react'
+import { useEffect, useState, type FormEvent } from 'react'
 import type { Page } from '@/app/routes'
+import BrandMark from '@/components/ui/BrandMark'
+import { site } from '@/config/site'
+import { DEMO_CREDENTIALS, getSession, signIn } from '@/features/admin/session'
+import Icon, { type IconName } from '@/features/admin/ui/Icon'
+import { buttonPrimary, fieldLabel, input } from '@/features/admin/ui/styles'
+import { useMediaQuery } from '@/hooks'
 
-interface Props { navigate: (p: Page) => void }
+interface Props {
+  navigate: (p: Page) => void
+}
+
+const capabilities: { icon: IconName; text: string }[] = [
+  { icon: 'bookings', text: 'Confirm and dispatch every booking' },
+  { icon: 'fleet', text: 'Manage partners, drivers and vehicles' },
+  { icon: 'finance', text: 'Track commission and partner payouts' },
+]
 
 export default function AdminLogin({ navigate }: Props) {
+  const compact = useMediaQuery('(max-width: 900px)')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const [showPass, setShowPass] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Already signed in this session: skip straight to the console.
+  useEffect(() => {
+    if (getSession()) navigate('admin')
+  }, [navigate])
+
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
     setError('')
-    if (!email || !password) { setError('Please enter your credentials.'); return }
+    if (!email.trim() || !password) {
+      setError('Enter your email address and password.')
+      return
+    }
     setLoading(true)
-    setTimeout(() => {
+    // A short pause so the button state is visible; the real check will be a
+    // network call to POST /auth/login.
+    window.setTimeout(() => {
+      const session = signIn(email, password)
       setLoading(false)
-      if (email === 'admin@addislimo.com' && password === 'admin123') {
-        navigate('admin')
-      } else {
-        setError('Invalid email or password. Please try again.')
-      }
-    }, 900)
+      if (session) navigate('admin')
+      else setError('That email and password do not match an admin account.')
+    }, 600)
   }
 
   return (
-    <div style={{
-      minHeight: '100vh', background: 'var(--ink)',
-      display: 'flex', alignItems: 'stretch',
-      fontFamily: 'var(--font-body)',
-    }}>
+    <div className="admin-console" style={{ minHeight: '100vh', display: 'flex', background: 'var(--admin-page)', color: '#FFFFFF' }}>
+      {/* Brand panel */}
+      {!compact && (
+        <aside
+          style={{
+            flex: '0 0 46%',
+            position: 'relative',
+            overflow: 'hidden',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            padding: '44px 52px',
+            borderRight: '1px solid var(--admin-hairline)',
+          }}
+        >
+          <div
+            aria-hidden="true"
+            style={{
+              position: 'absolute',
+              inset: 0,
+              backgroundImage: 'url(https://images.unsplash.com/photo-1771350368994-9d87f0d8431f?w=1400&h=1000&fit=crop&auto=format)',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }}
+          />
+          <div aria-hidden="true" style={{ position: 'absolute', inset: 0, background: 'linear-gradient(165deg, rgba(5,5,5,0.55) 0%, rgba(5,5,5,0.82) 55%, rgba(5,5,5,0.96) 100%)' }} />
 
-      {/* Left panel — brand visual */}
-      <div style={{
-        flex: '0 0 46%', position: 'relative', overflow: 'hidden',
-        display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: '56px 52px',
-      }} className="admin-login-left">
-        {/* Background image */}
-        <div style={{
-          position: 'absolute', inset: 0,
-          backgroundImage: 'url(https://images.unsplash.com/photo-1604560842632-bd795d8f1275?w=1200&h=900&fit=crop&auto=format)',
-          backgroundSize: 'cover', backgroundPosition: 'center',
-        }} />
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(160deg, rgba(3,3,3,0.45) 0%, rgba(3,3,3,0.88) 100%)' }} />
-        {/* Gold left accent */}
-        <div style={{ position: 'absolute', left: 0, top: '8%', height: '84%', width: 3, background: 'linear-gradient(to bottom, transparent, #FFFFFF, transparent)' }} />
-
-        {/* Brand mark */}
-        <div style={{ position: 'absolute', top: 48, left: 52, display: 'flex', alignItems: 'center', gap: 14 }}>
-          <svg width="44" height="44" viewBox="0 0 48 48" fill="none">
-            <circle cx="24" cy="24" r="22.5" stroke="url(#lnc1)" strokeWidth="1.4"/>
-            <circle cx="24" cy="24" r="18" stroke="url(#lnc2)" strokeWidth="0.6" strokeDasharray="2 3"/>
-            <text x="24" y="30" textAnchor="middle" fontFamily="'Playfair Display',serif" fontSize="14" fontWeight="700" fill="url(#lnt1)" letterSpacing="1">AL</text>
-            <defs>
-              <linearGradient id="lnc1" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
-                <stop stopColor="#FFFFFF"/><stop offset=".5" stopColor="#FFFFFF"/><stop offset="1" stopColor="rgba(255,255,255,0.65)"/>
-              </linearGradient>
-              <linearGradient id="lnc2" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
-                <stop stopColor="#FFFFFF" stopOpacity=".5"/><stop offset="1" stopColor="rgba(255,255,255,0.65)" stopOpacity=".2"/>
-              </linearGradient>
-              <linearGradient id="lnt1" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
-                <stop stopColor="#FFFFFF"/><stop offset=".5" stopColor="#FFFFFF"/><stop offset="1" stopColor="#FFFFFF"/>
-              </linearGradient>
-            </defs>
-          </svg>
-          <div>
-            <p style={{ fontFamily: 'var(--font-display)', fontSize: 16, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#FFFFFF', lineHeight: 1 }}>ADDIS LIMO</p>
-            <p style={{ fontFamily: 'var(--font-body)', fontSize: 8, fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.50)', marginTop: 3 }}>Premium Transportation</p>
-          </div>
-        </div>
-
-        {/* Bottom quote */}
-        <div style={{ position: 'relative' }}>
-          <div style={{ display: 'flex', gap: 3, color: '#FFFFFF', fontSize: 11, marginBottom: 18 }}>
-            {['★','★','★','★','★'].map((s,i)=><span key={i}>{s}</span>)}
-          </div>
-          <p style={{
-            fontFamily: 'var(--font-display)', fontSize: 'clamp(22px, 2.5vw, 32px)',
-            fontWeight: 700, color: '#FFFFFF', lineHeight: 1.2, marginBottom: 8,
-          }}>Operations Center.</p>
-          <p style={{
-            fontFamily: 'var(--font-display)', fontSize: 'clamp(18px, 2vw, 26px)',
-            fontWeight: 600, fontStyle: 'italic',
-            color: '#FFFFFF', lineHeight: 1.2, marginBottom: 20,
-          }}>Addis Limo HQ.</p>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 0, marginBottom: 20 }}>
-            <div style={{ height: 1, width: 48, background: 'linear-gradient(to right, transparent, #FFFFFF)' }} />
-            <div style={{ width: 6, height: 6, background: '#FFFFFF', transform: 'rotate(45deg)', margin: '0 8px', flexShrink: 0 }} />
-            <div style={{ height: 1, width: 48, background: 'linear-gradient(to left, transparent, #FFFFFF)' }} />
-          </div>
-          <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.75)', lineHeight: 1.7 }}>
-            Manage bookings, partners, commissions<br />and daily operations from one place.
-          </p>
-        </div>
-      </div>
-
-      {/* Right panel — login form */}
-      <div style={{
-        flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center',
-        padding: '48px 40px', background: '#0A0A0A',
-      }}>
-        <div style={{ width: '100%', maxWidth: 420 }}>
-
-          {/* Header */}
-          <p className="label-caps" style={{ color: '#FFFFFF', fontSize: 9, letterSpacing: '0.3em', marginBottom: 12 }}>Admin Access</p>
-          <h1 style={{
-            fontFamily: 'var(--font-display)', fontSize: 34, fontWeight: 700,
-            color: '#FFFFFF', lineHeight: 1.1, marginBottom: 6, letterSpacing: '-0.01em',
-          }}>Sign In</h1>
-          <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.70)', marginBottom: 48, lineHeight: 1.6 }}>
-            Access the Addis Limo operations dashboard.
-          </p>
-
-          {/* Form */}
-          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-
-            {/* Email */}
+          <div style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: 13 }}>
+            <BrandMark size={42} />
             <div>
-              <label style={{
-                display: 'block', fontFamily: 'var(--font-body)', fontSize: 9, fontWeight: 700,
-                letterSpacing: '0.22em', textTransform: 'uppercase',
-                color: 'rgba(255,255,255,0.55)', marginBottom: 8,
-              }}>Email Address</label>
-              <input
-                type="email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                placeholder="admin@addislimo.com"
-                autoComplete="email"
-                style={{
-                  width: '100%', boxSizing: 'border-box',
-                  background: '#111111', border: '1px solid rgba(255,255,255,0.15)',
-                  color: '#FFFFFF', fontFamily: 'var(--font-body)', fontSize: 14,
-                  padding: '14px 18px', outline: 'none', borderRadius: 2,
-                  transition: 'border-color 0.2s',
-                }}
-                onFocus={e => e.currentTarget.style.borderColor = 'rgba(255,255,255,0.50)'}
-                onBlur={e => e.currentTarget.style.borderColor = 'rgba(255,255,255,0.15)'}
-              />
+              <p style={{ margin: 0, fontFamily: 'var(--font-display)', fontSize: 16, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', lineHeight: 1 }}>{site.name}</p>
+              <p style={{ margin: '5px 0 0', fontFamily: 'var(--font-body)', fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.6)' }}>Operations</p>
+            </div>
+          </div>
+
+          <div style={{ position: 'relative' }}>
+            <p style={{ margin: 0, fontFamily: 'var(--font-display)', fontSize: 'clamp(28px, 2.8vw, 40px)', fontWeight: 700, lineHeight: 1.1 }}>
+              Every trip,
+              <br />
+              <span style={{ fontStyle: 'italic', fontWeight: 600, color: 'rgba(255,255,255,0.82)' }}>in one place.</span>
+            </p>
+            <ul style={{ listStyle: 'none', margin: '28px 0 0', padding: 0, display: 'grid', gap: 14 }}>
+              {capabilities.map((c) => (
+                <li key={c.text} style={{ display: 'flex', alignItems: 'center', gap: 12, fontFamily: 'var(--font-body)', fontSize: 14, color: 'rgba(255,255,255,0.85)' }}>
+                  <span style={{ width: 34, height: 34, borderRadius: 9, display: 'grid', placeItems: 'center', background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.14)' }}>
+                    <Icon name={c.icon} size={16} />
+                  </span>
+                  {c.text}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <p style={{ position: 'relative', margin: 0, fontFamily: 'var(--font-body)', fontSize: 12, color: 'rgba(255,255,255,0.45)' }}>
+            &copy; {new Date().getFullYear()} {site.name} · Authorised staff only
+          </p>
+        </aside>
+      )}
+
+      {/* Form. A div, not <main>: SiteLayout already provides the page landmark. */}
+      <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: compact ? '32px 20px' : '48px 40px' }}>
+        <div style={{ width: '100%', maxWidth: 400 }}>
+          {compact && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 36 }}>
+              <BrandMark size={38} />
+              <div>
+                <p style={{ margin: 0, fontFamily: 'var(--font-display)', fontSize: 15, fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', lineHeight: 1 }}>{site.name}</p>
+                <p style={{ margin: '5px 0 0', fontFamily: 'var(--font-body)', fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--admin-text-muted)' }}>Operations</p>
+              </div>
+            </div>
+          )}
+
+          <h1 style={{ margin: 0, fontFamily: 'var(--font-display)', fontSize: 32, fontWeight: 700, lineHeight: 1.1 }}>Sign in</h1>
+          <p style={{ margin: '8px 0 32px', fontFamily: 'var(--font-body)', fontSize: 14, color: 'var(--admin-text-muted)' }}>
+            Use your Addis Limo staff account.
+          </p>
+
+          <form onSubmit={handleSubmit} noValidate style={{ display: 'grid', gap: 18 }}>
+            <div>
+              <label htmlFor="admin-email" style={fieldLabel}>Email address</label>
+              <div style={{ position: 'relative' }}>
+                <span style={fieldIcon}><Icon name="mail" size={16} /></span>
+                <input
+                  id="admin-email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  autoComplete="username"
+                  placeholder="you@addislimo.com"
+                  aria-invalid={Boolean(error)}
+                  className="admin-input"
+                  style={{ ...input, height: 46, paddingLeft: 40, fontSize: 14.5 }}
+                />
+              </div>
             </div>
 
-            {/* Password */}
             <div>
-              <label style={{
-                display: 'block', fontFamily: 'var(--font-body)', fontSize: 9, fontWeight: 700,
-                letterSpacing: '0.22em', textTransform: 'uppercase',
-                color: 'rgba(255,255,255,0.55)', marginBottom: 8,
-              }}>Password</label>
+              <label htmlFor="admin-password" style={fieldLabel}>Password</label>
               <div style={{ position: 'relative' }}>
+                <span style={fieldIcon}><Icon name="lock" size={16} /></span>
                 <input
-                  type={showPass ? 'text' : 'password'}
+                  id="admin-password"
+                  type={showPassword ? 'text' : 'password'}
                   value={password}
-                  onChange={e => setPassword(e.target.value)}
-                  placeholder="••••••••"
+                  onChange={(e) => setPassword(e.target.value)}
                   autoComplete="current-password"
-                  style={{
-                    width: '100%', boxSizing: 'border-box',
-                    background: '#111111', border: '1px solid rgba(255,255,255,0.15)',
-                    color: '#FFFFFF', fontFamily: 'var(--font-body)', fontSize: 14,
-                    padding: '14px 48px 14px 18px', outline: 'none', borderRadius: 2,
-                    transition: 'border-color 0.2s',
-                  }}
-                  onFocus={e => e.currentTarget.style.borderColor = 'rgba(255,255,255,0.50)'}
-                  onBlur={e => e.currentTarget.style.borderColor = 'rgba(255,255,255,0.15)'}
+                  placeholder="Your password"
+                  aria-invalid={Boolean(error)}
+                  className="admin-input"
+                  style={{ ...input, height: 46, paddingLeft: 40, paddingRight: 46, fontSize: 14.5 }}
                 />
                 <button
                   type="button"
-                  onClick={() => setShowPass(s => !s)}
-                  style={{
-                    position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)',
-                    background: 'none', border: 'none', cursor: 'pointer',
-                    color: 'rgba(255,255,255,0.30)', fontSize: 12, fontFamily: 'var(--font-body)',
-                    fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase',
-                    transition: 'color 0.2s',
-                  }}
-                  onMouseEnter={e => e.currentTarget.style.color = '#FFFFFF'}
-                  onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.30)'}
-                >{showPass ? 'Hide' : 'Show'}</button>
+                  onClick={() => setShowPassword((v) => !v)}
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                  style={{ position: 'absolute', right: 6, top: '50%', transform: 'translateY(-50%)', width: 34, height: 34, display: 'grid', placeItems: 'center', background: 'transparent', border: 'none', borderRadius: 7, color: 'var(--admin-text-muted)', cursor: 'pointer' }}
+                >
+                  <Icon name={showPassword ? 'eyeOff' : 'eye'} size={17} />
+                </button>
               </div>
             </div>
 
-            {/* Error */}
-            {error && (
-              <div style={{
-                background: 'rgba(244,67,54,0.08)', border: '1px solid rgba(244,67,54,0.25)',
-                padding: '12px 16px', borderRadius: 2,
-                display: 'flex', alignItems: 'center', gap: 10,
-              }}>
-                <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#f44336', flexShrink: 0 }} />
-                <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.85)', lineHeight: 1.5 }}>{error}</p>
-              </div>
-            )}
+            <div aria-live="assertive">
+              {error && (
+                <p
+                  role="alert"
+                  style={{
+                    margin: 0,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 10,
+                    padding: '11px 13px',
+                    borderRadius: 9,
+                    background: 'rgba(208,59,59,0.10)',
+                    border: '1px solid rgba(208,59,59,0.4)',
+                    fontFamily: 'var(--font-body)',
+                    fontSize: 13,
+                    color: '#FFFFFF',
+                  }}
+                >
+                  <Icon name="alert" size={16} style={{ color: 'var(--status-critical)' }} />
+                  {error}
+                </p>
+              )}
+            </div>
 
-            {/* Hint */}
-            <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.22)', letterSpacing: '0.02em' }}>
-              Demo: admin@addislimo.com / admin123
-            </p>
-
-            {/* Submit */}
-            <button
-              type="submit"
-              disabled={loading}
-              style={{
-                background: loading ? 'rgba(212,175,90,0.5)' : 'var(--gold-gradient)',
-                color: '#060606', border: 'none', cursor: loading ? 'wait' : 'pointer',
-                fontFamily: 'var(--font-body)', fontSize: 11, fontWeight: 800,
-                letterSpacing: '0.22em', textTransform: 'uppercase',
-                padding: '16px 0', width: '100%', borderRadius: 2,
-                boxShadow: loading ? 'none' : '0 2px 24px rgba(255,255,255,0.18)',
-                transition: 'box-shadow 0.2s, transform 0.15s, background 0.2s',
-                marginTop: 4,
-                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
-              }}
-              onMouseEnter={e => { if (!loading) { e.currentTarget.style.boxShadow = '0 6px 36px rgba(255,255,255,0.35)'; e.currentTarget.style.transform = 'translateY(-1px)' } }}
-              onMouseLeave={e => { e.currentTarget.style.boxShadow = '0 2px 24px rgba(255,255,255,0.18)'; e.currentTarget.style.transform = 'translateY(0)' }}
-            >
-              {loading
-                ? <><span style={{ width: 14, height: 14, border: '2px solid rgba(0,0,0,0.3)', borderTopColor: '#060606', borderRadius: '50%', animation: 'spin 0.7s linear infinite', display: 'inline-block' }} />Signing In...</>
-                : 'Sign In to Dashboard'
-              }
+            <button type="submit" disabled={loading} className="admin-btn" style={{ ...buttonPrimary, height: 48, fontSize: 14.5 }}>
+              {loading ? (
+                <>
+                  <span aria-hidden="true" style={{ width: 16, height: 16, border: '2px solid rgba(0,0,0,0.25)', borderTopColor: '#060606', borderRadius: '50%', animation: 'adminSpin 0.7s linear infinite' }} />
+                  Signing in
+                </>
+              ) : (
+                'Sign in'
+              )}
             </button>
           </form>
 
-          {/* Back link */}
-          <div style={{ marginTop: 40, paddingTop: 32, borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-            <button
-              onClick={() => navigate('home')}
-              style={{
-                background: 'none', border: 'none', cursor: 'pointer',
-                fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 600,
-                color: 'rgba(255,255,255,0.30)', letterSpacing: '0.06em',
-                transition: 'color 0.2s', padding: 0,
-              }}
-              onMouseEnter={e => e.currentTarget.style.color = 'rgba(255,255,255,0.70)'}
-              onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.30)'}
-            >← Return to Addis Limo</button>
-          </div>
+          {/* Only in development builds. A deployed site never shows credentials. */}
+          {import.meta.env.DEV && (
+            <div style={{ marginTop: 22, padding: '12px 14px', borderRadius: 10, border: '1px dashed rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, fontFamily: 'var(--font-body)', fontSize: 12.5 }}>
+              <span style={{ color: 'var(--admin-text-muted)' }}>
+                <strong style={{ color: '#FFFFFF', fontWeight: 600 }}>Development login</strong>
+                <br />
+                {DEMO_CREDENTIALS.email} / {DEMO_CREDENTIALS.password}
+              </span>
+              <button
+                type="button"
+                onClick={() => {
+                  setEmail(DEMO_CREDENTIALS.email)
+                  setPassword(DEMO_CREDENTIALS.password)
+                  setError('')
+                }}
+                className="admin-btn-secondary"
+                style={{ height: 32, padding: '0 12px', borderRadius: 8, background: 'var(--admin-raised)', border: '1px solid var(--admin-hairline-strong)', color: '#FFFFFF', fontFamily: 'var(--font-body)', fontSize: 12.5, fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap' }}
+              >
+                Fill in
+              </button>
+            </div>
+          )}
+
+          <button
+            onClick={() => navigate('home')}
+            style={{ marginTop: 30, display: 'inline-flex', alignItems: 'center', gap: 8, background: 'none', border: 'none', padding: 0, fontFamily: 'var(--font-body)', fontSize: 13, fontWeight: 600, color: 'var(--admin-text-muted)', cursor: 'pointer' }}
+          >
+            <Icon name="arrowLeft" size={15} />
+            Return to website
+          </button>
         </div>
       </div>
 
-      <style>{`
-        @keyframes spin { to { transform: rotate(360deg) } }
-        @media (max-width: 860px) { .admin-login-left { display: none !important } }
-      `}</style>
+      <style>{`@keyframes adminSpin { to { transform: rotate(360deg) } }`}</style>
     </div>
   )
+}
+
+const fieldIcon = {
+  position: 'absolute' as const,
+  left: 13,
+  top: '50%',
+  transform: 'translateY(-50%)',
+  color: 'var(--admin-text-faint)',
+  pointerEvents: 'none' as const,
 }

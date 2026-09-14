@@ -18,7 +18,15 @@ export const routes = {
   contact: { path: '/contact', title: 'Contact', chrome: 'site' },
   confirmation: { path: '/booking/confirmed', title: 'Booking Confirmed', chrome: 'site' },
   'admin-login': { path: '/admin/login', title: 'Admin Sign In', chrome: 'bare' },
-  admin: { path: '/admin', title: 'Operations Center', chrome: 'bare' },
+  // Admin console: one route per section, so the back button, refresh and
+  // shared links all land on the right screen. All render AdminDashboard.
+  admin: { path: '/admin', title: 'Admin · Overview', chrome: 'bare' },
+  'admin-bookings': { path: '/admin/bookings', title: 'Admin · Bookings', chrome: 'bare' },
+  'admin-partners': { path: '/admin/partners', title: 'Admin · Partners', chrome: 'bare' },
+  'admin-fleet': { path: '/admin/fleet', title: 'Admin · Fleet', chrome: 'bare' },
+  'admin-customers': { path: '/admin/customers', title: 'Admin · Customers', chrome: 'bare' },
+  'admin-finance': { path: '/admin/finance', title: 'Admin · Finance', chrome: 'bare' },
+  'admin-settings': { path: '/admin/settings', title: 'Admin · Settings', chrome: 'bare' },
 } as const satisfies Record<string, RouteDefinition>
 
 export interface RouteDefinition {
@@ -54,4 +62,21 @@ export function pageFromHash(hash: string): Page {
   const path = hash.replace(/^#/, '').replace(/\/+$/, '') || '/'
   const match = pageIds.find((id) => routes[id].path === path)
   return match ?? DEFAULT_PAGE
+}
+
+/** Every page that renders inside the signed-in admin console. */
+export const adminConsolePages = [
+  'admin',
+  'admin-bookings',
+  'admin-partners',
+  'admin-fleet',
+  'admin-customers',
+  'admin-finance',
+  'admin-settings',
+] as const satisfies readonly Page[]
+
+export type AdminConsolePage = (typeof adminConsolePages)[number]
+
+export function isAdminConsolePage(page: Page): page is AdminConsolePage {
+  return (adminConsolePages as readonly Page[]).includes(page)
 }

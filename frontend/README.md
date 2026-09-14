@@ -23,7 +23,7 @@ src/
 ├── data/                 # static site copy (services, fleet, destinations, partners)
 ├── features/
 │   ├── booking/          # booking wizard options
-│   └── admin/            # admin console mock data + View type
+│   └── admin/            # the operations console, see below
 ├── hooks/                # useScrolled, useMediaQuery
 ├── lib/
 │   ├── api/              # fetch wrapper + endpoint map (nothing calls it yet)
@@ -92,6 +92,48 @@ Things that are deliberately unfinished, waiting on the client:
 - Fleet and destination photography is Unsplash placeholder imagery, assigned
   per category by `imagePool` in `data/destinations.ts`.
 - Vehicle classes in the booking wizard use emoji instead of photos.
-- The admin console reads mock rows and its sign-in accepts one hard-coded
-  credential pair — it is a UI prototype, not an auth system.
+- The admin console runs on seed data in memory: edits last for the browser
+  session and reset on reload. Its sign-in is a UI gate with one prototype
+  account (`admin@addislimo.com` / `admin123`, shown on the sign-in page in
+  development builds only). It is not an authentication system.
 - `contact` is routed to the About page; there is no dedicated contact page yet.
+
+## Admin console
+
+Staff reach it at `#/admin/login`; nothing on the public site links there.
+Every section has its own route (`#/admin/bookings`, `#/admin/finance`…), all
+rendered by `pages/AdminDashboard.tsx`, which checks the session and picks the
+section.
+
+```
+features/admin/
+├── types.ts          # FleetPartner, Driver, FleetVehicle, Customer, settings
+├── data.ts           # seed data, dated relative to "now" so it always looks live
+├── store.ts          # shared in-memory store + toasts (useSyncExternalStore)
+├── session.ts        # sign-in gate for the prototype
+├── selectors.ts      # every figure the console shows is computed here
+├── status.ts         # how each status looks: tone + glyph
+├── format.ts, csv.ts # dates, currency, CSV export
+├── nav.ts            # sections in the sidebar (only ones that work)
+├── layout/           # AdminShell, Sidebar, Topbar
+├── ui/               # Icon, StatusBadge, StatTile, Drawer, FilterTabs…
+├── charts/           # RevenueChart
+└── views/            # one file per section, plus BookingDrawer
+```
+
+Rules the console follows:
+
+- **No typed-in numbers.** KPIs, deltas, payouts and customer totals come from
+  `selectors.ts`, so every section agrees with every other and with edits.
+- **Store actions are the future API calls.** `adminActions.updateBooking`
+  becomes `PATCH /bookings/:id`; see `lib/api/endpoints.ts`.
+- **Status colour is reserved** for needs-action (warning), done (good) and
+  failed (critical), and never used alone: good and critical are nearly
+  identical to red-green colourblind readers, so every badge also has its own
+  glyph and a text label.
+- **Numbers are set in Manrope**, with tabular figures in table columns.
+  Playfair is kept for page titles.
+- **Phones get different structure, not squeezed desktop.** The sidebar
+  becomes a drawer and tables become card lists, switched with
+  `useMediaQuery`. Check every change at 375px.
+

@@ -9,6 +9,9 @@
 /* Brand tokens. Must come after the Tailwind import. */
 @import './tokens.css';
 
+/* Admin console hover, focus and motion. */
+@import './admin.css';
+
 /* Mobile adaptation. Last, so its overrides win. */
 @import './responsive.css';
 

@@ -41,4 +41,23 @@
   --muted:       rgba(255,255,255,0.40);
 
   --radius-pill: 50px;
+
+  /* Status — reserved for state, never for decoration or data series.
+     Checked against the dark admin surface (#0f0f0f): all clear 3:1.
+     good and critical are nearly identical to a deuteranope (ΔE 4.1), so a
+     status colour is never the only signal: every badge also carries its own
+     glyph and a text label. See features/admin/status.ts. */
+  --status-good:     #0ca30c;
+  --status-warning:  #fab219;
+  --status-critical: #d03b3b;
+
+  /* Admin console surfaces — one step quieter than the marketing site. */
+  --admin-page:      #070707;
+  --admin-sidebar:   #0a0a0a;
+  --admin-panel:     linear-gradient(180deg, #121212 0%, #0d0d0d 100%);
+  --admin-raised:    #161616;
+  --admin-hairline:  rgba(255,255,255,0.08);
+  --admin-hairline-strong: rgba(255,255,255,0.14);
+  --admin-text-muted: rgba(255,255,255,0.52);
+  --admin-text-faint: rgba(255,255,255,0.34);
 }

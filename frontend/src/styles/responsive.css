@@ -211,38 +211,69 @@
 
 /* ─────────────────────────────────────────────
    Admin console
-   The sidebar stacks above the content and becomes a horizontal scroller.
+   Its layout switches structurally in JS (sidebar becomes a drawer, tables
+   become card lists), so only small refinements are needed here.
    ───────────────────────────────────────────── */
 
-@media (max-width: 900px) {
-  .admin-shell {
-    flex-direction: column !important;
+@media (max-width: 560px) {
+  /* Headline figures as a compact 2x2 instead of four full-width rows. */
+  .admin-stat-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
   }
-  .admin-sidebar {
-    width: 100% !important;
-    position: static !important;
-    height: auto !important;
-    border-right: none !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  .admin-stat-grid > * {
+    padding: 14px !important;
   }
-  .admin-nav {
-    display: flex !important;
-    overflow-x: auto !important;
-    gap: 4px;
-    padding: 10px 12px !important;
-  }
-  .admin-nav > button {
-    width: auto !important;
-    white-space: nowrap !important;
-    border-left: none !important;
-    border-bottom: 2px solid transparent !important;
-  }
-  /* Vertical rules between nav groups make no sense once the nav is a row. */
-  .admin-nav > div {
+  .admin-stat-icon,
+  .admin-stat-compared {
     display: none !important;
   }
-  .admin-content {
-    padding: 28px 20px !important;
+  .admin-stat-value {
+    font-size: 19px !important;
+    margin: 8px 0 6px !important;
+  }
+  .admin-page-header > div:last-child {
+    width: 100%;
+  }
+  .admin-page-header > div:last-child > button {
+    flex: 1;
+  }
+  /* Drawer actions: the primary action spans the top row, the secondary
+     actions share the row beneath, so saving is never an afterthought. */
+  .admin-drawer-actions {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px !important;
+  }
+  .admin-drawer-actions .admin-action-spacer {
+    display: none !important;
+  }
+  .admin-drawer-actions .admin-action-note,
+  .admin-drawer-actions .admin-action-primary {
+    grid-column: 1 / -1;
+  }
+  .admin-drawer-actions .admin-action-primary {
+    order: -1;
+    width: 100%;
+  }
+  .admin-drawer-actions .admin-action-note {
+    order: -2;
+  }
+  .admin-drawer-actions .admin-action-secondary {
+    width: 100%;
+  }
+  /* A closed booking has only "Close" left: let it take the whole row. */
+  .admin-drawer-actions .admin-action-secondary:only-of-type {
+    grid-column: 1 / -1;
+  }
+  .admin-toaster {
+    left: 12px !important;
+    right: 12px !important;
+    bottom: 12px !important;
+  }
+  .admin-toaster > button {
+    min-width: 0 !important;
+    max-width: none !important;
   }
 }
 

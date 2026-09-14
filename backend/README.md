@@ -61,12 +61,22 @@ Derived from what the UI already renders — see the admin console and the
 booking wizard.
 
 - `customers` — name, email, phone, created_at
-- `bookings` — reference (`AL-XK9281`), customer, service, pickup, destination,
-  scheduled_at, passengers, luggage, vehicle_class, status, amount, commission,
-  notes
-- `partners` — fleet operators; name, contact, commission_rate, active
-- `vehicles` — partner, class, plate, capacity, luggage capacity
-- `drivers` — partner, name, phone, licence, active
+- `bookings` — reference (`AL-XK9281`), customer, service_id, pickup,
+  destination, scheduled_at, created_at, passengers, partner_id, driver_id
+  (nullable), vehicle_id (nullable), status, amount, commission, notes.
+  Commission is stored at pricing time so a later rate change rewrites nothing
+- `partners` — fleet operators; name, type, contact name, phone, email,
+  commission_rate, status (`Active` / `Pending` / `Suspended`), rating, joined_at
+- `vehicles` — partner_id, make, model, year, plate, class, seats, status
+  (`Available` / `Maintenance`; "On Trip" is derived from live bookings)
+- `drivers` — partner_id, name, phone, licence_no, status (`Available` /
+  `Off Duty`; "On Trip" is derived), rating
+- `settings` — default commission rate for new partners, notification toggles
+
+The admin console already exercises this model against seed data in
+`frontend/src/features/admin/data.ts`, and `selectors.ts` there shows every
+aggregate the API will need to serve (revenue by day, payouts per partner,
+customers grouped by email).
 - `services` — the sellable service types shown in step 1 of the wizard
 - `admin_users` — email, password_hash, role
 
