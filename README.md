@@ -68,5 +68,7 @@ Looking for something to change? Start here.
 - [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — how the two apps fit together.
 - [`frontend/README.md`](frontend/README.md) — frontend structure and conventions.
 - [`backend/README.md`](backend/README.md) — the API plan and database sketch.
+- [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) — deploying to AletCloud, connecting
+  addislimo.com, and the checklist before going public.
 - [`docs/CLIENT-BRIEF.md`](docs/CLIENT-BRIEF.md) — every line of the client's
   service PDF mapped to the file that owns it.
