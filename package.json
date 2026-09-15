@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "pnpm --filter @addislimo/frontend dev",
     "build": "pnpm --filter @addislimo/frontend build",
+    "start": "node server.mjs",
     "preview": "pnpm --filter @addislimo/frontend preview",
     "typecheck": "pnpm --filter @addislimo/frontend typecheck",
     "format": "oxfmt"
@@ -16,5 +17,6 @@
   },
   "engines": {
     "node": ">=22"
-  }
+  },
+  "packageManager": "pnpm@10.34.3"
 }

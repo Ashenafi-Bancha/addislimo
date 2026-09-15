@@ -1,0 +1,12 @@
+# Keep the build context small and reproducible: never send local installs,
+# builds, secrets or VCS history into the image.
+node_modules
+**/node_modules
+dist
+.git
+.env*
+!.env.example
+*.log
+# npm's lockfile is not used here — the workspace is managed by pnpm.
+package-lock.json
+.claude
