@@ -30,6 +30,9 @@ path is missing, or when the repository contradicts this guide.
 - `.figma/make/` — harness hooks (`dev`, `install`, `build`/`deploy`, `format`)
   and `site.json`, which supplies the page title and meta tags
 - `dist/` — build output, git-ignored, published by `.figma/make/deploy`
+- `vercel.json` — build settings for the live deployment (see
+  `docs/DEPLOYMENT.md`). `server.mjs` and `Dockerfile` serve `dist/` on
+  container hosts and are unused on Vercel
 - `docs/ARCHITECTURE.md` — how the pieces fit together
 - `docs/CLIENT-BRIEF.md` — the client's service PDF mapped to the files that
   own each item. **Read it before changing service or destination content**

@@ -22,3 +22,6 @@ logs/
 # beside it.
 /.plugins/
 /.opencode-skills/
+
+# Vercel CLI state, machine-local and not project source.
+.vercel/
