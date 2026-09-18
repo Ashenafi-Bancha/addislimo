@@ -79,6 +79,13 @@ aggregate the API will need to serve (revenue by day, payouts per partner,
 customers grouped by email).
 - `services` — the sellable service types shown in step 1 of the wizard
 - `admin_users` — email, password_hash, role
+- `site_content` — key (primary key, e.g. `home_hero`), value (jsonb),
+  updated_at, updated_by. One row per group in
+  `frontend/src/features/cms/content.ts`; `GET /content` serves all rows
+  publicly, `PUT /content/:key` is admin only
+- `content_images` — uploads from the Website Content editor
+  (`POST /content/images` returns `{ url }`). Until this exists the editor
+  stores images inline as data URLs
 
 ## When work starts
 

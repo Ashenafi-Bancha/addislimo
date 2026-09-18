@@ -59,7 +59,14 @@ path is missing, or when the repository contradicts this guide.
 - `src/config/site.ts` — brand name, tagline, contact details, socials, header
   nav. **Contact info and copy belong here, never inline in a component**
 - `src/config/env.ts` — typed access to `VITE_*` variables
-- `src/data/` — static site copy: services, fleet, destinations, partners
+- `src/data/` — static site copy: services, fleet, destinations, partners.
+  These are the **defaults**; pages read content through `useContent` from
+  `src/features/cms`, which layers admin edits on top. Never import `data/`
+  into a page for content the admin can edit
+- `src/features/cms/` — editable-content layer: `content.ts` (shape and
+  defaults), `schema.ts` (the fields the admin edits), `store.ts`
+  (`useContent`, save/reset/export), `published.json` (committed edits). See
+  "Editable content" in `docs/ARCHITECTURE.md`
 - `src/features/booking/` — booking wizard options
 - `src/features/admin/` — the operations console: seed data, a shared
   in-memory store whose actions mirror future API calls, selectors that compute

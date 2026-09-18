@@ -1,18 +1,23 @@
 import { useMemo, useState } from 'react'
 import { useMediaQuery } from '@/hooks'
 import { vehicleOptions } from '@/features/booking/booking.data'
+import { checkDriverDelete, checkVehicleDelete } from '../guards'
 import { driverStatuses, indexById, REVENUE_STATUSES, vehicleLabel, vehicleStatuses } from '../selectors'
 import { driverStatusMeta, vehicleStatusMeta } from '../status'
-import { useAdminStore } from '../store'
-import type { DriverStatus, VehicleStatus } from '../types'
+import { adminActions, notify, useAdminStore } from '../store'
+import type { Driver, DriverStatus, FleetVehicle, VehicleStatus } from '../types'
+import DeleteDialog from '../ui/DeleteDialog'
 import EmptyState from '../ui/EmptyState'
 import FilterTabs from '../ui/FilterTabs'
 import Icon from '../ui/Icon'
 import PageHeader from '../ui/PageHeader'
+import RowActions from '../ui/RowActions'
 import SearchField from '../ui/SearchField'
 import StatusBadge, { Glyph } from '../ui/StatusBadge'
 import { toneColor } from '../status'
-import { cellPrimary, cellSecondary, panel, tabular, td, th } from '../ui/styles'
+import { buttonPrimary, cellPrimary, cellSecondary, panel, tabular, td, th } from '../ui/styles'
+import DriverForm from './forms/DriverForm'
+import VehicleForm from './forms/VehicleForm'
 
 type Tab = 'vehicles' | 'drivers'
 
@@ -23,6 +28,28 @@ export default function FleetView() {
   const wide = useMediaQuery('(min-width: 900px)')
   const [tab, setTab] = useState<Tab>('vehicles')
   const [query, setQuery] = useState('')
+  // `null` opens the form for a new record; `undefined` keeps it closed.
+  const [editingVehicle, setEditingVehicle] = useState<FleetVehicle | null | undefined>(undefined)
+  const [editingDriver, setEditingDriver] = useState<Driver | null | undefined>(undefined)
+  const [deletingVehicle, setDeletingVehicle] = useState<FleetVehicle | null>(null)
+  const [deletingDriver, setDeletingDriver] = useState<Driver | null>(null)
+
+  const vehicleCheck = useMemo(() => (deletingVehicle ? checkVehicleDelete(state, deletingVehicle.id) : null), [deletingVehicle, state])
+  const driverCheck = useMemo(() => (deletingDriver ? checkDriverDelete(state, deletingDriver.id) : null), [deletingDriver, state])
+
+  const confirmVehicleDelete = () => {
+    if (!deletingVehicle) return
+    adminActions.deleteVehicle(deletingVehicle.id)
+    notify(`${vehicleLabel(deletingVehicle)} ${deletingVehicle.plate} deleted`, 'critical')
+    setDeletingVehicle(null)
+  }
+
+  const confirmDriverDelete = () => {
+    if (!deletingDriver) return
+    adminActions.deleteDriver(deletingDriver.id)
+    notify(`${deletingDriver.name} deleted`, 'critical')
+    setDeletingDriver(null)
+  }
 
   const partners = useMemo(() => indexById(state.partners), [state.partners])
   const vStatus = useMemo(() => vehicleStatuses(state), [state])
@@ -62,6 +89,16 @@ export default function FleetView() {
       <PageHeader
         title="Fleet & Drivers"
         description={`${state.vehicles.length} vehicles and ${state.drivers.length} drivers across ${state.partners.length} partners`}
+        actions={
+          <button
+            onClick={() => (tab === 'vehicles' ? setEditingVehicle(null) : setEditingDriver(null))}
+            className="admin-btn"
+            style={buttonPrimary}
+          >
+            <Icon name="plus" size={16} strokeWidth={2} />
+            {tab === 'vehicles' ? 'Add vehicle' : 'Add driver'}
+          </button>
+        }
       />
 
       {/* Availability at a glance */}
@@ -103,6 +140,7 @@ export default function FleetView() {
                     <th style={{ ...th, textAlign: 'right' }}>Seats</th>
                     <th style={th}>Partner</th>
                     <th style={th}>Status</th>
+                    <th style={{ ...th, textAlign: 'right' }}>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -119,6 +157,9 @@ export default function FleetView() {
                         <td style={{ ...td, textAlign: 'right', ...tabular }}>{v.seats}</td>
                         <td style={td}>{partners.get(v.partnerId)?.name}</td>
                         <td style={td}><StatusBadge label={s} meta={vehicleStatusMeta[s]} size="sm" /></td>
+                        <td style={{ ...td, textAlign: 'right', whiteSpace: 'nowrap' }}>
+                          <RowActions label={`${vehicleLabel(v)} ${v.plate}`} onEdit={() => setEditingVehicle(v)} onDelete={() => setDeletingVehicle(v)} />
+                        </td>
                       </tr>
                     )
                   })}
@@ -138,7 +179,10 @@ export default function FleetView() {
                     <span style={mobileSub}>
                       <span style={tabular}>{v.plate}</span> · {classLabels.get(v.vehicleClass)} · {v.seats} seats
                     </span>
-                    <span style={mobileSub}>{partners.get(v.partnerId)?.name} · {v.year}</span>
+                    <span style={{ ...mobileSub, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
+                      <span>{partners.get(v.partnerId)?.name} · {v.year}</span>
+                      <RowActions label={`${vehicleLabel(v)} ${v.plate}`} onEdit={() => setEditingVehicle(v)} onDelete={() => setDeletingVehicle(v)} />
+                    </span>
                   </li>
                 )
               })}
@@ -157,6 +201,7 @@ export default function FleetView() {
                   <th style={{ ...th, textAlign: 'right' }}>Trips</th>
                   <th style={{ ...th, textAlign: 'right' }}>Rating</th>
                   <th style={th}>Status</th>
+                  <th style={{ ...th, textAlign: 'right' }}>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -175,6 +220,9 @@ export default function FleetView() {
                       <td style={{ ...td, textAlign: 'right', ...tabular }}>{tripsByDriver.get(d.id) ?? 0}</td>
                       <td style={{ ...td, textAlign: 'right', ...tabular }}>{d.rating > 0 ? d.rating.toFixed(1) : 'New'}</td>
                       <td style={td}><StatusBadge label={s} meta={driverStatusMeta[s]} size="sm" /></td>
+                      <td style={{ ...td, textAlign: 'right', whiteSpace: 'nowrap' }}>
+                        <RowActions label={d.name} onEdit={() => setEditingDriver(d)} onDelete={() => setDeletingDriver(d)} />
+                      </td>
                     </tr>
                   )
                 })}
@@ -194,8 +242,9 @@ export default function FleetView() {
                   <span style={mobileSub}>
                     <a href={`tel:${d.phone.replace(/\s/g, '')}`} style={{ color: 'inherit', textDecoration: 'none', ...tabular }}>{d.phone}</a> · {partners.get(d.partnerId)?.name}
                   </span>
-                  <span style={mobileSub}>
-                    {tripsByDriver.get(d.id) ?? 0} trips · {d.rating > 0 ? `${d.rating.toFixed(1)} rating` : 'New driver'}
+                  <span style={{ ...mobileSub, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
+                    <span>{tripsByDriver.get(d.id) ?? 0} trips · {d.rating > 0 ? `${d.rating.toFixed(1)} rating` : 'New driver'}</span>
+                    <RowActions label={d.name} onEdit={() => setEditingDriver(d)} onDelete={() => setDeletingDriver(d)} />
                   </span>
                 </li>
               )
@@ -203,6 +252,23 @@ export default function FleetView() {
           </ul>
         )}
       </section>
+
+      <VehicleForm vehicle={editingVehicle} onClose={() => setEditingVehicle(undefined)} />
+      <DriverForm driver={editingDriver} onClose={() => setEditingDriver(undefined)} />
+      <DeleteDialog
+        noun="vehicle"
+        name={deletingVehicle ? `${vehicleLabel(deletingVehicle)} ${deletingVehicle.plate}` : null}
+        check={vehicleCheck}
+        onConfirm={confirmVehicleDelete}
+        onClose={() => setDeletingVehicle(null)}
+      />
+      <DeleteDialog
+        noun="driver"
+        name={deletingDriver?.name ?? null}
+        check={driverCheck}
+        onConfirm={confirmDriverDelete}
+        onClose={() => setDeletingDriver(null)}
+      />
     </>
   )
 }

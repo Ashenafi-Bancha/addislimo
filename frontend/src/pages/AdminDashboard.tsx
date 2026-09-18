@@ -7,6 +7,7 @@ import { getSession, signOut, type AdminSession } from '@/features/admin/session
 import { adminActions } from '@/features/admin/store'
 import BookingDrawer from '@/features/admin/views/BookingDrawer'
 import BookingsView from '@/features/admin/views/BookingsView'
+import ContentView from '@/features/admin/views/ContentView'
 import CustomersView from '@/features/admin/views/CustomersView'
 import FinanceView from '@/features/admin/views/FinanceView'
 import FleetView from '@/features/admin/views/FleetView'
@@ -50,6 +51,7 @@ export default function AdminDashboard({ navigate }: Props) {
       {section === 'fleet' && <FleetView />}
       {section === 'customers' && <CustomersView navigate={navigate} />}
       {section === 'finance' && <FinanceView navigate={navigate} />}
+      {section === 'content' && <ContentView />}
       {section === 'settings' && <SettingsView session={session} onSignOut={handleSignOut} />}
       <BookingDrawer />
     </AdminShell>

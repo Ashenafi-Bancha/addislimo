@@ -1,6 +1,7 @@
 import { useMemo, useState, type ReactNode } from 'react'
 import type { Booking, BookingStatus } from '@/types'
 import { formatETB, formatSchedule, timeAgo } from '../format'
+import { checkBookingDelete } from '../guards'
 import {
   BOOKING_STATUSES,
   driverStatuses,
@@ -11,10 +12,13 @@ import {
 } from '../selectors'
 import { bookingStatusMeta } from '../status'
 import { adminActions, notify, useAdminStore } from '../store'
+import DeleteDialog from '../ui/DeleteDialog'
 import Drawer from '../ui/Drawer'
 import Icon, { type IconName } from '../ui/Icon'
+import RowActions from '../ui/RowActions'
 import StatusBadge from '../ui/StatusBadge'
 import { buttonDanger, buttonGhost, buttonPrimary, fieldLabel, input, select, tabular } from '../ui/styles'
+import BookingDetailsForm from './forms/BookingDetailsForm'
 
 /** Statuses that describe a trip someone is already driving or about to. */
 const NEEDS_DRIVER: ReadonlySet<BookingStatus> = new Set(['Assigned', 'Driver En Route', 'In Progress'])
@@ -39,7 +43,40 @@ export default function BookingDrawer() {
   )
 }
 
+/**
+ * Two modes: dispatch (driver, vehicle, status, notes) is where an admin
+ * spends the day; "edit details" changes the trip itself.
+ */
 function BookingEditor({ booking }: { booking: Booking }) {
+  const [editingDetails, setEditingDetails] = useState(false)
+  const [deleting, setDeleting] = useState(false)
+  const state = useAdminStore()
+  const deleteCheck = useMemo(() => (deleting ? checkBookingDelete(state, booking.id) : null), [deleting, state, booking.id])
+
+  const confirmDelete = () => {
+    adminActions.deleteBooking(booking.id)
+    notify(`${booking.id} deleted`, 'critical')
+  }
+
+  return (
+    <>
+      {editingDetails ? (
+        <BookingDetailsForm booking={booking} onDone={() => setEditingDetails(false)} />
+      ) : (
+        <DispatchEditor booking={booking} onEditDetails={() => setEditingDetails(true)} onDelete={() => setDeleting(true)} />
+      )}
+      <DeleteDialog
+        noun="booking"
+        name={deleting ? booking.id : null}
+        check={deleteCheck}
+        onConfirm={confirmDelete}
+        onClose={() => setDeleting(false)}
+      />
+    </>
+  )
+}
+
+function DispatchEditor({ booking, onEditDetails, onDelete }: { booking: Booking; onEditDetails: () => void; onDelete: () => void }) {
   const state = useAdminStore()
   const [status, setStatus] = useState<BookingStatus>(booking.status)
   const [driverId, setDriverId] = useState(booking.driverId ?? '')
@@ -95,8 +132,11 @@ function BookingEditor({ booking }: { booking: Booking }) {
       {/* Status and headline facts */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, padding: '16px 0' }}>
         <StatusBadge label={booking.status} meta={bookingStatusMeta[booking.status]} />
-        <span style={{ fontFamily: 'var(--font-body)', fontSize: 20, fontWeight: 700, color: '#FFFFFF', ...tabular }}>
-          {formatETB(booking.amount)}
+        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 12 }}>
+          <span style={{ fontFamily: 'var(--font-body)', fontSize: 20, fontWeight: 700, color: '#FFFFFF', ...tabular }}>
+            {formatETB(booking.amount)}
+          </span>
+          <RowActions label={`booking ${booking.id}`} onEdit={onEditDetails} onDelete={onDelete} />
         </span>
       </div>
 
@@ -145,6 +185,7 @@ function BookingEditor({ booking }: { booking: Booking }) {
             <label htmlFor="bd-driver" style={fieldLabel}>Driver</label>
             <select id="bd-driver" value={driverId} onChange={(e) => setDriverId(e.target.value)} disabled={closed} style={select}>
               <option value="">Unassigned</option>
+              {driverId && !drivers.some((d) => d.id === driverId) && <option value={driverId}>Removed driver</option>}
               {drivers.map((d) => {
                 const s = driverState.get(d.id)
                 const busyElsewhere = s === 'On Trip' && d.id !== booking.driverId
@@ -164,6 +205,7 @@ function BookingEditor({ booking }: { booking: Booking }) {
             <label htmlFor="bd-vehicle" style={fieldLabel}>Vehicle</label>
             <select id="bd-vehicle" value={vehicleId} onChange={(e) => setVehicleId(e.target.value)} disabled={closed} style={select}>
               <option value="">Unassigned</option>
+              {vehicleId && !vehicles.some((v) => v.id === vehicleId) && <option value={vehicleId}>Removed vehicle</option>}
               {vehicles.map((v) => {
                 const s = vehicleState.get(v.id)
                 return (

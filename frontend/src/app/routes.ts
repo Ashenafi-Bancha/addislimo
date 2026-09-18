@@ -26,6 +26,7 @@ export const routes = {
   'admin-fleet': { path: '/admin/fleet', title: 'Admin · Fleet', chrome: 'bare' },
   'admin-customers': { path: '/admin/customers', title: 'Admin · Customers', chrome: 'bare' },
   'admin-finance': { path: '/admin/finance', title: 'Admin · Finance', chrome: 'bare' },
+  'admin-content': { path: '/admin/content', title: 'Admin · Website Content', chrome: 'bare' },
   'admin-settings': { path: '/admin/settings', title: 'Admin · Settings', chrome: 'bare' },
 } as const satisfies Record<string, RouteDefinition>
 
@@ -72,6 +73,7 @@ export const adminConsolePages = [
   'admin-fleet',
   'admin-customers',
   'admin-finance',
+  'admin-content',
   'admin-settings',
 ] as const satisfies readonly Page[]
 

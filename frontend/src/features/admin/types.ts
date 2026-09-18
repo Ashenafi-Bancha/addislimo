@@ -98,4 +98,5 @@ export type AdminSection =
   | 'fleet'
   | 'customers'
   | 'finance'
+  | 'content'
   | 'settings'

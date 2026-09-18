@@ -183,7 +183,7 @@ export default function BookingsView() {
               </thead>
               <tbody>
                 {rows.map((b) => (
-                  <BookingRow key={b.id} booking={b} driverName={b.driverId ? drivers.get(b.driverId)?.name : undefined} />
+                  <BookingRow key={b.id} booking={b} driverName={b.driverId ? drivers.get(b.driverId)?.name ?? 'Removed driver' : undefined} />
                 ))}
               </tbody>
             </table>
@@ -191,7 +191,7 @@ export default function BookingsView() {
         ) : (
           <ul style={{ listStyle: 'none', margin: 0, padding: 0 }}>
             {rows.map((b) => (
-              <BookingCard key={b.id} booking={b} driverName={b.driverId ? drivers.get(b.driverId)?.name : undefined} />
+              <BookingCard key={b.id} booking={b} driverName={b.driverId ? drivers.get(b.driverId)?.name ?? 'Removed driver' : undefined} />
             ))}
           </ul>
         )}

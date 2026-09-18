@@ -38,6 +38,7 @@ const pageComponents: Record<Page, PageComponent> = {
   'admin-fleet': AdminDashboard,
   'admin-customers': AdminDashboard,
   'admin-finance': AdminDashboard,
+  'admin-content': AdminDashboard,
   'admin-settings': AdminDashboard,
 }
 

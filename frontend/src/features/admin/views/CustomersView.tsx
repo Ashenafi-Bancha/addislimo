@@ -4,15 +4,19 @@ import { useMediaQuery } from '@/hooks'
 import { initialsOf } from '@/lib/utils'
 import { datedFilename, downloadCsv, toCsv } from '../csv'
 import { formatDate, formatETB, timeAgo } from '../format'
+import { checkCustomerDelete } from '../guards'
 import { deriveCustomers, serviceLabel } from '../selectors'
 import { adminActions, notify, useAdminStore } from '../store'
 import type { Customer } from '../types'
+import DeleteDialog from '../ui/DeleteDialog'
 import EmptyState from '../ui/EmptyState'
 import FilterTabs from '../ui/FilterTabs'
 import Icon from '../ui/Icon'
 import PageHeader from '../ui/PageHeader'
+import RowActions from '../ui/RowActions'
 import SearchField from '../ui/SearchField'
 import { buttonSecondary, cellPrimary, cellSecondary, panel, tabular, td, th } from '../ui/styles'
+import CustomerForm from './forms/CustomerForm'
 
 type Sort = 'spend' | 'recent' | 'trips'
 
@@ -25,6 +29,8 @@ export default function CustomersView({ navigate }: CustomersViewProps) {
   const wide = useMediaQuery('(min-width: 900px)')
   const [query, setQuery] = useState('')
   const [sort, setSort] = useState<Sort>('spend')
+  const [editing, setEditing] = useState<Customer | null>(null)
+  const [deleting, setDeleting] = useState<Customer | null>(null)
 
   const customers = useMemo(() => deriveCustomers(state.bookings), [state.bookings])
 
@@ -42,6 +48,15 @@ export default function CustomersView({ navigate }: CustomersViewProps) {
   }, [customers, query, sort])
 
   const repeat = customers.filter((c) => c.trips > 1).length
+
+  const deleteCheck = useMemo(() => (deleting ? checkCustomerDelete(state, deleting.email) : null), [deleting, state])
+
+  const confirmDelete = () => {
+    if (!deleting) return
+    adminActions.deleteCustomer(deleting.email)
+    notify(`${deleting.name} and their bookings deleted`, 'critical')
+    setDeleting(null)
+  }
 
   // A customer's bookings are one search away in the bookings list.
   const viewBookings = (c: Customer) => {
@@ -107,7 +122,7 @@ export default function CustomersView({ navigate }: CustomersViewProps) {
                   <th style={{ ...th, textAlign: 'right' }}>Total spend</th>
                   <th style={th}>Most booked</th>
                   <th style={th}>Last trip</th>
-                  <th style={{ ...th, width: 36 }}><span className="sr-only">Bookings</span></th>
+                  <th style={{ ...th, textAlign: 'right' }}>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -140,7 +155,9 @@ export default function CustomersView({ navigate }: CustomersViewProps) {
                       <span style={{ color: '#FFFFFF' }}>{formatDate(c.lastTripAt)}</span>
                       <span style={cellSecondary}>first booked {timeAgo(c.firstBookedAt)}</span>
                     </td>
-                    <td style={{ ...td, color: 'var(--admin-text-faint)' }}><Icon name="chevronRight" size={16} /></td>
+                    <td style={{ ...td, textAlign: 'right', whiteSpace: 'nowrap' }}>
+                      <RowActions label={c.name} onEdit={() => setEditing(c)} onDelete={() => setDeleting(c)} />
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -149,11 +166,11 @@ export default function CustomersView({ navigate }: CustomersViewProps) {
         ) : (
           <ul style={{ listStyle: 'none', margin: 0, padding: 0 }}>
             {rows.map((c) => (
-              <li key={c.email}>
+              <li key={c.email} style={{ display: 'flex', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
                 <button
                   onClick={() => viewBookings(c)}
                   className="admin-row"
-                  style={{ width: '100%', display: 'flex', alignItems: 'center', gap: 12, padding: '14px 16px', background: 'transparent', border: 'none', borderBottom: '1px solid rgba(255,255,255,0.06)', textAlign: 'left', color: 'inherit', fontFamily: 'var(--font-body)' }}
+                  style={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'center', gap: 12, padding: '14px 8px 14px 16px', background: 'transparent', border: 'none', textAlign: 'left', color: 'inherit', fontFamily: 'var(--font-body)' }}
                 >
                   <Avatar name={c.name} />
                   <span style={{ flex: 1, minWidth: 0 }}>
@@ -166,11 +183,23 @@ export default function CustomersView({ navigate }: CustomersViewProps) {
                     </span>
                   </span>
                 </button>
+                <span style={{ paddingRight: 12 }}>
+                  <RowActions label={c.name} onEdit={() => setEditing(c)} onDelete={() => setDeleting(c)} />
+                </span>
               </li>
             ))}
           </ul>
         )}
       </section>
+
+      <CustomerForm customer={editing} onClose={() => setEditing(null)} />
+      <DeleteDialog
+        noun="customer"
+        name={deleting?.name ?? null}
+        check={deleteCheck}
+        onConfirm={confirmDelete}
+        onClose={() => setDeleting(null)}
+      />
     </>
   )
 }

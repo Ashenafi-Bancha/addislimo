@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { airportDestinationGroups, airportFeatures, airportSteps } from '@/data/airport'
+import { useContent } from '@/features/cms'
 import type { Page } from '@/app/routes'
 
 interface Props { navigate: (p: Page) => void }
@@ -11,8 +11,10 @@ export default function AirportTransfer({ navigate }: Props) {
   const [dest, setDest] = useState('')
   const [pax, setPax] = useState('1')
   const [veh, setVeh] = useState('Executive Sedan')
-  const [group, setGroup] = useState(airportDestinationGroups[0].id)
+  const { steps: airportSteps, features: airportFeatures, destinationGroups: airportDestinationGroups } = useContent('airport')
+  const [group, setGroup] = useState(airportDestinationGroups[0]?.id ?? '')
 
+  // The admin can rename or remove groups, so fall back rather than assume.
   const activeGroup = airportDestinationGroups.find(g => g.id === group) ?? airportDestinationGroups[0]
 
   return (
@@ -187,11 +189,11 @@ export default function AirportTransfer({ navigate }: Props) {
         </div>
 
         <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.72)', lineHeight: 1.7, marginBottom: 28, maxWidth: 620 }}>
-          {activeGroup.blurb}
+          {activeGroup?.blurb}
         </p>
 
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
-          {activeGroup.places.map(place => (
+          {(activeGroup?.places ?? []).map(place => (
             <div key={place} style={{
               border: '1px solid rgba(255,255,255,0.2)', padding: '10px 20px', borderRadius: '50px',
               fontSize: 13, color: 'rgba(255,255,255,0.85)',

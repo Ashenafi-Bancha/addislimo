@@ -1,8 +1,10 @@
-import { corporateClients, corporateFeatures, corporateVenues } from '@/data/corporate'
+import { useContent } from '@/features/cms'
 import type { Page } from '@/app/routes'
 interface Props { navigate: (p: Page) => void }
 
 export default function Corporate({ navigate }: Props) {
+  const { clients: corporateClients, features: corporateFeatures, venues: corporateVenues } = useContent('corporate')
+
   return (
     <div style={{ background: 'var(--ink)', minHeight: '100vh', paddingTop: 72 }}>
       {/* Hero */}

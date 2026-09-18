@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { categories, destinations, type Category } from '@/data/destinations'
+import { categories, type Category } from '@/data/destinations'
+import { useContent } from '@/features/cms'
 import { cardTopRule, raisedCard } from '@/components/ui/cardStyles'
 import type { Page } from '@/app/routes'
 
@@ -8,6 +9,7 @@ interface Props { navigate: (p: Page) => void }
 export default function ExploreAddis({ navigate }: Props) {
   const [active, setActive] = useState<Category>('all')
   const [hovered, setHovered] = useState<number | null>(null)
+  const destinations = useContent('destinations')
 
   const filtered = active === 'all' ? destinations : destinations.filter(d => d.cat === active)
 

@@ -39,6 +39,10 @@ export const adminNav: AdminNavGroup[] = [
     ],
   },
   {
+    label: 'Website',
+    items: [{ section: 'content', page: 'admin-content', label: 'Website Content', icon: 'content' }],
+  },
+  {
     label: 'Business',
     items: [
       { section: 'finance', page: 'admin-finance', label: 'Finance', icon: 'finance' },

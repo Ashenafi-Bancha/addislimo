@@ -179,3 +179,25 @@ button:disabled {
     animation: none;
   }
 }
+
+/* ── Forms: two columns, one on phones ── */
+@media (max-width: 640px) {
+  .admin-form-grid { grid-template-columns: 1fr !important; }
+  .admin-form-grid > * { grid-column: auto !important; }
+}
+
+/* Row actions: edit and delete icon buttons in tables and lists. */
+.admin-icon-btn:hover { background: rgba(255,255,255,0.08) !important; color: #FFFFFF !important; }
+.admin-icon-btn-danger:hover { border-color: rgba(208,59,59,0.7) !important; background: rgba(208,59,59,0.12) !important; color: #FFFFFF !important; }
+.admin-icon-btn:focus-visible,
+.admin-icon-btn-danger:focus-visible { outline: none; box-shadow: 0 0 0 2px #070707, 0 0 0 4px rgba(255,255,255,0.7); }
+
+/* Content editor cards */
+.admin-content-card { transition: border-color 0.15s, background 0.15s; }
+.admin-content-card:hover { border-color: rgba(255,255,255,0.28) !important; background: rgba(255,255,255,0.035) !important; }
+.admin-content-card:focus-visible { outline: none; box-shadow: 0 0 0 2px #070707, 0 0 0 4px rgba(255,255,255,0.7); }
+
+/* Reordering is a desk task; on phones the row keeps edit and delete. */
+@media (max-width: 640px) {
+  .admin-content-order { display: none !important; }
+}

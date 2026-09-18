@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react'
 import type { Page } from '@/app/routes'
+import { useContent } from '@/features/cms'
 import { useMediaQuery } from '@/hooks'
 
 interface HomeHeroProps {
@@ -20,11 +21,10 @@ interface HomeHeroProps {
  * one image.
  */
 
-/** 16:9 source. The mobile frame matches that ratio so nothing is cropped. */
-const HERO_IMAGE =
-  'https://images.unsplash.com/photo-1771350368994-9d87f0d8431f?w=1600&h=900&fit=crop&auto=format'
-const HERO_IMAGE_WIDE =
-  'https://images.unsplash.com/photo-1771350368994-9d87f0d8431f?w=1920&h=1080&fit=crop&auto=format'
+/**
+ * The photograph is edited in the admin's Website Content section. The mobile
+ * frame is 16:9, so a landscape photo in that ratio shows without cropping.
+ */
 
 const scrollCueKeyframes = `
   @keyframes scrollLine { 0%{opacity:1;transform:scaleY(1) translateY(0)} 100%{opacity:0;transform:scaleY(0.5) translateY(12px)} }
@@ -32,6 +32,8 @@ const scrollCueKeyframes = `
 
 export default function HomeHero({ navigate }: HomeHeroProps) {
   const isMobile = useMediaQuery('(max-width: 768px)')
+  const hero = useContent('home_hero')
+  const headlineLines = hero.headline.split('\n').filter((line) => line.trim())
 
   const headline = (
     <>
@@ -48,7 +50,12 @@ export default function HomeHero({ navigate }: HomeHeroProps) {
             textShadow: '0 2px 40px rgba(0,0,0,0.5)',
           }}
         >
-          Experience<br />the Capital City<br />of Africa
+          {headlineLines.map((line, i) => (
+            <span key={i}>
+              {i > 0 && <br />}
+              {line}
+            </span>
+          ))}
         </span>
       </h1>
       <h1 style={{ margin: '0 0 clamp(20px, 3vh, 36px)', lineHeight: 1 }}>
@@ -64,7 +71,7 @@ export default function HomeHero({ navigate }: HomeHeroProps) {
             textShadow: '0 2px 30px rgba(0,0,0,0.4)',
           }}
         >
-          in Class.
+          {hero.headlineAccent}
         </span>
       </h1>
     </>
@@ -97,8 +104,7 @@ export default function HomeHero({ navigate }: HomeHeroProps) {
         maxWidth: 540,
       }}
     >
-      Premium chauffeur and transportation services in Addis Ababa, designed for travelers,
-      executives, businesses, events and unforgettable journeys.
+      {hero.intro}
     </p>
   )
 
@@ -206,7 +212,7 @@ export default function HomeHero({ navigate }: HomeHeroProps) {
             and the whole photograph is on screen. */}
         <div style={{ position: 'relative', width: '100%', aspectRatio: '16 / 9', marginTop: 72, flexShrink: 0 }}>
           <img
-            src={HERO_IMAGE}
+            src={hero.image}
             alt="The Addis Ababa skyline"
             style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
           />
@@ -243,7 +249,7 @@ export default function HomeHero({ navigate }: HomeHeroProps) {
         style={{
           position: 'absolute',
           inset: 0,
-          backgroundImage: `url(${HERO_IMAGE_WIDE})`,
+          backgroundImage: `url(${hero.image})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center 30%',
         }}

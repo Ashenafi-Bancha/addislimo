@@ -17,6 +17,8 @@ export const endpoints = {
     /** Status, driver, vehicle and notes. `adminActions.updateBooking`. */
     update: (id: string) => `/bookings/${id}`,
     updateStatus: (id: string) => `/bookings/${id}/status`,
+    /** `adminActions.deleteBooking`. */
+    remove: (id: string) => `/bookings/${id}`,
   },
   quotes: {
     estimate: '/quotes/estimate',
@@ -29,18 +31,34 @@ export const endpoints = {
     byId: (id: string) => `/partners/${id}`,
     /** Approve, suspend or reinstate. `adminActions.setPartnerStatus`. */
     updateStatus: (id: string) => `/partners/${id}/status`,
+    /** POST creates, PUT updates, DELETE removes. `adminActions.savePartner` / `deletePartner`. */
+    create: '/partners',
   },
   drivers: {
     list: '/drivers',
+    /** PUT updates, DELETE removes. */
     byId: (id: string) => `/drivers/${id}`,
+    create: '/drivers',
   },
   vehicles: {
     list: '/vehicles',
+    /** PUT updates, DELETE removes. */
     byId: (id: string) => `/vehicles/${id}`,
+    create: '/vehicles',
   },
   customers: {
     /** Derived server-side by grouping bookings, as `deriveCustomers` does now. */
     list: '/customers',
+    /** PATCH rewrites contact details on their bookings; DELETE removes them. */
+    byEmail: (email: string) => `/customers/${encodeURIComponent(email)}`,
+  },
+  content: {
+    /** Every edited content group, keyed as in `features/cms/content.ts`. Public. */
+    all: '/content',
+    /** Replace one group. Admin only. `contentActions.save`. */
+    byKey: (key: string) => `/content/${key}`,
+    /** Image upload for the content editor; returns `{ url }`. */
+    upload: '/content/images',
   },
   auth: {
     login: '/auth/login',

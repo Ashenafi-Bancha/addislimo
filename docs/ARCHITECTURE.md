@@ -44,7 +44,7 @@ frontend package, and `frontend/vite.config.ts` sets
  pages/  ──────────  layout + interaction, one file per screen
    │
    ├── data/ ─────── static copy: services, fleet, destinations, partners
-   ├── features/ ─── feature-scoped state, options and mocks (booking, admin)
+   ├── features/ ─── feature-scoped state, options and mocks (booking, admin, cms)
    ├── components/ ─ layout chrome (Nav, Footer, SiteLayout) and shared UI
    ├── config/ ───── brand facts and env
    ├── lib/api/ ──── the future HTTP boundary
@@ -54,6 +54,24 @@ frontend package, and `frontend/vite.config.ts` sets
 The rule that matters: **a page never hard-codes content a client might want
 changed.** Copy goes in `data/`, brand facts go in `config/site.ts`, colours go
 in `styles/tokens.css`.
+
+## Editable content
+
+Pages read their copy through `useContent('<group>')` from `features/cms`, not
+by importing `data/` directly. That is what lets the admin's **Website
+Content** section edit the site. Each group is resolved from three layers,
+later ones winning:
+
+1. the defaults in `data/` and `config/site.ts`,
+2. `features/cms/published.json`, content exported from the admin and
+   committed, which is how an edit reaches visitors before the backend exists,
+3. edits saved in the admin's browser (localStorage).
+
+`features/cms/schema.ts` describes every editable field, and the admin renders
+its forms from it, so making something editable is: add it to `SiteContent`
+and its default in `content.ts`, describe it in `schema.ts`, and read it with
+`useContent` on the page. When the backend lands, layer 3 becomes
+`GET /content` and saving becomes `PUT /content/:key`.
 
 ## Routing
 

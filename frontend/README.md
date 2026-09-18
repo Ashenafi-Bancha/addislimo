@@ -92,10 +92,13 @@ Things that are deliberately unfinished, waiting on the client:
 - Fleet and destination photography is Unsplash placeholder imagery, assigned
   per category by `imagePool` in `data/destinations.ts`.
 - Vehicle classes in the booking wizard use emoji instead of photos.
-- The admin console runs on seed data in memory: edits last for the browser
-  session and reset on reload. Its sign-in is a UI gate with one prototype
-  account (`admin@addislimo.com` / `admin@2026`, shown on the sign-in page in
-  development builds only). It is not an authentication system.
+- The admin console runs on seed data in memory: edits, additions and
+  deletions last until the page is reloaded. Its sign-in is a UI gate with one
+  prototype account (`admin@addislimo.com` / `admin@2026`), which the UI never
+  displays. It is not an authentication system.
+- Website Content edits are saved in the admin's browser only. Visitors see
+  them after **Export** and a commit of the file to
+  `src/features/cms/published.json`, or once the backend stores them.
 - `contact` is routed to the About page; there is no dedicated contact page yet.
 
 ## Admin console
@@ -114,12 +117,25 @@ features/admin/
 ├── selectors.ts      # every figure the console shows is computed here
 ├── status.ts         # how each status looks: tone + glyph
 ├── format.ts, csv.ts # dates, currency, CSV export
+├── guards.ts         # what a delete would break, checked before confirming
 ├── nav.ts            # sections in the sidebar (only ones that work)
 ├── layout/           # AdminShell, Sidebar, Topbar
-├── ui/               # Icon, StatusBadge, StatTile, Drawer, FilterTabs…
+├── ui/               # Icon, StatusBadge, Drawer, ConfirmDialog, RowActions…
 ├── charts/           # RevenueChart
 └── views/            # one file per section, plus BookingDrawer
+    ├── forms/        # add/edit drawers: partner, vehicle, driver, customer, trip
+    └── content/      # the Website Content editor, driven by features/cms/schema.ts
 ```
+
+What can be changed where:
+
+| Record | Add | Edit | Delete |
+| --- | --- | --- | --- |
+| Booking | (from the public booking flow) | Drawer: dispatch, or "Edit details" for trip, customer and price | Yes, unless the trip is under way |
+| Partner | Yes | Yes | Only with no bookings on record; otherwise suspend |
+| Vehicle, driver | Yes | Yes | Only when no open booking uses them |
+| Customer | (from bookings) | Yes, rewrites all their bookings | Yes, with all their bookings |
+| Website content | Yes | Yes | Yes |
 
 Rules the console follows:
 
@@ -133,6 +149,10 @@ Rules the console follows:
   glyph and a text label.
 - **Numbers are set in Manrope**, with tabular figures in table columns.
   Playfair is kept for page titles.
+- **Deletes explain themselves.** Every delete goes through `DeleteDialog`,
+  which lists what goes with the record or, when `guards.ts` refuses, says
+  why and what to do instead. History that finance depends on is never
+  deleted by accident.
 - **Phones get different structure, not squeezed desktop.** The sidebar
   becomes a drawer and tables become card lists, switched with
   `useMediaQuery`. Check every change at 375px.

@@ -1,11 +1,12 @@
 import { useState } from 'react'
-import { serviceCatalog } from '@/data/service-catalog'
+import { useContent } from '@/features/cms'
 import type { Page } from '@/app/routes'
 
 interface Props { navigate: (p: Page) => void }
 
 export default function Services({ navigate }: Props) {
   const [hovered, setHovered] = useState<number | null>(null)
+  const serviceCatalog = useContent('services')
 
   return (
     <div style={{ background: 'var(--ink)', minHeight: '100vh', paddingTop: 72 }}>

@@ -1,6 +1,5 @@
 import { useState } from 'react'
-import { trustBadges } from '@/data/trust'
-import { differentiators } from '@/data/services'
+import { useContent } from '@/features/cms'
 import { cardTopRule, raisedCard } from '@/components/ui/cardStyles'
 
 /**
@@ -13,6 +12,9 @@ import { cardTopRule, raisedCard } from '@/components/ui/cardStyles'
  */
 export default function TrustStrip() {
   const [hovered, setHovered] = useState<number | null>(null)
+  const trustBadges = useContent('trust_badges')
+  const differentiators = useContent('why_addis_limo')
+  const { whyEyebrow } = useContent('home_sections')
 
   return (
     <section
@@ -27,7 +29,7 @@ export default function TrustStrip() {
       <div style={{ maxWidth: 1380, margin: '0 auto' }}>
         {/* Heading — kept deliberately small so the cards carry the section. */}
         <div style={{ textAlign: 'center', marginBottom: 34 }}>
-          <p className="label-caps" style={{ marginBottom: 12 }}>Why Addis Limo</p>
+          <p className="label-caps" style={{ marginBottom: 12 }}>{whyEyebrow}</p>
           <h2
             className="trust-heading"
             style={{

@@ -1,8 +1,10 @@
-import { brandValues, partnerTypes } from '@/data/about'
+import { useContent } from '@/features/cms'
 import type { Page } from '@/app/routes'
 interface Props { navigate: (p: Page) => void }
 
 export default function About({ navigate }: Props) {
+  const { values: brandValues, partnerTypes } = useContent('about')
+
   return (
     <div style={{ background: 'var(--ink)', minHeight: '100vh', paddingTop: 72 }}>
       {/* Hero */}

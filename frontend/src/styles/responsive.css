@@ -18,10 +18,11 @@
    Page gutters
    Every page section carries a 48px or 32px inline gutter. Only the
    horizontal padding is overridden, so vertical rhythm is untouched.
+   The admin console lays out its own panels, so its sections are left out.
    ───────────────────────────────────────────── */
 
 @media (max-width: 1024px) {
-  main section:not(.hero-full),
+  main section:not(.hero-full):not(.admin-console *),
   .gutter {
     padding-left: 32px !important;
     padding-right: 32px !important;
@@ -29,7 +30,7 @@
 }
 
 @media (max-width: 768px) {
-  main section:not(.hero-full),
+  main section:not(.hero-full):not(.admin-console *),
   .gutter {
     padding-left: 20px !important;
     padding-right: 20px !important;
@@ -37,7 +38,7 @@
 }
 
 @media (max-width: 560px) {
-  main section:not(.hero-full),
+  main section:not(.hero-full):not(.admin-console *),
   .gutter {
     padding-left: 16px !important;
     padding-right: 16px !important;

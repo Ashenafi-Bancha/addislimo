@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { Page } from '@/app/routes'
-import { quickLinks } from '@/config/site'
+import { useContent } from '@/features/cms'
 
 interface QuickLinksProps {
   navigate: (page: Page) => void
@@ -15,6 +15,7 @@ interface QuickLinksProps {
  */
 export default function QuickLinks({ navigate }: QuickLinksProps) {
   const [hovered, setHovered] = useState<number | null>(null)
+  const quickLinks = useContent('quick_links')
 
   return (
     <section style={{ padding: '96px 48px 8px', maxWidth: 1380, margin: '0 auto' }}>

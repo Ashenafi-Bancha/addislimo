@@ -1,16 +1,20 @@
 import { useMemo, useState } from 'react'
 import { formatCompactETB, timeAgo } from '../format'
+import { checkPartnerDelete } from '../guards'
 import { comparisonWindows, partnerPerformance, type PartnerPerformance } from '../selectors'
 import { partnerStatusMeta } from '../status'
 import { adminActions, notify, useAdminStore } from '../store'
-import type { PartnerStatus } from '../types'
+import type { FleetPartner, PartnerStatus } from '../types'
+import DeleteDialog from '../ui/DeleteDialog'
 import EmptyState from '../ui/EmptyState'
 import FilterTabs from '../ui/FilterTabs'
 import Icon from '../ui/Icon'
 import PageHeader from '../ui/PageHeader'
+import RowActions from '../ui/RowActions'
 import SearchField from '../ui/SearchField'
 import StatusBadge from '../ui/StatusBadge'
 import { buttonDanger, buttonGhost, buttonPrimary, buttonSecondary, panel, tabular } from '../ui/styles'
+import PartnerForm from './forms/PartnerForm'
 
 type Filter = 'all' | PartnerStatus
 
@@ -18,6 +22,18 @@ export default function PartnersView() {
   const state = useAdminStore()
   const [filter, setFilter] = useState<Filter>('all')
   const [query, setQuery] = useState('')
+  // `null` is a new partner; `undefined` means the form is closed.
+  const [editing, setEditing] = useState<FleetPartner | null | undefined>(undefined)
+  const [deleting, setDeleting] = useState<FleetPartner | null>(null)
+
+  const deleteCheck = useMemo(() => (deleting ? checkPartnerDelete(state, deleting.id) : null), [deleting, state])
+
+  const confirmDelete = () => {
+    if (!deleting) return
+    adminActions.deletePartner(deleting.id)
+    notify(`${deleting.name} deleted`, 'critical')
+    setDeleting(null)
+  }
 
   const performance = useMemo(() => {
     const { current } = comparisonWindows(30)
@@ -44,6 +60,12 @@ export default function PartnersView() {
       <PageHeader
         title="Partners"
         description={`${counts.Active} active fleet partners · ${counts.Pending} awaiting approval`}
+        actions={
+          <button onClick={() => setEditing(null)} className="admin-btn" style={buttonPrimary}>
+            <Icon name="plus" size={16} strokeWidth={2} />
+            Add partner
+          </button>
+        }
       />
 
       <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center', marginBottom: 16 }}>
@@ -68,15 +90,24 @@ export default function PartnersView() {
       ) : (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: 16 }}>
           {rows.map((p) => (
-            <PartnerCard key={p.partner.id} data={p} />
+            <PartnerCard key={p.partner.id} data={p} onEdit={() => setEditing(p.partner)} onDelete={() => setDeleting(p.partner)} />
           ))}
         </div>
       )}
+
+      <PartnerForm partner={editing} onClose={() => setEditing(undefined)} />
+      <DeleteDialog
+        noun="partner"
+        name={deleting?.name ?? null}
+        check={deleteCheck}
+        onConfirm={confirmDelete}
+        onClose={() => setDeleting(null)}
+      />
     </>
   )
 }
 
-function PartnerCard({ data }: { data: PartnerPerformance }) {
+function PartnerCard({ data, onEdit, onDelete }: { data: PartnerPerformance; onEdit: () => void; onDelete: () => void }) {
   const { partner, drivers, vehicles, trips, revenue } = data
   const [confirmSuspend, setConfirmSuspend] = useState(false)
 
@@ -95,7 +126,10 @@ function PartnerCard({ data }: { data: PartnerPerformance }) {
             {partner.type} · joined {timeAgo(partner.joinedAt)}
           </p>
         </div>
-        <StatusBadge label={partner.status} meta={partnerStatusMeta[partner.status]} size="sm" />
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 10, flexShrink: 0 }}>
+          <StatusBadge label={partner.status} meta={partnerStatusMeta[partner.status]} size="sm" />
+          <RowActions label={partner.name} onEdit={onEdit} onDelete={onDelete} />
+        </div>
       </header>
 
       <div style={{ display: 'grid', gap: 6, fontFamily: 'var(--font-body)', fontSize: 13 }}>

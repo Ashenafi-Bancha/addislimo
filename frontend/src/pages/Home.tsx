@@ -1,9 +1,7 @@
 import { useState } from 'react'
 import { pillOutline } from '@/components/ui/buttonStyles'
 import { cardTopRule, raisedCard } from '@/components/ui/cardStyles'
-import { homeServices } from '@/data/services'
-import { fleet } from '@/data/fleet'
-import { partnersRowOne, partnersRowTwo } from '@/data/partners'
+import { useContent } from '@/features/cms'
 import PartnerCard from '@/components/ui/PartnerCard'
 import HomeHero from '@/components/sections/HomeHero'
 import TrustStrip from '@/components/sections/TrustStrip'
@@ -15,6 +13,10 @@ interface HomeProps { navigate: (p: Page) => void }
 export default function Home({ navigate }: HomeProps) {
   const [hovSvc, setHovSvc] = useState<number|null>(null)
   const [hovVeh, setHovVeh] = useState<number|null>(null)
+  const homeServices = useContent('home_services')
+  const fleet = useContent('fleet')
+  const { rowOne: partnersRowOne, rowTwo: partnersRowTwo } = useContent('partner_logos')
+  const copy = useContent('home_sections')
 
   return (
     <div style={{ background: 'var(--ink)', minHeight: '100vh' }}>
@@ -31,18 +33,18 @@ export default function Home({ navigate }: HomeProps) {
       {/* ── SERVICES ── */}
       <section style={{ padding: '112px 48px', maxWidth: 1380, margin: '0 auto' }}>
         <div style={{ textAlign: 'center', marginBottom: 72 }}>
-          <p className="label-caps" style={{ marginBottom: 14 }}>Our Services</p>
+          <p className="label-caps" style={{ marginBottom: 14 }}>{copy.servicesEyebrow}</p>
           <h2 style={{
             fontFamily: 'var(--font-display)',
             fontSize: 'clamp(32px, 4.5vw, 56px)', fontWeight: 700, lineHeight: 1.08,
             color: '#FFFFFF', marginBottom: 8,
-          }}>Premium Transportation,</h2>
+          }}>{copy.servicesTitle}</h2>
           <h2 style={{
             fontFamily: 'var(--font-display)',
             fontSize: 'clamp(28px, 4vw, 50px)', fontWeight: 600, fontStyle: 'italic',
             background: 'var(--gold-gradient-h)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
             lineHeight: 1.1, marginBottom: 24,
-          }}>Every Journey.</h2>
+          }}>{copy.servicesTitleAccent}</h2>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0 }}>
             <div style={{ height: 1.5, width: 60, background: 'linear-gradient(to right, transparent, #FFFFFF)' }} />
             <div style={{ width: 7, height: 7, background: '#FFFFFF', transform: 'rotate(45deg)', margin: '0 8px' }} />
@@ -93,7 +95,7 @@ export default function Home({ navigate }: HomeProps) {
       <section style={{ position: 'relative', height: 520, overflow: 'hidden' }}>
         <div style={{
           position: 'absolute', inset: 0,
-          backgroundImage: 'url(https://images.unsplash.com/photo-1604560842632-bd795d8f1275?w=1900&h=600&fit=crop&auto=format)',
+          backgroundImage: `url(${copy.featureImage})`,
           backgroundSize: 'cover', backgroundPosition: 'center',
         }} />
         <div style={{ position: 'absolute', inset: 0, background: 'rgba(3,3,3,0.80)' }} />
@@ -104,15 +106,15 @@ export default function Home({ navigate }: HomeProps) {
             <div style={{ display: 'flex', gap: 3, color: 'var(--gold-bright)', fontSize: 13, marginBottom: 18 }}>
               {['★','★','★','★','★'].map((s,i)=><span key={i}>{s}</span>)}
             </div>
-            <p className="label-caps" style={{ marginBottom: 12 }}>Addis Ababa, Ethiopia</p>
+            <p className="label-caps" style={{ marginBottom: 12 }}>{copy.featureEyebrow}</p>
             <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(30px, 4vw, 50px)', fontWeight: 700, lineHeight: 1.1, marginBottom: 6, color: '#FFFFFF' }}>
-              Africa&apos;s capital city.
+              {copy.featureTitle}
             </h2>
             <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(26px, 3.5vw, 44px)', fontWeight: 600, fontStyle: 'italic', lineHeight: 1.1, marginBottom: 24, background: 'var(--gold-sheen)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
-              Explored with elegance.
+              {copy.featureTitleAccent}
             </h2>
             <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 15, lineHeight: 1.8, marginBottom: 36 }}>
-              Discover museums, cultural restaurants, scenic parks and vibrant neighborhoods, all with a professional chauffeur and premium vehicle.
+              {copy.featureText}
             </p>
             <button
               onClick={() => navigate('explore')}
@@ -128,9 +130,9 @@ export default function Home({ navigate }: HomeProps) {
       <section style={{ padding: '112px 48px', maxWidth: 1380, margin: '0 auto' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 60, flexWrap: 'wrap', gap: 24 }}>
           <div>
-            <p className="label-caps" style={{ marginBottom: 12 }}>Our Fleet</p>
-            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(28px, 4vw, 46px)', fontWeight: 700, color: '#FFFFFF', lineHeight: 1.1, marginBottom: 2 }}>Travel in the</h2>
-            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(26px, 3.5vw, 42px)', fontWeight: 600, fontStyle: 'italic', background: 'var(--gold-gradient-h)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', lineHeight: 1.1 }}>Right Vehicle.</h2>
+            <p className="label-caps" style={{ marginBottom: 12 }}>{copy.fleetEyebrow}</p>
+            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(28px, 4vw, 46px)', fontWeight: 700, color: '#FFFFFF', lineHeight: 1.1, marginBottom: 2 }}>{copy.fleetTitle}</h2>
+            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(26px, 3.5vw, 42px)', fontWeight: 600, fontStyle: 'italic', background: 'var(--gold-gradient-h)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', lineHeight: 1.1 }}>{copy.fleetTitleAccent}</h2>
           </div>
           <button style={pillOutline} onClick={() => navigate('booking')}
             onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)' }}
@@ -184,7 +186,7 @@ export default function Home({ navigate }: HomeProps) {
         <div className="gutter" style={{ textAlign: 'center', marginBottom: 64, padding: '0 48px' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 16, marginBottom: 20 }}>
             <div style={{ height: 1, width: 48, background: 'linear-gradient(to right, transparent, rgba(212,175,90,0.5))' }} />
-            <p className="label-caps" style={{ color: '#FFFFFF', fontSize: 9, letterSpacing: '0.3em' }}>Our Partners</p>
+            <p className="label-caps" style={{ color: '#FFFFFF', fontSize: 9, letterSpacing: '0.3em' }}>{copy.partnersEyebrow}</p>
             <div style={{ height: 1, width: 48, background: 'linear-gradient(to left, transparent, rgba(212,175,90,0.5))' }} />
           </div>
           <h2 style={{
@@ -194,7 +196,7 @@ export default function Home({ navigate }: HomeProps) {
             color: '#FFFFFF',
             lineHeight: 1.05,
             letterSpacing: '-0.01em',
-          }}>Trusted by.</h2>
+          }}>{copy.partnersTitle}</h2>
         </div>
 
         {/* Marquee row 1 — left */}
@@ -204,7 +206,7 @@ export default function Home({ navigate }: HomeProps) {
           <div style={{ display: 'flex', animation: 'marqueeLeft 36s linear infinite', width: 'max-content' }}>
             {[...Array(2)].map((_, rep) => (
               <div key={rep} style={{ display: 'flex', gap: 14, paddingRight: 14 }}>
-                {partnersRowOne.map((p, i) => <PartnerCard key={`r1-${rep}-${i}`} name={p.name} sub={p.sub} logo={p.logo} />)}
+                {partnersRowOne.map((p, i) => <PartnerCard key={`r1-${rep}-${i}`} name={p.name} sub={p.sub} logo={p.logo || null} />)}
               </div>
             ))}
           </div>
@@ -217,7 +219,7 @@ export default function Home({ navigate }: HomeProps) {
           <div style={{ display: 'flex', animation: 'marqueeRight 40s linear infinite', width: 'max-content' }}>
             {[...Array(2)].map((_, rep) => (
               <div key={rep} style={{ display: 'flex', gap: 14, paddingRight: 14 }}>
-                {partnersRowTwo.map((p, i) => <PartnerCard key={`r2-${rep}-${i}`} name={p.name} sub={p.sub} logo={p.logo} />)}
+                {partnersRowTwo.map((p, i) => <PartnerCard key={`r2-${rep}-${i}`} name={p.name} sub={p.sub} logo={p.logo || null} />)}
               </div>
             ))}
           </div>
@@ -231,10 +233,12 @@ export default function Home({ navigate }: HomeProps) {
             <div style={{ background: 'var(--gold-gradient)', padding: '60px 52px', position: 'relative' }}>
               <p style={{ fontFamily: 'var(--font-body)', fontSize: 9, fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(6,6,6,0.5)', marginBottom: 14 }}>For Passengers</p>
               <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(24px,3vw,36px)', fontWeight: 700, color: '#060606', lineHeight: 1.15, marginBottom: 16 }}>
-                Book Your<br />Premium Journey
+                {copy.passengerTitle.split('\n').map((line, i) => (
+                  <span key={i}>{i > 0 && <br />}{line}</span>
+                ))}
               </h3>
               <p style={{ fontSize: 14, color: 'rgba(6,6,6,0.62)', lineHeight: 1.75, marginBottom: 36 }}>
-                Airport transfers, corporate travel, city tours. Book now and experience Addis Ababa at its finest.
+                {copy.passengerText}
               </p>
               <button onClick={() => navigate('booking')} style={{
                 background: '#060606', color: '#FFFFFF', border: 'none', cursor: 'pointer',
@@ -255,7 +259,7 @@ export default function Home({ navigate }: HomeProps) {
                 Addis Limo.
               </h3>
               <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.72)', lineHeight: 1.75, marginBottom: 36 }}>
-                Hotels, vehicle owners, transport companies: join our premium partner network.
+                {copy.partnerText}
               </p>
               <button onClick={() => navigate('about')} style={pillOutline}
                 onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)' }}

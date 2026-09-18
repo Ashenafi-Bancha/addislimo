@@ -1,7 +1,7 @@
 import { useSyncExternalStore } from 'react'
 import type { Booking } from '@/types'
 import { createSeedState } from './data'
-import type { AdminSettings, AdminState, PartnerStatus } from './types'
+import type { AdminSettings, AdminState, Driver, FleetPartner, FleetVehicle, PartnerStatus } from './types'
 
 /**
  * The admin console's data store.
@@ -14,7 +14,17 @@ import type { AdminSettings, AdminState, PartnerStatus } from './types'
  * Each action is the seam where an API call will go. `updateBooking` becomes
  * `PATCH /bookings/:id`, `setPartnerStatus` becomes `PATCH /partners/:id` —
  * see `lib/api/endpoints.ts`. Until then changes last for the browser session.
+ *
+ * Deletes do not check whether they are safe; `guards.ts` does that, and the
+ * views ask it before offering the confirm button.
  */
+
+/** Insert, or replace the item with the same id. */
+function upsert<T extends { id: string }>(list: T[], item: T): T[] {
+  return list.some((x) => x.id === item.id) ? list.map((x) => (x.id === item.id ? item : x)) : [...list, item]
+}
+
+const sameEmail = (a: string, b: string) => a.toLowerCase() === b.toLowerCase()
 
 let state: AdminState = createSeedState()
 const listeners = new Set<() => void>()
@@ -42,6 +52,67 @@ export const adminActions = {
     setState({
       ...state,
       bookings: state.bookings.map((b) => (b.id === id ? { ...b, ...patch } : b)),
+    })
+  },
+
+  deleteBooking(id: string) {
+    setState({
+      ...state,
+      bookings: state.bookings.filter((b) => b.id !== id),
+      openBookingId: state.openBookingId === id ? null : state.openBookingId,
+    })
+  },
+
+  savePartner(partner: FleetPartner) {
+    setState({ ...state, partners: upsert(state.partners, partner) })
+  },
+
+  /** Removes the partner with their drivers and vehicles. */
+  deletePartner(id: string) {
+    setState({
+      ...state,
+      partners: state.partners.filter((p) => p.id !== id),
+      drivers: state.drivers.filter((d) => d.partnerId !== id),
+      vehicles: state.vehicles.filter((v) => v.partnerId !== id),
+    })
+  },
+
+  saveDriver(driver: Driver) {
+    setState({ ...state, drivers: upsert(state.drivers, driver) })
+  },
+
+  deleteDriver(id: string) {
+    setState({ ...state, drivers: state.drivers.filter((d) => d.id !== id) })
+  },
+
+  saveVehicle(vehicle: FleetVehicle) {
+    setState({ ...state, vehicles: upsert(state.vehicles, vehicle) })
+  },
+
+  deleteVehicle(id: string) {
+    setState({ ...state, vehicles: state.vehicles.filter((v) => v.id !== id) })
+  },
+
+  /**
+   * Customers are derived from bookings, so editing one rewrites the contact
+   * details on every booking they made.
+   */
+  updateCustomer(email: string, patch: { customerName: string; customerEmail: string; customerPhone: string }) {
+    setState({
+      ...state,
+      bookings: state.bookings.map((b) => (sameEmail(b.customerEmail, email) ? { ...b, ...patch } : b)),
+      bookingQuery: sameEmail(state.bookingQuery, email) ? patch.customerEmail : state.bookingQuery,
+    })
+  },
+
+  /** Deletes every booking the customer made, which is what removes them. */
+  deleteCustomer(email: string) {
+    const doomed = new Set(state.bookings.filter((b) => sameEmail(b.customerEmail, email)).map((b) => b.id))
+    setState({
+      ...state,
+      bookings: state.bookings.filter((b) => !doomed.has(b.id)),
+      openBookingId: state.openBookingId && doomed.has(state.openBookingId) ? null : state.openBookingId,
+      bookingQuery: sameEmail(state.bookingQuery, email) ? '' : state.bookingQuery,
     })
   },
 
