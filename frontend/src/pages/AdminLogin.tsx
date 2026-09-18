@@ -2,7 +2,7 @@ import { useEffect, useState, type FormEvent } from 'react'
 import type { Page } from '@/app/routes'
 import BrandMark from '@/components/ui/BrandMark'
 import { site } from '@/config/site'
-import { DEMO_CREDENTIALS, getSession, signIn } from '@/features/admin/session'
+import { getSession, signIn } from '@/features/admin/session'
 import Icon, { type IconName } from '@/features/admin/ui/Icon'
 import { buttonPrimary, fieldLabel, input } from '@/features/admin/ui/styles'
 import { useMediaQuery } from '@/hooks'
@@ -112,8 +112,8 @@ export default function AdminLogin({ navigate }: Props) {
       <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: compact ? '32px 20px' : '48px 40px' }}>
         <div style={{ width: '100%', maxWidth: 400 }}>
           {compact && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 36 }}>
-              <BrandMark size={38} />
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12, marginBottom: 36, textAlign: 'center' }}>
+              <BrandMark size={44} />
               <div>
                 <p style={{ margin: 0, fontFamily: 'var(--font-display)', fontSize: 15, fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', lineHeight: 1 }}>{site.name}</p>
                 <p style={{ margin: '5px 0 0', fontFamily: 'var(--font-body)', fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--admin-text-muted)' }}>Operations</p>
@@ -121,9 +121,9 @@ export default function AdminLogin({ navigate }: Props) {
             </div>
           )}
 
-          <h1 style={{ margin: 0, fontFamily: 'var(--font-display)', fontSize: 32, fontWeight: 700, lineHeight: 1.1 }}>Sign in</h1>
-          <p style={{ margin: '8px 0 32px', fontFamily: 'var(--font-body)', fontSize: 14, color: 'var(--admin-text-muted)' }}>
-            Use your Addis Limo staff account.
+          <h1 style={{ margin: 0, fontFamily: 'var(--font-display)', fontSize: 32, fontWeight: 700, lineHeight: 1.1, textAlign: 'center' }}>Sign in</h1>
+          <p style={{ margin: '8px 0 32px', fontFamily: 'var(--font-body)', fontSize: 14, color: 'var(--admin-text-muted)', textAlign: 'center' }}>
+            Use your Addis Limo Admin account.
           </p>
 
           <form onSubmit={handleSubmit} noValidate style={{ display: 'grid', gap: 18 }}>
@@ -206,29 +206,6 @@ export default function AdminLogin({ navigate }: Props) {
               )}
             </button>
           </form>
-
-          {/* Only in development builds. A deployed site never shows credentials. */}
-          {import.meta.env.DEV && (
-            <div style={{ marginTop: 22, padding: '12px 14px', borderRadius: 10, border: '1px dashed rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, fontFamily: 'var(--font-body)', fontSize: 12.5 }}>
-              <span style={{ color: 'var(--admin-text-muted)' }}>
-                <strong style={{ color: '#FFFFFF', fontWeight: 600 }}>Development login</strong>
-                <br />
-                {DEMO_CREDENTIALS.email} / {DEMO_CREDENTIALS.password}
-              </span>
-              <button
-                type="button"
-                onClick={() => {
-                  setEmail(DEMO_CREDENTIALS.email)
-                  setPassword(DEMO_CREDENTIALS.password)
-                  setError('')
-                }}
-                className="admin-btn-secondary"
-                style={{ height: 32, padding: '0 12px', borderRadius: 8, background: 'var(--admin-raised)', border: '1px solid var(--admin-hairline-strong)', color: '#FFFFFF', fontFamily: 'var(--font-body)', fontSize: 12.5, fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap' }}
-              >
-                Fill in
-              </button>
-            </div>
-          )}
 
           <button
             onClick={() => navigate('home')}
