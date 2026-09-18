@@ -94,7 +94,7 @@ Things that are deliberately unfinished, waiting on the client:
 - Vehicle classes in the booking wizard use emoji instead of photos.
 - The admin console runs on seed data in memory: edits last for the browser
   session and reset on reload. Its sign-in is a UI gate with one prototype
-  account (`admin@addislimo.com` / `admin123`, shown on the sign-in page in
+  account (`admin@addislimo.com` / `admin@2026`, shown on the sign-in page in
   development builds only). It is not an authentication system.
 - `contact` is routed to the About page; there is no dedicated contact page yet.
 

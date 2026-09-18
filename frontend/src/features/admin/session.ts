@@ -25,7 +25,7 @@ const STORAGE_KEY = 'addislimo.admin.session'
 let memorySession: AdminSession | null = null
 
 /** Prototype credentials. Shown on the sign-in page in development only. */
-export const DEMO_CREDENTIALS = { email: 'admin@addislimo.com', password: 'admin123' } as const
+export const DEMO_CREDENTIALS = { email: 'admin@addislimo.com', password: 'admin@2026' } as const
 
 const DEMO_ACCOUNT: AdminSession = {
   email: DEMO_CREDENTIALS.email,
