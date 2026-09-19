@@ -9,7 +9,8 @@ import type { AdminSettings, AdminState, Driver, FleetPartner, FleetVehicle } fr
  * browser session and reset on reload.
  *
  * Dates are relative to the moment the console loads, so the sample trip is
- * always "tomorrow" rather than frozen on the day this file was written.
+ * always "yesterday" and stays inside the 7-day figures, rather than frozen on
+ * the day this file was written.
  * Places come from the client's service document (see docs/CLIENT-BRIEF.md).
  * Names, phone numbers and plates are fictional; emails use the reserved
  * example.com domain.
@@ -36,8 +37,9 @@ function onDay(dayOffset: number, time: string): string {
  *
  * A single record per feature: enough to see how every screen works, and
  * nothing an admin has to clear away before real data arrives. The trip is
- * the one the business exists for: a Bole International arrival to a hotel,
- * scheduled for tomorrow morning and already dispatched.
+ * the one the business exists for: a Bole International arrival to a hotel.
+ * It was completed yesterday, so Overview and Finance show real figures
+ * (ETB 3,400 gross, ETB 408 commission at the partner's 12%).
  */
 
 export const seedPartners: FleetPartner[] = [
@@ -72,13 +74,13 @@ const rows: (Omit<Booking, 'createdAt' | 'commission'> & { leadDays: number })[]
     serviceId: 'airport',
     pickup: 'Bole International Airport',
     destination: 'Sheraton Addis',
-    scheduledAt: onDay(1, '08:30'),
+    scheduledAt: onDay(-1, '08:30'),
     passengers: 2,
     partnerId: 'p-bole-exec',
     driverId: 'd-01',
     vehicleId: 'v-01',
     amount: 3400,
-    status: 'Assigned',
+    status: 'Completed',
     leadDays: 2,
     notes: 'Meet at arrivals with a name sign. Two suitcases.',
   },
