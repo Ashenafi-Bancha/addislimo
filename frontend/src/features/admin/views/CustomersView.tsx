@@ -3,7 +3,7 @@ import type { Page } from '@/app/routes'
 import { useMediaQuery } from '@/hooks'
 import { initialsOf } from '@/lib/utils'
 import { datedFilename, downloadCsv, toCsv } from '../csv'
-import { formatDate, formatETB, timeAgo } from '../format'
+import { formatDate, formatETB, plural, timeAgo } from '../format'
 import { checkCustomerDelete } from '../guards'
 import { deriveCustomers, serviceLabel } from '../selectors'
 import { adminActions, notify, useAdminStore } from '../store'
@@ -83,7 +83,7 @@ export default function CustomersView({ navigate }: CustomersViewProps) {
     <>
       <PageHeader
         title="Customers"
-        description={`${customers.length} customers · ${repeat} have booked more than once`}
+        description={`${plural(customers.length, 'customer')} · ${repeat} ${repeat === 1 ? 'has' : 'have'} booked more than once`}
         actions={
           <button onClick={exportCsv} disabled={rows.length === 0} className="admin-btn-secondary" style={buttonSecondary}>
             <Icon name="download" size={16} />

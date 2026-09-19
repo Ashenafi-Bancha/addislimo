@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { formatCompactETB, timeAgo } from '../format'
+import { formatCompactETB, plural, timeAgo } from '../format'
 import { checkPartnerDelete } from '../guards'
 import { comparisonWindows, partnerPerformance, type PartnerPerformance } from '../selectors'
 import { partnerStatusMeta } from '../status'
@@ -59,7 +59,7 @@ export default function PartnersView() {
     <>
       <PageHeader
         title="Partners"
-        description={`${counts.Active} active fleet partners · ${counts.Pending} awaiting approval`}
+        description={`${plural(counts.Active, 'active fleet partner')} · ${counts.Pending} awaiting approval`}
         actions={
           <button onClick={() => setEditing(null)} className="admin-btn" style={buttonPrimary}>
             <Icon name="plus" size={16} strokeWidth={2} />

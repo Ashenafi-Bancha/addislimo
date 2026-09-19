@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import type { Page } from '@/app/routes'
 import { useMediaQuery } from '@/hooks'
 import { datedFilename, downloadCsv, toCsv } from '../csv'
-import { formatETB } from '../format'
+import { formatETB, plural } from '../format'
 import { comparisonWindows, partnerPerformance, percentChange, totalsBetween } from '../selectors'
 import { notify, useAdminStore } from '../store'
 import EmptyState from '../ui/EmptyState'
@@ -160,7 +160,7 @@ export default function FinanceView({ navigate }: FinanceViewProps) {
                   <span style={{ fontSize: 14, fontWeight: 700, color: '#FFFFFF', ...tabular }}>{formatETB(p.revenue - p.commission)}</span>
                 </div>
                 <div style={{ fontSize: 12.5, color: 'var(--admin-text-muted)', marginTop: 4, ...tabular }}>
-                  {p.trips} trips · {formatETB(p.revenue)} gross · {formatETB(p.commission)} at {p.partner.commissionRate}%
+                  {plural(p.trips, 'trip')} · {formatETB(p.revenue)} gross · {formatETB(p.commission)} at {p.partner.commissionRate}%
                 </div>
               </li>
             ))}

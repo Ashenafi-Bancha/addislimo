@@ -2,7 +2,7 @@ import { useMemo, useState, type KeyboardEvent } from 'react'
 import { useMediaQuery } from '@/hooks'
 import type { Booking, BookingStatus } from '@/types'
 import { datedFilename, downloadCsv, toCsv } from '../csv'
-import { formatDate, formatETB, formatTime } from '../format'
+import { formatDate, formatETB, formatTime, plural } from '../format'
 import { BOOKING_STATUSES, countByStatus, indexById, OPEN_STATUSES, serviceLabel, startOfDay } from '../selectors'
 import { bookingStatusMeta } from '../status'
 import { adminActions, notify, useAdminStore } from '../store'
@@ -117,7 +117,7 @@ export default function BookingsView() {
     <>
       <PageHeader
         title="Bookings"
-        description={`${state.bookings.length} bookings · ${pendingTotal} awaiting confirmation`}
+        description={`${plural(state.bookings.length, 'booking')} · ${pendingTotal} awaiting confirmation`}
         actions={
           <button onClick={exportCsv} disabled={rows.length === 0} className="admin-btn-secondary" style={buttonSecondary}>
             <Icon name="download" size={16} />
@@ -198,7 +198,7 @@ export default function BookingsView() {
 
         {rows.length > 0 && (
           <div style={{ padding: '12px 16px', borderTop: '1px solid var(--admin-hairline)', fontFamily: 'var(--font-body)', fontSize: 12.5, color: 'var(--admin-text-muted)' }}>
-            Showing {rows.length} of {state.bookings.length} bookings
+            Showing {rows.length} of {plural(state.bookings.length, 'booking')}
           </div>
         )}
       </section>

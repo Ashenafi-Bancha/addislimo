@@ -70,3 +70,8 @@ export function formatSignedPercent(value: number): string {
   const rounded = Math.round(value * 10) / 10
   return `${rounded > 0 ? '+' : ''}${rounded}%`
 }
+
+/** `plural(1, 'booking')` is "1 booking"; `plural(3, 'booking')` is "3 bookings". */
+export function plural(count: number, one: string, many = `${one}s`): string {
+  return `${count} ${count === 1 ? one : many}`
+}

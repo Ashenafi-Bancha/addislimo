@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { useMediaQuery } from '@/hooks'
+import { plural } from '../format'
 import { vehicleOptions } from '@/features/booking/booking.data'
 import { checkDriverDelete, checkVehicleDelete } from '../guards'
 import { driverStatuses, indexById, REVENUE_STATUSES, vehicleLabel, vehicleStatuses } from '../selectors'
@@ -88,7 +89,7 @@ export default function FleetView() {
     <>
       <PageHeader
         title="Fleet & Drivers"
-        description={`${state.vehicles.length} vehicles and ${state.drivers.length} drivers across ${state.partners.length} partners`}
+        description={`${plural(state.vehicles.length, 'vehicle')} and ${plural(state.drivers.length, 'driver')} across ${plural(state.partners.length, 'partner')}`}
         actions={
           <button
             onClick={() => (tab === 'vehicles' ? setEditingVehicle(null) : setEditingDriver(null))}
@@ -243,7 +244,7 @@ export default function FleetView() {
                     <a href={`tel:${d.phone.replace(/\s/g, '')}`} style={{ color: 'inherit', textDecoration: 'none', ...tabular }}>{d.phone}</a> · {partners.get(d.partnerId)?.name}
                   </span>
                   <span style={{ ...mobileSub, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
-                    <span>{tripsByDriver.get(d.id) ?? 0} trips · {d.rating > 0 ? `${d.rating.toFixed(1)} rating` : 'New driver'}</span>
+                    <span>{plural(tripsByDriver.get(d.id) ?? 0, 'trip')} · {d.rating > 0 ? `${d.rating.toFixed(1)} rating` : 'New driver'}</span>
                     <RowActions label={d.name} onEdit={() => setEditingDriver(d)} onDelete={() => setDeletingDriver(d)} />
                   </span>
                 </li>

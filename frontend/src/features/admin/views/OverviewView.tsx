@@ -3,7 +3,7 @@ import type { Page } from '@/app/routes'
 import { useMediaQuery } from '@/hooks'
 import type { Booking } from '@/types'
 import RevenueChart from '../charts/RevenueChart'
-import { formatCompactETB, formatETB, formatSchedule, formatTime } from '../format'
+import { formatCompactETB, formatETB, formatSchedule, formatTime, plural } from '../format'
 import {
   comparisonWindows,
   countByStatus,
@@ -233,7 +233,7 @@ export default function OverviewView({ navigate, session }: OverviewViewProps) {
           <div style={panelHeader}>
             <div>
               <h2 id="ov-status" style={panelTitle}>Bookings by status</h2>
-              <p style={panelSubtitle}>{state.bookings.length} bookings in total</p>
+              <p style={panelSubtitle}>{plural(state.bookings.length, 'booking')} in total</p>
             </div>
           </div>
           <ul style={{ listStyle: 'none', margin: 0, padding: '10px 20px 16px' }}>
@@ -276,7 +276,7 @@ export default function OverviewView({ navigate, session }: OverviewViewProps) {
                   <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, marginBottom: 6 }}>
                     <span style={{ fontFamily: 'var(--font-body)', fontSize: 13.5, fontWeight: 600, color: '#FFFFFF' }}>
                       {p.partner.name}
-                      <span style={{ color: 'var(--admin-text-muted)', fontWeight: 500 }}> · {p.trips} trips</span>
+                      <span style={{ color: 'var(--admin-text-muted)', fontWeight: 500 }}> · {plural(p.trips, 'trip')}</span>
                     </span>
                     <span style={{ fontFamily: 'var(--font-body)', fontSize: 13, fontWeight: 700, color: '#FFFFFF', ...tabular }}>{formatCompactETB(p.revenue)}</span>
                   </div>
