@@ -22,8 +22,26 @@ interface RouterValue {
 
 const RouterContext = createContext<RouterValue | null>(null)
 
+/**
+ * Accepts plain path addresses such as `/admin` or `/booking` by moving them
+ * into the hash (`/#/admin`) before the first render, so a typed or shared
+ * link without the `#` still opens the right page. The host already serves
+ * `index.html` for every path (see `vercel.json` and `server.mjs`).
+ * `replaceState` keeps the back button from returning to the bare path.
+ */
+function adoptPathAddress() {
+  if (window.location.hash) return
+  const base = import.meta.env.BASE_URL.replace(/\/+$/, '')
+  const path = window.location.pathname.slice(base.length).replace(/\/+$/, '')
+  if (!path || path === '/') return
+  const known = (Object.keys(routes) as Page[]).some((id) => routes[id].path === path)
+  if (!known) return
+  window.history.replaceState(null, '', `${base}/${window.location.search}#${path}`)
+}
+
 function currentPage(): Page {
   if (typeof window === 'undefined') return DEFAULT_PAGE
+  adoptPathAddress()
   return pageFromHash(window.location.hash)
 }
 

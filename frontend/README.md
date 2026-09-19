@@ -103,7 +103,9 @@ Things that are deliberately unfinished, waiting on the client:
 
 ## Admin console
 
-Staff reach it at `#/admin/login`; nothing on the public site links there.
+Staff reach it at `/admin` (for example `https://addislimo.vercel.app/admin`),
+which opens `#/admin/login` when signed out; nothing on the public site links
+there. Any page path without the `#` works the same way (`/booking`).
 Every section has its own route (`#/admin/bookings`, `#/admin/finance`…), all
 rendered by `pages/AdminDashboard.tsx`, which checks the session and picks the
 section.
