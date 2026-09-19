@@ -11,7 +11,7 @@ export default function AirportTransfer({ navigate }: Props) {
   const [dest, setDest] = useState('')
   const [pax, setPax] = useState('1')
   const [veh, setVeh] = useState('Executive Sedan')
-  const { steps: airportSteps, features: airportFeatures, destinationGroups: airportDestinationGroups } = useContent('airport')
+  const { heroImage, steps: airportSteps, features: airportFeatures, destinationGroups: airportDestinationGroups } = useContent('airport')
   const [group, setGroup] = useState(airportDestinationGroups[0]?.id ?? '')
 
   // The admin can rename or remove groups, so fall back rather than assume.
@@ -21,12 +21,13 @@ export default function AirportTransfer({ navigate }: Props) {
     <div style={{ background: 'var(--ink)', minHeight: '100vh', paddingTop: 72 }}>
       {/* Hero */}
       <section style={{ position: 'relative', minHeight: 480, display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
-        <div style={{
+        <div className="airport-hero-photo" style={{
           position: 'absolute', inset: 0,
-          backgroundImage: 'url(https://images.unsplash.com/photo-1503365194569-df4e1d04cec1?w=1800&h=700&fit=crop&auto=format)',
-          backgroundSize: 'cover', backgroundPosition: 'center',
+          backgroundImage: `url(${heroImage})`,
+          backgroundSize: 'cover', backgroundPosition: 'center 40%',
         }} />
-        <div style={{ position: 'absolute', inset: 0, background: 'rgba(11,11,11,0.82)' }} />
+        {/* Dark behind the headline, clearing to the right so the aircraft shows. Phones get an even shade instead (responsive.css). */}
+        <div className="airport-hero-shade" style={{ position: 'absolute', inset: 0, background: 'linear-gradient(90deg, rgba(6,6,6,0.9) 0%, rgba(6,6,6,0.72) 38%, rgba(6,6,6,0.25) 75%, rgba(6,6,6,0.1) 100%)' }} />
         <div style={{ position: 'relative', maxWidth: 1280, margin: '0 auto', padding: '80px 32px', width: '100%' }}>
           <div style={{ display: 'flex', gap: 3, color: 'rgba(255,255,255,0.80)', fontSize: 12, marginBottom: 16 }}>
             {['★','★','★','★','★'].map((s,i)=><span key={i}>{s}</span>)}

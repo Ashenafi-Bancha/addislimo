@@ -272,11 +272,12 @@ export const contentGroups: ContentGroup[] = [
   {
     key: 'airport',
     title: 'Airport Transfer',
-    description: 'How it works, the features, and the "Where we take you" lists.',
+    description: 'The hero photograph, how it works, the features, and the "Where we take you" lists.',
     area: 'Pages',
     page: 'airport',
     kind: 'singleton',
     fields: [
+      { key: 'heroImage', label: 'Hero photograph', type: 'image', hint: 'Landscape. The left side sits behind the headline, so keep the subject centre or right.', full: true },
       {
         key: 'steps',
         label: 'How it works',

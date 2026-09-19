@@ -9,6 +9,7 @@ import { serviceCatalog, type CatalogService } from '@/data/service-catalog'
 import { differentiators, homeServices, type Differentiator, type HomeService } from '@/data/services'
 import { trustBadges, type TrustBadge } from '@/data/trust'
 import type { Partner, Vehicle } from '@/types'
+import airportHeroImage from '@/assets/images/bole-international-airlines.jpg'
 
 /**
  * Everything on the public site that the admin console can edit.
@@ -77,6 +78,7 @@ export interface SiteContent {
   partner_logos: { rowOne: Partner[]; rowTwo: Partner[] }
   services: CatalogService[]
   airport: {
+    heroImage: string
     steps: { n: number; title: string; desc: string }[]
     features: IconCard[]
     destinationGroups: DestinationGroup[]
@@ -158,6 +160,7 @@ export const contentDefaults: SiteContent = {
   partner_logos: { rowOne: partnersRowOne, rowTwo: partnersRowTwo },
   services: serviceCatalog,
   airport: {
+    heroImage: airportHeroImage,
     steps: airportSteps,
     features: airportFeatures,
     destinationGroups: airportDestinationGroups,

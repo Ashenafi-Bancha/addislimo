@@ -309,3 +309,21 @@ video {
     -webkit-tap-highlight-color: rgba(255, 255, 255, 0.08);
   }
 }
+
+/* ─────────────────────────────────────────────
+   Airport hero
+   On desktop the shade clears to the right so the aircraft shows beside the
+   headline. On phones the text spans the whole photo, so it gets an even
+   shade, a little heavier at the bottom where the paragraph sits, and a
+   crop that keeps busy lettering out from behind the headline.
+   ───────────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* A phone shows a narrow slice of the landscape photo: take the tail and
+     engine, and keep the airline's wordmark out from behind the headline. */
+  .airport-hero-photo {
+    background-position: 8% 40% !important;
+  }
+  .airport-hero-shade {
+    background: linear-gradient(180deg, rgba(6,6,6,0.55) 0%, rgba(6,6,6,0.72) 55%, rgba(6,6,6,0.88) 100%) !important;
+  }
+}
