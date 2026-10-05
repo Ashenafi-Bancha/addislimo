@@ -1,3 +1,7 @@
 export { useElementWidth } from './useElementWidth'
+export { useParallax } from './useParallax'
+export { useReducedMotion } from './useReducedMotion'
+export { useReveal } from './useReveal'
+export { useTilt } from './useTilt'
 export { useMediaQuery } from './useMediaQuery'
 export { useScrolled } from './useScrolled'

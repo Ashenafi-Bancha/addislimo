@@ -1,7 +1,7 @@
 import type { CSSProperties } from 'react'
 import type { Page } from '@/app/routes'
 import { useContent } from '@/features/cms'
-import { useMediaQuery } from '@/hooks'
+import { useMediaQuery, useParallax } from '@/hooks'
 
 interface HomeHeroProps {
   navigate: (page: Page) => void
@@ -33,11 +33,13 @@ const scrollCueKeyframes = `
 export default function HomeHero({ navigate }: HomeHeroProps) {
   const isMobile = useMediaQuery('(max-width: 768px)')
   const hero = useContent('home_hero')
+  // The photograph drifts slower than the page, which gives the hero depth.
+  const photoRef = useParallax<HTMLDivElement>(0.12, 70)
   const headlineLines = hero.headline.split('\n').filter((line) => line.trim())
 
   const headline = (
-    <>
-      <h1 style={{ margin: '0 0 4px', lineHeight: 0.92 }}>
+    <div className="hero-stage">
+      <h1 className="hero-step" style={{ margin: '0 0 4px', lineHeight: 0.92, ['--hero-step' as string]: '1' }}>
         <span
           style={{
             display: 'block',
@@ -58,7 +60,7 @@ export default function HomeHero({ navigate }: HomeHeroProps) {
           ))}
         </span>
       </h1>
-      <h1 style={{ margin: '0 0 clamp(20px, 3vh, 36px)', lineHeight: 1 }}>
+      <h1 className="hero-step" style={{ margin: '0 0 clamp(20px, 3vh, 36px)', lineHeight: 1, ['--hero-step' as string]: '2' }}>
         <span
           style={{
             display: 'block',
@@ -74,12 +76,14 @@ export default function HomeHero({ navigate }: HomeHeroProps) {
           {hero.headlineAccent}
         </span>
       </h1>
-    </>
+    </div>
   )
 
   const divider = (
     <div
+      className="hero-step"
       style={{
+        ['--hero-step' as string]: '3',
         display: 'flex',
         alignItems: 'center',
         gap: 0,
@@ -94,7 +98,9 @@ export default function HomeHero({ navigate }: HomeHeroProps) {
 
   const body = (
     <p
+      className="hero-step"
       style={{
+        ['--hero-step' as string]: '4',
         fontFamily: 'var(--font-body)',
         fontSize: 16,
         fontWeight: 400,
@@ -123,7 +129,9 @@ export default function HomeHero({ navigate }: HomeHeroProps) {
 
   const ctas = (
     <div
+      className="hero-step"
       style={{
+        ['--hero-step' as string]: '5',
         display: 'flex',
         gap: isMobile ? 12 : 16,
         flexWrap: 'wrap',
@@ -133,6 +141,7 @@ export default function HomeHero({ navigate }: HomeHeroProps) {
     >
       <button
         onClick={() => navigate('booking')}
+        className="shine shine-dark press"
         style={{
           ...ctaBase,
           background: 'var(--gold-gradient)',
@@ -150,6 +159,7 @@ export default function HomeHero({ navigate }: HomeHeroProps) {
       </button>
       <button
         onClick={() => navigate('explore')}
+        className="shine press"
         style={{
           ...ctaBase,
           background: 'transparent',
@@ -167,6 +177,7 @@ export default function HomeHero({ navigate }: HomeHeroProps) {
       {!isMobile && (
         <button
           onClick={() => navigate('booking')}
+          className="shine press"
           style={{
             ...ctaBase,
             background: 'transparent',
@@ -207,13 +218,15 @@ export default function HomeHero({ navigate }: HomeHeroProps) {
   /* ── Phone: photograph on top, text beneath ── */
   if (isMobile) {
     return (
-      <section className="hero-full" style={{ position: 'relative', display: 'flex', flexDirection: 'column', minHeight: '100vh', overflow: 'hidden' }}>
+      <section className="hero-full grain" style={{ position: 'relative', display: 'flex', flexDirection: 'column', minHeight: '100vh', overflow: 'hidden' }}>
         {/* The frame matches the source's 16:9 ratio, so `cover` crops nothing
             and the whole photograph is on screen. */}
         <div style={{ position: 'relative', width: '100%', aspectRatio: '16 / 9', marginTop: 72, flexShrink: 0 }}>
           <img
             src={hero.image}
             alt="The Addis Ababa skyline"
+            fetchPriority="high"
+            className="kenburns"
             style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
           />
           {/* Long gradient so the photograph dissolves into the page rather
@@ -244,16 +257,19 @@ export default function HomeHero({ navigate }: HomeHeroProps) {
 
   /* ── Desktop: full-bleed photograph with the headline over it ── */
   return (
-    <section className="hero-full" style={{ position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          backgroundImage: `url(${hero.image})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center 30%',
-        }}
-      />
+    <section className="hero-full grain" style={{ position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
+      <div ref={photoRef} style={{ position: 'absolute', inset: '-90px 0' }}>
+        <div
+          className="kenburns"
+          style={{
+            position: 'absolute',
+            inset: 0,
+            backgroundImage: `url(${hero.image})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center 30%',
+          }}
+        />
+      </div>
       {/* Left-heavy overlay so text stays readable while the right reveals the city. */}
       <div style={{ position: 'absolute', inset: 0, background: 'rgba(3,3,3,0.52)' }} />
       <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(105deg, rgba(3,3,3,0.72) 0%, rgba(3,3,3,0.38) 55%, rgba(3,3,3,0.10) 100%)' }} />

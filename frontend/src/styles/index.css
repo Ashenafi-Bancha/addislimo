@@ -12,6 +12,12 @@
 /* Admin console hover, focus and motion. */
 @import './admin.css';
 
+/* Scroll reveals, 3D tilt and the rest of the motion system. */
+@import './motion.css';
+
+/* Public form controls: floating labels, choice cards, step rail. */
+@import './forms.css';
+
 /* Mobile adaptation. Last, so its overrides win. */
 @import './responsive.css';
 

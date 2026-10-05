@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useContent } from '@/features/cms'
 import type { Page } from '@/app/routes'
+import Reveal from '@/components/ui/Reveal'
 
 interface Props { navigate: (p: Page) => void }
 
@@ -149,13 +150,13 @@ export default function AirportTransfer({ navigate }: Props) {
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '28px 48px' }}>
             {airportFeatures.map((f, i) => (
-              <div key={i} style={{ display: 'flex', gap: 20 }}>
+              <Reveal key={i} index={i} style={{ display: 'flex', gap: 20 }}>
                 <div style={{ fontSize: 22, color: '#FFFFFF', flexShrink: 0, marginTop: 2 }}>{f.icon}</div>
                 <div>
                   <h4 style={{ fontFamily: 'var(--font-display)', fontSize: 17, fontWeight: 600, color: '#FFFFFF', marginBottom: 6 }}>{f.title}</h4>
                   <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.75)', lineHeight: 1.7 }}>{f.desc}</p>
                 </div>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>

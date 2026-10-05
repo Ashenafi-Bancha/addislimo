@@ -56,6 +56,24 @@ visual regressions for no gain. Every colour references a `var(--token)` from
 `styles/tokens.css`, so a rebrand is still a one-file change. Tailwind is
 available and fine to use in new components.
 
+**Motion is decoration, never the only way to see something.** Scroll
+reveals (`Reveal`), 3D tilt (`useTilt`), parallax (`useParallax`) and counting
+figures (`CountUp`) all animate `transform` and `opacity` only, so a mid-range
+phone keeps its frame rate. Three rules hold:
+
+- One `@media (prefers-reduced-motion: reduce)` block in `styles/motion.css`
+  switches the whole system off. Nothing moves for a reader who asked for that.
+- Hidden-until-revealed state lives under `.motion-ready`, a class JavaScript
+  adds at startup. If the bundle fails or is blocked, every section still
+  renders.
+- Pointer-driven depth is gated to `(hover: hover) and (pointer: fine)`, so a
+  touch never leaves a card stuck mid-tilt.
+
+**Public forms use `styles/forms.css`.** Floating labels, choice cards and the
+booking step rail live there. Fields are 58px tall, errors appear under the
+field they belong to and only once the reader has tried to continue, and the
+booking flow keeps a running summary so nobody scrolls back to check.
+
 **Navigation goes through the router.** Pages receive a `navigate(page)` prop;
 components anywhere can call `useNavigate()`. Nothing outside `app/router.tsx`
 knows navigation is hash-based, so it can be swapped for `react-router-dom`

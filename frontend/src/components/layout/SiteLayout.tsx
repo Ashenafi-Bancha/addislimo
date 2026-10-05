@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { isAdminConsolePage, type Page, type RouteDefinition } from '@/app/routes'
 import BackToHome from '@/components/ui/BackToHome'
+import ScrollProgress from '@/components/ui/ScrollProgress'
 import Footer from './Footer'
 import Nav from './Nav'
 
@@ -30,6 +31,7 @@ export default function SiteLayout({ chrome, page, navigate, children }: SiteLay
         minHeight: '100vh',
       }}
     >
+      {withChrome && <ScrollProgress />}
       {withChrome && <Nav current={page} navigate={navigate} />}
 
       {/* Keyed on the page so the fade-in replays on every navigation — except

@@ -1,5 +1,6 @@
 import { useContent } from '@/features/cms'
 import type { Page } from '@/app/routes'
+import Reveal from '@/components/ui/Reveal'
 interface Props { navigate: (p: Page) => void }
 
 export default function Corporate({ navigate }: Props) {
@@ -111,13 +112,13 @@ export default function Corporate({ navigate }: Props) {
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '32px 48px' }}>
             {corporateFeatures.map((f, i) => (
-              <div key={i} style={{ display: 'flex', gap: 20 }}>
+              <Reveal key={i} index={i} style={{ display: 'flex', gap: 20 }}>
                 <div style={{ fontSize: 24, color: '#FFFFFF', flexShrink: 0, marginTop: 2 }}>{f.icon}</div>
                 <div>
                   <h4 style={{ fontFamily: 'var(--font-display)', fontSize: 18, fontWeight: 600, color: '#FFFFFF', marginBottom: 8 }}>{f.title}</h4>
                   <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.75)', lineHeight: 1.7 }}>{f.desc}</p>
                 </div>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>

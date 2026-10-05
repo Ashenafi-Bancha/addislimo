@@ -55,7 +55,9 @@ path is missing, or when the repository contradicts this guide.
   (`HomeHero`, `TrustStrip`, `QuickLinks`). Reach for this when a section
   grows past a screenful of JSX inside a page
 - `src/components/ui/` — shared presentational pieces and the pill button
-  style objects
+  style objects, plus the motion primitives: `Reveal` (settles an element in
+  when it scrolls into view), `CountUp` (headline figures) and
+  `ScrollProgress`
 - `src/config/site.ts` — brand name, tagline, contact details, socials, header
   nav. **Contact info and copy belong here, never inline in a component**
 - `src/config/env.ts` — typed access to `VITE_*` variables
@@ -75,8 +77,14 @@ path is missing, or when the repository contradicts this guide.
   `frontend/README.md` before changing it
 - `src/lib/api/` — `fetch` wrapper and endpoint map for the future backend;
   nothing calls it yet
-- `src/lib/utils/`, `src/hooks/` — small shared helpers
+- `src/lib/utils/`, `src/hooks/` — small shared helpers, including the
+  motion hooks `useReveal`, `useTilt` (3D pointer tilt), `useParallax` and
+  `useReducedMotion`
 - `src/types/index.ts` — domain types shared across features
+- `src/styles/motion.css` — scroll reveals, 3D tilt, grain, button sheen and
+  the single `prefers-reduced-motion` block that switches all of it off;
+  `src/styles/forms.css` — public form controls (floating labels, choice
+  cards, the booking step rail)
 - `src/styles/tokens.css` — design tokens; `src/styles/index.css` — globals;
   `src/styles/responsive.css` — **all mobile adaptation lives here**, not in
   per-page `<style>` blocks. Most phones in Ethiopia are the primary target,

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useContent } from '@/features/cms'
 import type { Page } from '@/app/routes'
+import Reveal from '@/components/ui/Reveal'
 
 interface Props { navigate: (p: Page) => void }
 
@@ -42,8 +43,8 @@ export default function Services({ navigate }: Props) {
       <section style={{ padding: '64px 32px', maxWidth: 1280, margin: '0 auto' }}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: 20 }}>
           {serviceCatalog.map((s, i) => (
+            <Reveal key={i} variant="lift" index={i}>
             <div
-              key={i}
               className="card-hover"
               onMouseEnter={() => setHovered(i)}
               onMouseLeave={() => setHovered(null)}
@@ -99,6 +100,7 @@ export default function Services({ navigate }: Props) {
                 >{s.cta}</button>
               </div>
             </div>
+            </Reveal>
           ))}
         </div>
       </section>

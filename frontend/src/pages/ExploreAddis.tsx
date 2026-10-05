@@ -3,6 +3,7 @@ import { categories, type Category } from '@/data/destinations'
 import { useContent } from '@/features/cms'
 import { cardTopRule, raisedCard } from '@/components/ui/cardStyles'
 import type { Page } from '@/app/routes'
+import Reveal from '@/components/ui/Reveal'
 
 interface Props { navigate: (p: Page) => void }
 
@@ -88,8 +89,8 @@ export default function ExploreAddis({ navigate }: Props) {
           {filtered.map((d, i) => {
             const active = hovered === i
             return (
+            <Reveal key={`${d.cat}-${d.name}`} variant="lift" index={i % 6}>
             <div
-              key={i}
               onMouseEnter={() => setHovered(i)}
               onMouseLeave={() => setHovered(null)}
               style={{ ...raisedCard(active), cursor: 'pointer' }}
@@ -135,6 +136,7 @@ export default function ExploreAddis({ navigate }: Props) {
                 >Book a Ride</button>
               </div>
             </div>
+            </Reveal>
             )
           })}
         </div>

@@ -58,6 +58,7 @@ export const mainNav: NavLink[] = [
   { label: 'Corporate', page: 'corporate' },
   { label: 'Explore Addis', page: 'explore' },
   { label: 'About Us', page: 'about' },
+  { label: 'Contact', page: 'contact' },
 ]
 
 /** The single call-to-action pinned to the right of the header. */

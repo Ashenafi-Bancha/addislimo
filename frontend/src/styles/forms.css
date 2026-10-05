@@ -1,0 +1,220 @@
+/**
+ * Form controls for the public site.
+ *
+ * Built for a phone first: every target is at least 52px tall, labels float
+ * out of the way instead of stacking extra height, and focus is always
+ * visible as a ring rather than a colour change alone.
+ */
+
+/* ── Text, select and textarea fields ── */
+
+.field {
+  position: relative;
+  display: block;
+}
+
+.field > input,
+.field > select,
+.field > textarea {
+  width: 100%;
+  height: 58px;
+  padding: 24px 16px 8px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.4;
+  outline: none;
+  color-scheme: dark;
+  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.field > textarea {
+  height: auto;
+  min-height: 110px;
+  padding-top: 28px;
+  line-height: 1.6;
+  resize: vertical;
+}
+
+.field > select {
+  appearance: none;
+  cursor: pointer;
+  padding-right: 42px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='white' stroke-opacity='0.55' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+}
+
+/* The label starts inside the field and rises once it is focused or filled. */
+.field > .field-label {
+  position: absolute;
+  left: 17px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--font-body);
+  font-size: 14.5px;
+  color: rgba(255, 255, 255, 0.5);
+  pointer-events: none;
+  transition: transform 0.18s ease, font-size 0.18s ease, color 0.18s ease, letter-spacing 0.18s ease;
+}
+
+.field:focus-within > .field-label,
+.field.is-filled > .field-label {
+  transform: translateY(-20px);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.field:focus-within > input,
+.field:focus-within > select,
+.field:focus-within > textarea {
+  border-color: rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.07);
+}
+
+.field.is-invalid > input,
+.field.is-invalid > select,
+.field.is-invalid > textarea {
+  border-color: rgba(208, 59, 59, 0.75);
+}
+.field.is-invalid:focus-within > input,
+.field.is-invalid:focus-within > textarea {
+  box-shadow: 0 0 0 4px rgba(208, 59, 59, 0.16);
+}
+
+.field-error {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 7px 0 0;
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  color: #ffffff;
+}
+.field-error::before {
+  content: '●';
+  color: var(--status-critical);
+  font-size: 9px;
+}
+
+.field-hint {
+  margin: 7px 0 0;
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.42);
+}
+
+/* ── Choice cards: services and vehicle classes ── */
+
+.choice {
+  position: relative;
+  display: block;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  padding: 20px 46px 20px 20px;
+  border-radius: 14px;
+  background: linear-gradient(165deg, rgba(255, 255, 255, 0.045) 0%, rgba(255, 255, 255, 0.015) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: border-color 0.22s ease, background 0.22s ease, transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.choice:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.45);
+}
+
+.choice:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px #060606, 0 0 0 4px rgba(255, 255, 255, 0.8);
+}
+
+.choice.is-selected {
+  border-color: rgba(255, 255, 255, 0.62);
+  background: linear-gradient(165deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.04) 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 18px 38px rgba(0, 0, 0, 0.5);
+}
+
+/* The tick sits in its own ring, so selection is never colour alone. */
+.choice-tick {
+  position: absolute;
+  top: 18px;
+  right: 16px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  color: #060606;
+  font-size: 11px;
+  font-weight: 700;
+  background: transparent;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+.choice.is-selected .choice-tick {
+  background: #ffffff;
+  border-color: #ffffff;
+  transform: scale(1.06);
+}
+
+/* ── Step progress ── */
+
+.step-rail {
+  position: relative;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+.step-rail > span {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 100%;
+  border-radius: 2px;
+  background: var(--gold-gradient-h);
+  transform-origin: left center;
+  transform: scaleX(var(--step-progress, 0));
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Each step of the wizard slides in as it becomes current. */
+.step-panel {
+  animation: stepIn 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes stepIn {
+  from { opacity: 0; transform: translate3d(14px, 0, 0); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .field > .field-label,
+  .choice,
+  .step-rail > span { transition: none; }
+  .step-panel { animation: none; }
+}
+
+/* On a phone the actions stay within reach at the bottom of the screen, and
+   every step chip is big enough for a thumb. */
+@media (max-width: 768px) {
+  .booking-step-chip { min-height: 42px; padding-left: 15px !important; padding-right: 15px !important; }
+  .booking-actions {
+    position: sticky;
+    bottom: 0;
+    z-index: 5;
+    margin: 0 -20px -20px;
+    padding: 14px 20px calc(14px + env(safe-area-inset-bottom));
+    background: linear-gradient(180deg, rgba(6, 6, 6, 0.6) 0%, #060606 38%);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  .booking-actions .booking-next { flex: 1; }
+}

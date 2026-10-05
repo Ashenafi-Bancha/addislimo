@@ -327,3 +327,13 @@ video {
     background: linear-gradient(180deg, rgba(6,6,6,0.55) 0%, rgba(6,6,6,0.72) 55%, rgba(6,6,6,0.88) 100%) !important;
   }
 }
+
+/* ─────────────────────────────────────────────
+   Booking
+   The running summary sits beside the form on a desktop and moves under it
+   on narrower screens, where a sticky column would eat the viewport.
+   ───────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .booking-layout { grid-template-columns: 1fr !important; }
+  .booking-summary { position: static !important; order: 2; }
+}

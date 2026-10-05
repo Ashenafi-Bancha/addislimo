@@ -1,0 +1,263 @@
+/**
+ * Motion and depth.
+ *
+ * Everything here animates `transform`, `opacity` or `filter` only, so the
+ * compositor does the work and a mid-range Android phone keeps its frame
+ * rate. No layout properties are animated anywhere in this file.
+ *
+ * Three rules hold throughout:
+ *   1. Motion is decoration. Every element is fully readable with animation
+ *      off, which is what `prefers-reduced-motion` at the bottom guarantees.
+ *   2. Depth effects that follow a pointer are gated to real pointers, so a
+ *      touch never leaves a card stuck mid-tilt.
+ *   3. Nothing moves more than a few pixels, and nothing loops forever in
+ *      the reader's field of view except the partner marquee.
+ */
+
+/* ─────────────────────────────────────────────
+   Scroll reveal
+   Elements start slightly low and transparent, then settle when they first
+   come into view. `--reveal-delay` staggers members of a grid.
+   ───────────────────────────────────────────── */
+
+/* Hidden only once JS is running (`motion-ready` is set in main.tsx), so a
+   failed or blocked bundle still leaves every word on the page readable. */
+.motion-ready .reveal {
+  opacity: 0;
+  transform: translate3d(0, 22px, 0);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: transform, opacity;
+}
+
+.motion-ready .reveal-up { transform: translate3d(0, 34px, 0); }
+.motion-ready .reveal-left { transform: translate3d(-28px, 0, 0); }
+.motion-ready .reveal-right { transform: translate3d(28px, 0, 0); }
+.motion-ready .reveal-scale { transform: scale(0.94); }
+
+/* Lifts into place as if rising off the page, for cards and photographs. */
+.motion-ready .reveal-lift {
+  transform: perspective(1200px) translate3d(0, 30px, -60px) rotateX(6deg);
+}
+
+.motion-ready .reveal.is-visible {
+  opacity: 1;
+  transform: none;
+  will-change: auto;
+}
+
+/* ─────────────────────────────────────────────
+   3D tilt
+   The card itself holds the perspective; `useTilt` writes the two angles.
+   Only pointers that can hover get it.
+   ───────────────────────────────────────────── */
+
+.tilt {
+  transform-style: preserve-3d;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .tilt.is-tilting {
+    transition: transform 0.08s linear;
+    transform:
+      perspective(var(--tilt-perspective, 900px))
+      rotateX(var(--tilt-x, 0deg))
+      rotateY(var(--tilt-y, 0deg))
+      translate3d(0, var(--tilt-lift, -6px), 0)
+      scale(var(--tilt-scale, 1.012));
+  }
+
+  /* Contents sit above the card face, so the tilt reads as real depth. */
+  .tilt-layer { transform: translate3d(0, 0, 36px); }
+  .tilt-layer-sm { transform: translate3d(0, 0, 18px); }
+
+  /* A soft highlight that follows the pointer across the card face. */
+  .tilt-sheen {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    background: radial-gradient(
+      380px circle at var(--tilt-px, 50%) var(--tilt-py, 50%),
+      rgba(255, 255, 255, 0.13),
+      rgba(255, 255, 255, 0.04) 38%,
+      transparent 62%
+    );
+  }
+  .tilt.is-tilting .tilt-sheen { opacity: 1; }
+}
+
+/* ─────────────────────────────────────────────
+   Surfaces and light
+   ───────────────────────────────────────────── */
+
+/* A faint film grain over dark photography, which hides banding in the
+   gradients and reads as printed rather than flat. */
+.grain::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.4;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+}
+
+/* A light sweep that crosses a button on hover. */
+.shine { position: relative; overflow: hidden; }
+.shine::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -60%;
+  width: 45%;
+  pointer-events: none;
+  transform: skewX(-18deg) translate3d(0, 0, 0);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.38), transparent);
+  opacity: 0;
+}
+.shine:hover::after,
+.shine:focus-visible::after {
+  opacity: 1;
+  animation: shineSweep 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+}
+/* The dark pill sweeps with a dark highlight instead of a white one. */
+.shine-dark::after {
+  background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.18), transparent);
+}
+
+@keyframes shineSweep {
+  from { left: -60%; }
+  to { left: 130%; }
+}
+
+/* Press feedback, so a tap feels like it landed. */
+.press { transition: transform 0.14s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease; }
+.press:active { transform: translateY(1px) scale(0.985); }
+
+/* Reading progress along the top of the window. */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: 200;
+  transform-origin: 0 50%;
+  transform: scaleX(var(--scroll-progress, 0));
+  background: var(--gold-gradient-h);
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+/* Photographs drift closer while their section is on screen. */
+.kenburns {
+  animation: kenburns 26s ease-in-out infinite alternate;
+  will-change: transform;
+}
+@keyframes kenburns {
+  from { transform: scale(1) translate3d(0, 0, 0); }
+  to { transform: scale(1.07) translate3d(0, -1.2%, 0); }
+}
+
+/* A slow bloom behind a hero, to lift the subject off the black. */
+.halo::before {
+  content: '';
+  position: absolute;
+  inset: -20% -10% auto -10%;
+  height: 70%;
+  pointer-events: none;
+  background: radial-gradient(60% 60% at 50% 40%, rgba(255, 255, 255, 0.1), transparent 70%);
+  animation: haloBreathe 9s ease-in-out infinite alternate;
+}
+@keyframes haloBreathe {
+  from { opacity: 0.5; transform: scale(1); }
+  to { opacity: 0.85; transform: scale(1.06); }
+}
+
+/* ─────────────────────────────────────────────
+   Respect the reader
+   One rule switches the whole system off for anyone who asks their device
+   to reduce motion. Content stays exactly where it belongs.
+   ───────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal-up,
+  .reveal-left,
+  .reveal-right,
+  .reveal-scale,
+  .reveal-lift {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .tilt,
+  .tilt.is-tilting,
+  .tilt-layer,
+  .tilt-layer-sm {
+    transform: none !important;
+    transition: none !important;
+  }
+  .tilt-sheen { display: none; }
+  .kenburns,
+  .halo::before,
+  .shine:hover::after,
+  .shine:focus-visible::after {
+    animation: none !important;
+  }
+  .scroll-progress { display: none; }
+}
+
+/* ─────────────────────────────────────────────
+   Header
+   A hairline grows under the link being pointed at, and stays under the
+   page you are on.
+   ───────────────────────────────────────────── */
+
+.nav-link { position: relative; }
+.nav-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -7px;
+  height: 1px;
+  background: var(--gold-gradient-h);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.nav-link:hover::after,
+.nav-link:focus-visible::after,
+.nav-link[data-active='true']::after { transform: scaleX(1); }
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-link::after { transition: none; }
+}
+
+/* ─────────────────────────────────────────────
+   Hero entrance
+   The headline, rule, paragraph and buttons arrive in sequence on the first
+   paint, each a beat after the one above it.
+   ───────────────────────────────────────────── */
+
+.hero-step {
+  animation: heroRise 0.85s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  animation-delay: calc(var(--hero-step, 1) * 110ms);
+}
+
+@keyframes heroRise {
+  from { opacity: 0; transform: translate3d(0, 26px, 0); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-step { animation: none; }
+}

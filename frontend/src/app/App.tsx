@@ -5,6 +5,7 @@ import AdminLogin from '@/pages/AdminLogin'
 import AirportTransfer from '@/pages/AirportTransfer'
 import Booking from '@/pages/Booking'
 import Confirmation from '@/pages/Confirmation'
+import Contact from '@/pages/Contact'
 import Corporate from '@/pages/Corporate'
 import ExploreAddis from '@/pages/ExploreAddis'
 import Home from '@/pages/Home'
@@ -27,8 +28,7 @@ const pageComponents: Record<Page, PageComponent> = {
   corporate: Corporate,
   booking: Booking,
   about: About,
-  // No dedicated contact page yet — the About page carries the contact block.
-  contact: About,
+  contact: Contact,
   confirmation: Confirmation,
   'admin-login': AdminLogin,
   // The console reads the current page itself to pick a section.

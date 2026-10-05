@@ -1,6 +1,9 @@
-import { useState } from 'react'
 import { pillOutline } from '@/components/ui/buttonStyles'
 import { cardTopRule, raisedCard } from '@/components/ui/cardStyles'
+import Reveal from '@/components/ui/Reveal'
+import { useTilt } from '@/hooks'
+import type { HomeService } from '@/data/services'
+import type { Vehicle } from '@/types'
 import { useContent } from '@/features/cms'
 import PartnerCard from '@/components/ui/PartnerCard'
 import HomeHero from '@/components/sections/HomeHero'
@@ -11,8 +14,6 @@ import type { Page } from '@/app/routes'
 interface HomeProps { navigate: (p: Page) => void }
 
 export default function Home({ navigate }: HomeProps) {
-  const [hovSvc, setHovSvc] = useState<number|null>(null)
-  const [hovVeh, setHovVeh] = useState<number|null>(null)
   const homeServices = useContent('home_services')
   const fleet = useContent('fleet')
   const { rowOne: partnersRowOne, rowTwo: partnersRowTwo } = useContent('partner_logos')
@@ -23,156 +24,6 @@ export default function Home({ navigate }: HomeProps) {
 
       {/* ── HERO ── */}
       <HomeHero navigate={navigate} />
-
-      {/* ── TRUST STRIP ── */}
-      <TrustStrip />
-
-      {/* ── QUICK LINKS ── */}
-      <QuickLinks navigate={navigate} />
-
-      {/* ── SERVICES ── */}
-      <section style={{ padding: '112px 48px', maxWidth: 1380, margin: '0 auto' }}>
-        <div style={{ textAlign: 'center', marginBottom: 72 }}>
-          <p className="label-caps" style={{ marginBottom: 14 }}>{copy.servicesEyebrow}</p>
-          <h2 style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: 'clamp(32px, 4.5vw, 56px)', fontWeight: 700, lineHeight: 1.08,
-            color: '#FFFFFF', marginBottom: 8,
-          }}>{copy.servicesTitle}</h2>
-          <h2 style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: 'clamp(28px, 4vw, 50px)', fontWeight: 600, fontStyle: 'italic',
-            background: 'var(--gold-gradient-h)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
-            lineHeight: 1.1, marginBottom: 24,
-          }}>{copy.servicesTitleAccent}</h2>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0 }}>
-            <div style={{ height: 1.5, width: 60, background: 'linear-gradient(to right, transparent, #FFFFFF)' }} />
-            <div style={{ width: 7, height: 7, background: '#FFFFFF', transform: 'rotate(45deg)', margin: '0 8px' }} />
-            <div style={{ height: 1.5, width: 60, background: 'linear-gradient(to left, transparent, #FFFFFF)' }} />
-          </div>
-        </div>
-
-        <div className="service-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 18 }}>
-          {homeServices.map((s, i) => {
-            const active = hovSvc === i
-            return (
-              <div key={i}
-                onClick={() => navigate(s.page)}
-                onMouseEnter={() => setHovSvc(i)}
-                onMouseLeave={() => setHovSvc(null)}
-                style={{ ...raisedCard(active), padding: '34px 30px 30px', cursor: 'pointer' }}
-              >
-                <div style={cardTopRule(active)} />
-
-                <div style={{
-                  fontSize: 24, marginBottom: 18, color: '#FFFFFF',
-                  opacity: active ? 1 : 0.5, transition: 'opacity 0.3s',
-                }}>{s.icon}</div>
-
-                <h3 style={{
-                  fontFamily: 'var(--font-display)', fontSize: 20, fontWeight: 700,
-                  lineHeight: 1.25, margin: '0 0 10px', color: '#FFFFFF',
-                }}>{s.title}</h3>
-
-                <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 13, lineHeight: 1.7, margin: 0 }}>{s.subtitle}</p>
-
-                {/* Sits in the flow so the card does not resize on hover. */}
-                <p style={{
-                  color: '#FFFFFF', fontSize: 10.5, fontWeight: 700,
-                  letterSpacing: '0.14em', textTransform: 'uppercase',
-                  margin: '22px 0 0',
-                  opacity: active ? 1 : 0,
-                  transform: active ? 'translateX(0)' : 'translateX(-6px)',
-                  transition: 'opacity 0.3s, transform 0.3s',
-                }}>Learn More →</p>
-              </div>
-            )
-          })}
-        </div>
-      </section>
-
-      {/* ── ADDIS PHOTO FEATURE ── */}
-      <section style={{ position: 'relative', height: 520, overflow: 'hidden' }}>
-        <div style={{
-          position: 'absolute', inset: 0,
-          backgroundImage: `url(${copy.featureImage})`,
-          backgroundSize: 'cover', backgroundPosition: 'center',
-        }} />
-        <div style={{ position: 'absolute', inset: 0, background: 'rgba(3,3,3,0.80)' }} />
-        <div style={{ position: 'absolute', left: 0, top: '12%', height: '76%', width: 3, background: 'var(--gold-gradient)' }} />
-
-        <div className="gutter" style={{ position: 'relative', maxWidth: 1380, margin: '0 auto', padding: '0 48px', height: '100%', display: 'flex', alignItems: 'center' }}>
-          <div style={{ maxWidth: 580, paddingLeft: 32 }}>
-            <div style={{ display: 'flex', gap: 3, color: 'var(--gold-bright)', fontSize: 13, marginBottom: 18 }}>
-              {['★','★','★','★','★'].map((s,i)=><span key={i}>{s}</span>)}
-            </div>
-            <p className="label-caps" style={{ marginBottom: 12 }}>{copy.featureEyebrow}</p>
-            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(30px, 4vw, 50px)', fontWeight: 700, lineHeight: 1.1, marginBottom: 6, color: '#FFFFFF' }}>
-              {copy.featureTitle}
-            </h2>
-            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(26px, 3.5vw, 44px)', fontWeight: 600, fontStyle: 'italic', lineHeight: 1.1, marginBottom: 24, background: 'var(--gold-sheen)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
-              {copy.featureTitleAccent}
-            </h2>
-            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 15, lineHeight: 1.8, marginBottom: 36 }}>
-              {copy.featureText}
-            </p>
-            <button
-              onClick={() => navigate('explore')}
-              style={pillOutline}
-              onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)' }}
-              onMouseLeave={e => { e.currentTarget.style.background = 'transparent' }}
-            >Explore Addis</button>
-          </div>
-        </div>
-      </section>
-
-      {/* ── VEHICLES ── */}
-      <section style={{ padding: '112px 48px', maxWidth: 1380, margin: '0 auto' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 60, flexWrap: 'wrap', gap: 24 }}>
-          <div>
-            <p className="label-caps" style={{ marginBottom: 12 }}>{copy.fleetEyebrow}</p>
-            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(28px, 4vw, 46px)', fontWeight: 700, color: '#FFFFFF', lineHeight: 1.1, marginBottom: 2 }}>{copy.fleetTitle}</h2>
-            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(26px, 3.5vw, 42px)', fontWeight: 600, fontStyle: 'italic', background: 'var(--gold-gradient-h)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', lineHeight: 1.1 }}>{copy.fleetTitleAccent}</h2>
-          </div>
-          <button style={pillOutline} onClick={() => navigate('booking')}
-            onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)' }}
-            onMouseLeave={e => { e.currentTarget.style.background = 'transparent' }}
-          >Request a Vehicle</button>
-        </div>
-
-        <div className="fleet-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 18 }}>
-          {fleet.map((v, i) => {
-            const active = hovVeh === i
-            return (
-            <div key={i}
-              onMouseEnter={() => setHovVeh(i)}
-              onMouseLeave={() => setHovVeh(null)}
-              style={{ ...raisedCard(active), cursor: 'pointer' }}
-            >
-              {/* Above the photo, so the rule is not clipped by it. */}
-              <div style={{ ...cardTopRule(active), zIndex: 2 }} />
-              <div style={{ height: 230, overflow: 'hidden', background: '#0a0a0a' }}>
-                <img src={v.img} alt={v.name} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s', transform: active ? 'scale(1.06)' : 'scale(1)' }} />
-              </div>
-              <div style={{ padding: '26px 28px' }}>
-                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 700, color: '#FFFFFF', marginBottom: 8 }}>{v.name}</h3>
-                <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.72)', marginBottom: 18, lineHeight: 1.6 }}>{v.desc}</p>
-                <div style={{ display: 'flex', gap: 24, borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: 16 }}>
-                  <div>
-                    <p className="label-caps" style={{ fontSize: 8, marginBottom: 4 }}>Capacity</p>
-                    <p style={{ fontSize: 13, color: '#FFFFFF', fontWeight: 600 }}>{v.capacity} pax</p>
-                  </div>
-                  <div>
-                    <p className="label-caps" style={{ fontSize: 8, marginBottom: 4 }}>Luggage</p>
-                    <p style={{ fontSize: 13, color: '#FFFFFF', fontWeight: 600 }}>{v.luggage}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            )
-          })}
-        </div>
-      </section>
 
       {/* ── TRUSTED BY ── */}
       <section style={{
@@ -226,6 +77,99 @@ export default function Home({ navigate }: HomeProps) {
         </div>
       </section>
 
+      {/* ── TRUST STRIP ── */}
+      <TrustStrip />
+
+      {/* ── QUICK LINKS ── */}
+      <QuickLinks navigate={navigate} />
+
+      {/* ── SERVICES ── */}
+      <section style={{ padding: '112px 48px', maxWidth: 1380, margin: '0 auto' }}>
+        <Reveal style={{ textAlign: 'center', marginBottom: 72 }}>
+          <p className="label-caps" style={{ marginBottom: 14 }}>{copy.servicesEyebrow}</p>
+          <h2 style={{
+            fontFamily: 'var(--font-display)',
+            fontSize: 'clamp(32px, 4.5vw, 56px)', fontWeight: 700, lineHeight: 1.08,
+            color: '#FFFFFF', marginBottom: 8,
+          }}>{copy.servicesTitle}</h2>
+          <h2 style={{
+            fontFamily: 'var(--font-display)',
+            fontSize: 'clamp(28px, 4vw, 50px)', fontWeight: 600, fontStyle: 'italic',
+            background: 'var(--gold-gradient-h)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+            lineHeight: 1.1, marginBottom: 24,
+          }}>{copy.servicesTitleAccent}</h2>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0 }}>
+            <div style={{ height: 1.5, width: 60, background: 'linear-gradient(to right, transparent, #FFFFFF)' }} />
+            <div style={{ width: 7, height: 7, background: '#FFFFFF', transform: 'rotate(45deg)', margin: '0 8px' }} />
+            <div style={{ height: 1.5, width: 60, background: 'linear-gradient(to left, transparent, #FFFFFF)' }} />
+          </div>
+        </Reveal>
+
+        <div className="service-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 18 }}>
+          {homeServices.map((s, i) => (
+            <ServiceCard key={i} service={s} index={i} onOpen={() => navigate(s.page)} />
+          ))}
+        </div>
+      </section>
+
+      {/* ── ADDIS PHOTO FEATURE ── */}
+      <section style={{ position: 'relative', height: 520, overflow: 'hidden' }}>
+        <div style={{
+          position: 'absolute', inset: 0,
+          backgroundImage: `url(${copy.featureImage})`,
+          backgroundSize: 'cover', backgroundPosition: 'center',
+        }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'rgba(3,3,3,0.80)' }} />
+        <div style={{ position: 'absolute', left: 0, top: '12%', height: '76%', width: 3, background: 'var(--gold-gradient)' }} />
+
+        <div className="gutter" style={{ position: 'relative', maxWidth: 1380, margin: '0 auto', padding: '0 48px', height: '100%', display: 'flex', alignItems: 'center' }}>
+          <Reveal variant="left" style={{ maxWidth: 580, paddingLeft: 32 }}>
+            <div style={{ display: 'flex', gap: 3, color: 'var(--gold-bright)', fontSize: 13, marginBottom: 18 }}>
+              {['★','★','★','★','★'].map((s,i)=><span key={i}>{s}</span>)}
+            </div>
+            <p className="label-caps" style={{ marginBottom: 12 }}>{copy.featureEyebrow}</p>
+            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(30px, 4vw, 50px)', fontWeight: 700, lineHeight: 1.1, marginBottom: 6, color: '#FFFFFF' }}>
+              {copy.featureTitle}
+            </h2>
+            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(26px, 3.5vw, 44px)', fontWeight: 600, fontStyle: 'italic', lineHeight: 1.1, marginBottom: 24, background: 'var(--gold-sheen)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+              {copy.featureTitleAccent}
+            </h2>
+            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 15, lineHeight: 1.8, marginBottom: 36 }}>
+              {copy.featureText}
+            </p>
+            <button
+              onClick={() => navigate('explore')}
+              style={pillOutline}
+              className="shine press"
+              onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)' }}
+              onMouseLeave={e => { e.currentTarget.style.background = 'transparent' }}
+            >Explore Addis</button>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ── VEHICLES ── */}
+      <section style={{ padding: '112px 48px', maxWidth: 1380, margin: '0 auto' }}>
+        <Reveal style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 60, flexWrap: 'wrap', gap: 24 }}>
+          <div>
+            <p className="label-caps" style={{ marginBottom: 12 }}>{copy.fleetEyebrow}</p>
+            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(28px, 4vw, 46px)', fontWeight: 700, color: '#FFFFFF', lineHeight: 1.1, marginBottom: 2 }}>{copy.fleetTitle}</h2>
+            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(26px, 3.5vw, 42px)', fontWeight: 600, fontStyle: 'italic', background: 'var(--gold-gradient-h)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', lineHeight: 1.1 }}>{copy.fleetTitleAccent}</h2>
+          </div>
+          <button style={pillOutline} className="shine press" onClick={() => navigate('booking')}
+            onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)' }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'transparent' }}
+          >Request a Vehicle</button>
+        </Reveal>
+
+        <div className="fleet-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 18 }}>
+          {fleet.map((v, i) => (
+            <VehicleCard key={i} vehicle={v} index={i} onBook={() => navigate('booking')} />
+          ))}
+        </div>
+      </section>
+
+
       {/* ── PARTNER CTA SPLIT ── */}
       <section style={{ padding: '96px 48px' }}>
         <div style={{ maxWidth: 1200, margin: '0 auto' }}>
@@ -278,5 +222,103 @@ export default function Home({ navigate }: HomeProps) {
         }
       `}</style>
     </div>
+  )
+}
+
+/**
+ * A service card that tips towards the pointer, with its contents standing
+ * off the card face so the tilt reads as depth rather than a skew.
+ */
+function ServiceCard({ service, index, onOpen }: { service: HomeService; index: number; onOpen: () => void }) {
+  const tilt = useTilt({ max: 7 })
+  const active = tilt.active
+
+  return (
+    <Reveal variant="lift" index={index}>
+      <div
+        ref={tilt.ref}
+        {...tilt.handlers}
+        className={tilt.className}
+        onClick={onOpen}
+        onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && (e.preventDefault(), onOpen())}
+        role="button"
+        tabIndex={0}
+        style={{ ...raisedCard(active), padding: '34px 30px 30px', cursor: 'pointer', height: '100%' }}
+      >
+        <span aria-hidden="true" className="tilt-sheen" />
+        <div style={cardTopRule(active)} />
+
+        <div className="tilt-layer">
+          <div style={{ fontSize: 24, marginBottom: 18, color: '#FFFFFF', opacity: active ? 1 : 0.5, transition: 'opacity 0.3s' }}>{service.icon}</div>
+
+          <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 20, fontWeight: 700, lineHeight: 1.25, margin: '0 0 10px', color: '#FFFFFF' }}>
+            {service.title}
+          </h3>
+
+          <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 13, lineHeight: 1.7, margin: 0 }}>{service.subtitle}</p>
+
+          {/* Sits in the flow so the card does not resize on hover. */}
+          <p
+            style={{
+              color: '#FFFFFF', fontSize: 10.5, fontWeight: 700,
+              letterSpacing: '0.14em', textTransform: 'uppercase',
+              margin: '22px 0 0',
+              opacity: active ? 1 : 0,
+              transform: active ? 'translateX(0)' : 'translateX(-6px)',
+              transition: 'opacity 0.3s, transform 0.3s',
+            }}
+          >
+            Learn More →
+          </p>
+        </div>
+      </div>
+    </Reveal>
+  )
+}
+
+/** A fleet card: the photograph pushes in while the card tips. */
+function VehicleCard({ vehicle, index, onBook }: { vehicle: Vehicle; index: number; onBook: () => void }) {
+  const tilt = useTilt({ max: 6, lift: -8 })
+  const active = tilt.active
+
+  return (
+    <Reveal variant="lift" index={index}>
+      <div
+        ref={tilt.ref}
+        {...tilt.handlers}
+        className={tilt.className}
+        onClick={onBook}
+        onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && (e.preventDefault(), onBook())}
+        role="button"
+        tabIndex={0}
+        style={{ ...raisedCard(active), cursor: 'pointer', height: '100%' }}
+      >
+        <span aria-hidden="true" className="tilt-sheen" style={{ zIndex: 3 }} />
+        {/* Above the photo, so the rule is not clipped by it. */}
+        <div style={{ ...cardTopRule(active), zIndex: 2 }} />
+        <div style={{ height: 230, overflow: 'hidden', background: '#0a0a0a' }}>
+          <img
+            src={vehicle.img}
+            alt={vehicle.name}
+            loading="lazy"
+            style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.6s cubic-bezier(0.22, 1, 0.36, 1)', transform: active ? 'scale(1.07)' : 'scale(1)' }}
+          />
+        </div>
+        <div className="tilt-layer-sm" style={{ padding: '26px 28px' }}>
+          <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 700, color: '#FFFFFF', marginBottom: 8 }}>{vehicle.name}</h3>
+          <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.72)', marginBottom: 18, lineHeight: 1.6 }}>{vehicle.desc}</p>
+          <div style={{ display: 'flex', gap: 24, borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: 16 }}>
+            <div>
+              <p className="label-caps" style={{ fontSize: 8, marginBottom: 4 }}>Capacity</p>
+              <p style={{ fontSize: 13, color: '#FFFFFF', fontWeight: 600 }}>{vehicle.capacity} pax</p>
+            </div>
+            <div>
+              <p className="label-caps" style={{ fontSize: 8, marginBottom: 4 }}>Luggage</p>
+              <p style={{ fontSize: 13, color: '#FFFFFF', fontWeight: 600 }}>{vehicle.luggage}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Reveal>
   )
 }

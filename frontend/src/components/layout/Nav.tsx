@@ -19,7 +19,7 @@ export default function Nav({ current, navigate }: NavProps) {
       transition: 'background 0.3s',
     }}>
       <div style={{ maxWidth: 1380, margin: '0 auto', padding: '0 32px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 72 }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: scrolled ? 64 : 76, transition: 'height 0.3s cubic-bezier(0.22, 1, 0.36, 1)' }}>
 
           {/* Logo */}
           <button onClick={() => navigate('home')} style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 12 }}>
@@ -57,11 +57,11 @@ export default function Nav({ current, navigate }: NavProps) {
           </button>
 
           {/* Desktop nav links */}
-          <nav style={{ display: 'flex', alignItems: 'center', gap: 28 }} className="hide-mobile">
+          <nav style={{ display: 'flex', alignItems: 'center', gap: 22 }} className="hide-mobile">
             {links.map(l => (
-              <button key={l.page} onClick={() => navigate(l.page)} style={{
+              <button key={l.page} onClick={() => navigate(l.page)} className="nav-link" data-active={current === l.page} style={{
                 background: 'none', border: 'none', cursor: 'pointer',
-                fontFamily: 'var(--font-body)', fontSize: 11.5, fontWeight: 600,
+                fontFamily: 'var(--font-body)', fontSize: 11, fontWeight: 600,
                 letterSpacing: '0.1em', textTransform: 'uppercase',
                 color: current === l.page ? '#FFFFFF' : '#FFFFFF',
                 opacity: current === l.page ? 1 : 0.82,

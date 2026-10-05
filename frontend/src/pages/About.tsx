@@ -1,5 +1,6 @@
 import { useContent } from '@/features/cms'
 import type { Page } from '@/app/routes'
+import Reveal from '@/components/ui/Reveal'
 interface Props { navigate: (p: Page) => void }
 
 export default function About({ navigate }: Props) {
@@ -49,12 +50,12 @@ export default function About({ navigate }: Props) {
         <p className="label-caps" style={{ color: '#FFFFFF', marginBottom: 48 }}>What We Stand For</p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '2px' }}>
           {brandValues.map((v, i) => (
-            <div key={i} style={{ background: 'var(--surface-2)', padding: '40px 32px', position: 'relative', overflow: 'hidden' }}>
+            <Reveal key={i} variant="lift" index={i} style={{ background: 'var(--surface-2)', padding: '40px 32px', position: 'relative', overflow: 'hidden' }}>
               <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'var(--gold-gradient)' }} />
               <div style={{ width: 32, height: 2, background: '#FFFFFF', marginBottom: 24 }} />
               <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 20, fontWeight: 600, color: '#FFFFFF', marginBottom: 12 }}>{v.title}</h3>
               <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.75)', lineHeight: 1.75 }}>{v.desc}</p>
-            </div>
+            </Reveal>
           ))}
         </div>
       </section>
