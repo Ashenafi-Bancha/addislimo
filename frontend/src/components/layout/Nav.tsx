@@ -79,7 +79,7 @@ export default function Nav({ current, navigate }: NavProps) {
               onClick={() => navigate(primaryCta.page)}
               style={{
                 background: 'var(--gold-gradient)',
-                color: '#060606',
+                color: '#0C0B09',
                 border: 'none', cursor: 'pointer',
                 fontFamily: 'var(--font-body)', fontSize: 11, fontWeight: 800,
                 letterSpacing: '0.16em', textTransform: 'uppercase',
@@ -102,7 +102,7 @@ export default function Nav({ current, navigate }: NavProps) {
               onClick={() => navigate(primaryCta.page)}
               style={{
                 background: 'var(--gold-gradient)',
-                color: '#060606',
+                color: '#0C0B09',
                 border: 'none', cursor: 'pointer',
                 fontFamily: 'var(--font-body)', fontSize: 10, fontWeight: 800,
                 letterSpacing: '0.14em', textTransform: 'uppercase',
@@ -135,7 +135,7 @@ export default function Nav({ current, navigate }: NavProps) {
           ))}
           <button onClick={() => { navigate(primaryCta.page); setOpen(false) }} style={{
             marginTop: 18, width: '100%', borderRadius: '50px',
-            background: 'var(--gold-gradient)', color: '#060606',
+            background: 'var(--gold-gradient)', color: '#0C0B09',
             border: 'none', cursor: 'pointer',
             fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 800,
             letterSpacing: '0.16em', textTransform: 'uppercase', padding: '14px 0',

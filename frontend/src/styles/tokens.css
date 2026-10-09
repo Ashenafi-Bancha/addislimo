@@ -25,12 +25,24 @@
   --gold-gradient-h: linear-gradient(90deg, #FFFFFF 0%, rgba(230,230,230,0.90) 50%, #FFFFFF 100%);
   --gold-sheen:      #FFFFFF;
 
-  /* Black system */
-  --ink:       #060606;
-  --charcoal:  #0E0E0E;
-  --surface:   #111111;
-  --surface-2: #181818;
-  --surface-3: #1E1E1E;
+  /* Champagne, the one warm accent. Used on the hero vehicle's trim, the
+     studio rim light and the hero eyebrow. The site-wide silver stays as it
+     is: switching the whole brand to gold is a change to --gold-* above,
+     not a change to this token. */
+  --champagne:        #BC9A63;
+  --champagne-soft:   rgba(188,154,99,0.55);
+  --champagne-glow:   rgba(188,154,99,0.18);
+
+  /* Dark system — warm charcoal, not black.
+     Sampled from the hero photograph: its shadows sit warm (16,15,13 in the
+     foreground, 47,46,45 in the mid tones), never blue. A neutral black page
+     behind that picture reads as a different material; these tones read as
+     the same night. Each step is a little warmer and lighter than the last. */
+  --ink:       #0C0B09;
+  --charcoal:  #121009;
+  --surface:   #17150F;
+  --surface-2: #1E1B16;
+  --surface-3: #241F19;
   --border:    rgba(255,255,255,0.10);
   --border-hi: rgba(255,255,255,0.22);
 
@@ -53,7 +65,7 @@
 
   /* Admin console surfaces — one step quieter than the marketing site. */
   --admin-page:      #070707;
-  --admin-sidebar:   #0a0a0a;
+  --admin-sidebar:   #100E0C;
   --admin-panel:     linear-gradient(180deg, #121212 0%, #0d0d0d 100%);
   --admin-raised:    #161616;
   --admin-hairline:  rgba(255,255,255,0.08);

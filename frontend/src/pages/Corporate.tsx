@@ -15,7 +15,7 @@ export default function Corporate({ navigate }: Props) {
           backgroundImage: 'url(https://images.unsplash.com/photo-1530521954074-e64f6810b32d?w=1800&h=600&fit=crop&auto=format)',
           backgroundSize: 'cover', backgroundPosition: 'center 30%',
         }} />
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(11,11,11,0.92) 55%, rgba(11,11,11,0.6))' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(17,15,13,0.92) 55%, rgba(17,15,13,0.6))' }} />
         <div style={{ position: 'relative', maxWidth: 1280, margin: '0 auto', padding: '80px 32px', width: '100%' }}>
           <div style={{ display: 'flex', gap: 3, color: 'rgba(255,255,255,0.80)', fontSize: 12, marginBottom: 16 }}>
             {['★','★','★','★','★'].map((s,i)=><span key={i}>{s}</span>)}
@@ -37,7 +37,7 @@ export default function Corporate({ navigate }: Props) {
             <button
               onClick={() => navigate('booking')}
               style={{
-                background: 'var(--gold-gradient)', color: '#060606',
+                background: 'var(--gold-gradient)', color: '#0C0B09',
                 border: 'none', cursor: 'pointer',
                 fontFamily: 'var(--font-body)', fontSize: 11, fontWeight: 800,
                 letterSpacing: '0.2em', textTransform: 'uppercase',
@@ -142,7 +142,7 @@ export default function Corporate({ navigate }: Props) {
       </section>
 
       {/* Dashboard preview CTA */}
-      <section style={{ background: '#0A0A0A', padding: '72px 32px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+      <section style={{ background: '#100E0C', padding: '72px 32px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
         <div style={{ maxWidth: 800, margin: '0 auto', textAlign: 'center' }}>
           <p className="label-caps" style={{ color: '#FFFFFF', marginBottom: 16 }}>Corporate Portal · Coming Soon</p>
           <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 34, fontWeight: 600, color: '#FFFFFF', marginBottom: 16 }}>
@@ -154,7 +154,7 @@ export default function Corporate({ navigate }: Props) {
           <button
             onClick={() => navigate('booking')}
             style={{
-              background: 'var(--gold-gradient)', color: '#060606',
+              background: 'var(--gold-gradient)', color: '#0C0B09',
               border: 'none', cursor: 'pointer',
               fontFamily: 'var(--font-body)', fontSize: 11, fontWeight: 800,
               letterSpacing: '0.2em', textTransform: 'uppercase',

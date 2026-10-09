@@ -34,7 +34,7 @@ export default function About({ navigate }: Props) {
                 We manage the customer experience, bookings, service quality, coordination and technology, so every journey is seamless, comfortable and exactly what a premium service should be.
               </p>
             </div>
-            <div style={{ height: 400, background: '#090909', overflow: 'hidden' }}>
+            <div style={{ height: 400, background: '#0F0E0C', overflow: 'hidden' }}>
               <img
                 src="https://images.unsplash.com/photo-1771350368994-9d87f0d8431f?w=700&h=500&fit=crop&auto=format"
                 alt="Addis Ababa skyline"
@@ -61,7 +61,7 @@ export default function About({ navigate }: Props) {
       </section>
 
       {/* Partner section */}
-      <section style={{ background: '#0A0A0A', padding: '80px 32px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+      <section style={{ background: '#100E0C', padding: '80px 32px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '48px 80px', alignItems: 'start' }}>
             <div>
@@ -84,7 +84,7 @@ export default function About({ navigate }: Props) {
               <button
                 onClick={() => navigate('booking')}
                 style={{
-                  background: 'var(--gold-gradient)', color: '#060606',
+                  background: 'var(--gold-gradient)', color: '#0C0B09',
                   border: 'none', cursor: 'pointer',
                   fontFamily: 'var(--font-body)', fontSize: 11, fontWeight: 800,
                   letterSpacing: '0.2em', textTransform: 'uppercase',

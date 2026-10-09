@@ -21,7 +21,7 @@ export default function PartnerCard({ name, sub, logo }: Partner) {
       transition: 'border-color 0.3s, background 0.3s',
       cursor: 'default',
     }}
-      onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(255,255,255,0.25)'; (e.currentTarget as HTMLDivElement).style.background = '#141414' }}
+      onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(255,255,255,0.25)'; (e.currentTarget as HTMLDivElement).style.background = '#1A1713' }}
       onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(255,255,255,0.08)'; (e.currentTarget as HTMLDivElement).style.background = '#0E0E0E' }}
     >
       {/* Logo / monogram */}

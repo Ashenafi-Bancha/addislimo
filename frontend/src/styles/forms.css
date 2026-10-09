@@ -134,7 +134,7 @@
 
 .choice:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px #060606, 0 0 0 4px rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 0 2px #0C0B09, 0 0 0 4px rgba(255, 255, 255, 0.8);
 }
 
 .choice.is-selected {
@@ -154,7 +154,7 @@
   display: grid;
   place-items: center;
   border: 1px solid rgba(255, 255, 255, 0.28);
-  color: #060606;
+  color: #0C0B09;
   font-size: 11px;
   font-weight: 700;
   background: transparent;
@@ -212,7 +212,7 @@
     z-index: 5;
     margin: 0 -20px -20px;
     padding: 14px 20px calc(14px + env(safe-area-inset-bottom));
-    background: linear-gradient(180deg, rgba(6, 6, 6, 0.6) 0%, #060606 38%);
+    background: linear-gradient(180deg, rgba(6, 6, 6, 0.6) 0%, #0C0B09 38%);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
   }

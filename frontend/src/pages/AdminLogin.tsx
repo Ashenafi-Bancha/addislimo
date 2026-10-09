@@ -198,7 +198,7 @@ export default function AdminLogin({ navigate }: Props) {
             <button type="submit" disabled={loading} className="admin-btn" style={{ ...buttonPrimary, height: 48, fontSize: 14.5 }}>
               {loading ? (
                 <>
-                  <span aria-hidden="true" style={{ width: 16, height: 16, border: '2px solid rgba(0,0,0,0.25)', borderTopColor: '#060606', borderRadius: '50%', animation: 'adminSpin 0.7s linear infinite' }} />
+                  <span aria-hidden="true" style={{ width: 16, height: 16, border: '2px solid rgba(0,0,0,0.25)', borderTopColor: '#0C0B09', borderRadius: '50%', animation: 'adminSpin 0.7s linear infinite' }} />
                   Signing in
                 </>
               ) : (

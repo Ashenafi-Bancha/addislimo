@@ -23,7 +23,7 @@ export default function ExploreAddis({ navigate }: Props) {
           backgroundImage: 'url(https://images.unsplash.com/photo-1771350368994-9d87f0d8431f?w=1800&h=600&fit=crop&auto=format)',
           backgroundSize: 'cover', backgroundPosition: 'center',
         }} />
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(11,11,11,0.9) 50%, rgba(11,11,11,0.5))' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(17,15,13,0.9) 50%, rgba(17,15,13,0.5))' }} />
         <div style={{ position: 'relative', maxWidth: 1280, margin: '0 auto', padding: '80px 32px', width: '100%' }}>
           <div style={{ display: 'flex', gap: 3, color: 'rgba(255,255,255,0.80)', fontSize: 12, marginBottom: 16 }}>
             {['★','★','★','★','★'].map((s,i)=><span key={i}>{s}</span>)}
@@ -44,7 +44,7 @@ export default function ExploreAddis({ navigate }: Props) {
           <button
             onClick={() => navigate('booking')}
             style={{
-              background: 'var(--gold-gradient)', color: '#060606',
+              background: 'var(--gold-gradient)', color: '#0C0B09',
               border: 'none', cursor: 'pointer',
               fontFamily: 'var(--font-body)', fontSize: 11, fontWeight: 800,
               letterSpacing: '0.2em', textTransform: 'uppercase',
@@ -97,7 +97,7 @@ export default function ExploreAddis({ navigate }: Props) {
             >
               {/* Above the photo, so the rule is not clipped by it. */}
               <div style={{ ...cardTopRule(active), zIndex: 2 }} />
-              <div style={{ height: 200, overflow: 'hidden', position: 'relative', background: '#090909' }}>
+              <div style={{ height: 200, overflow: 'hidden', position: 'relative', background: '#0F0E0C' }}>
                 <img
                   src={d.img}
                   alt={d.name}
@@ -109,7 +109,7 @@ export default function ExploreAddis({ navigate }: Props) {
                 />
                 <div style={{ position: 'absolute', top: 14, left: 14 }}>
                   <span style={{
-                    background: 'rgba(11,11,11,0.8)', color: '#FFFFFF',
+                    background: 'rgba(17,15,13,0.8)', color: '#FFFFFF',
                     fontSize: 10, fontWeight: 600, letterSpacing: '0.1em',
                     textTransform: 'uppercase', padding: '5px 10px',
                     border: '1px solid rgba(255,255,255,0.3)',
@@ -165,7 +165,7 @@ export default function ExploreAddis({ navigate }: Props) {
           <button
             onClick={() => navigate('booking')}
             style={{
-              background: 'var(--gold-gradient)', color: '#060606',
+              background: 'var(--gold-gradient)', color: '#0C0B09',
               border: 'none', cursor: 'pointer',
               fontFamily: 'var(--font-body)', fontSize: 11, fontWeight: 800,
               letterSpacing: '0.2em', textTransform: 'uppercase',

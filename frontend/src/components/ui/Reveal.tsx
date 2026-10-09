@@ -1,4 +1,4 @@
-import type { CSSProperties, ElementType, ReactNode } from 'react'
+import { createElement, type CSSProperties, type ElementType, type ReactNode } from 'react'
 import { useReveal } from '@/hooks/useReveal'
 
 type Variant = 'up' | 'left' | 'right' | 'scale' | 'lift'
@@ -35,13 +35,15 @@ export default function Reveal({
   const { ref, visible } = useReveal<HTMLDivElement>()
   const ms = delay ?? (index ? Math.min(index, 8) * 70 : 0)
 
-  return (
-    <Tag
-      ref={ref}
-      className={`reveal reveal-${variant}${visible ? ' is-visible' : ''}${className ? ` ${className}` : ''}`}
-      style={{ ...style, ['--reveal-delay' as string]: `${ms}ms` }}
-    >
-      {children}
-    </Tag>
+  // `createElement` rather than `<Tag>`: a tag chosen at runtime cannot be
+  // narrowed, and JSX would type its props as `never`.
+  return createElement(
+    Tag,
+    {
+      ref,
+      className: `reveal reveal-${variant}${visible ? ' is-visible' : ''}${className ? ` ${className}` : ''}`,
+      style: { ...style, ['--reveal-delay' as string]: `${ms}ms` },
+    },
+    children,
   )
 }

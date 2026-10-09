@@ -8,7 +8,7 @@
 
 export const pillGold = {
   background: 'var(--gold-gradient)',
-  color: '#060606',
+  color: '#0C0B09',
   border: 'none', cursor: 'pointer',
   fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 800,
   letterSpacing: '0.18em', textTransform: 'uppercase' as const,

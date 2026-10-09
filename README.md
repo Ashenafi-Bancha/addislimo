@@ -70,5 +70,7 @@ Looking for something to change? Start here.
 - [`backend/README.md`](backend/README.md) — the API plan and database sketch.
 - [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) — deploying to Vercel, connecting
   addislimo.com, and the checklist before going public.
+- [`docs/PHOTOGRAPHY.md`](docs/PHOTOGRAPHY.md) — how to shoot the fleet and
+  put the photographs on the site from the admin.
 - [`docs/CLIENT-BRIEF.md`](docs/CLIENT-BRIEF.md) — every line of the client's
   service PDF mapped to the file that owns it.

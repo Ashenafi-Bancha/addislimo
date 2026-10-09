@@ -19,8 +19,8 @@ export function raisedCard(active: boolean): CSSProperties {
     overflow: 'hidden',
     borderRadius: 14,
     background: active
-      ? 'linear-gradient(165deg, #1B1B1B 0%, #101010 55%, #0B0B0B 100%)'
-      : 'linear-gradient(165deg, #141414 0%, #0D0D0D 55%, #090909 100%)',
+      ? 'linear-gradient(165deg, #211D18 0%, #16140F 55%, #110F0D 100%)'
+      : 'linear-gradient(165deg, #1A1713 0%, #13110E 55%, #0F0E0C 100%)',
     border: `1px solid ${active ? 'rgba(255,255,255,0.26)' : 'rgba(255,255,255,0.09)'}`,
     boxShadow: active
       ? 'inset 0 1px 0 rgba(255,255,255,0.16), inset 0 -1px 0 rgba(0,0,0,0.6), 0 26px 55px rgba(0,0,0,0.72), 0 3px 10px rgba(0,0,0,0.5)'

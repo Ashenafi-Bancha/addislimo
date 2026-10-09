@@ -94,7 +94,7 @@ body {
   font-size: 14px;
 }
 .input-gold:focus { border-bottom-color: rgba(255,255,255,0.65); }
-.input-gold option { background: #111111; color: var(--ivory); }
+.input-gold option { background: #17150F; color: var(--ivory); }
 
 /* ── Booking glass panel ── */
 .booking-glass {

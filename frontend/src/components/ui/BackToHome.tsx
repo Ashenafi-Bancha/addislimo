@@ -39,7 +39,7 @@ export default function BackToHome({ navigate }: BackToHomeProps) {
         letterSpacing: '0.16em',
         textTransform: 'uppercase',
         color: hovered ? '#FFFFFF' : 'rgba(255,255,255,0.82)',
-        background: hovered ? 'rgba(18,18,18,0.92)' : 'rgba(10,10,10,0.72)',
+        background: hovered ? 'rgba(18,18,18,0.92)' : 'rgba(16,14,12,0.72)',
         border: `1px solid ${hovered ? 'rgba(255,255,255,0.32)' : 'rgba(255,255,255,0.14)'}`,
         boxShadow: hovered
           ? 'inset 0 1px 0 rgba(255,255,255,0.14), 0 10px 26px rgba(0,0,0,0.6)'

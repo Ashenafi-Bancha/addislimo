@@ -93,6 +93,28 @@ path is missing, or when the repository contradicts this guide.
 
 `frontend/README.md` covers conventions and the list of known placeholders.
 
+## Colour and motion
+
+**The palette is warm charcoal, not black.** It is sampled from the hero
+photograph, whose shadows sit warm (16,15,13 in the foreground, 47,46,45 in
+the mid tones). A neutral black page behind that picture reads as a different
+material. The five steps live in `styles/tokens.css` (`--ink` `#0C0B09`
+through `--surface-3` `#241F19`); change them there, not in a component. The
+admin console keeps its own cooler neutrals on purpose: it is a tool looked at
+for hours, not a brand surface.
+
+**There is no 3D on the site.** A WebGL vehicle hero was built and removed:
+the only convincing version needs a licensed car model, and photography suits
+a chauffeur brand better. Nothing imports three.js, and the packages are gone
+from `package.json`. The Blender pipeline that produced the models lives in
+`tools/blender/`, untracked. See `docs/PHOTOGRAPHY.md` for the route that
+replaced it.
+
+**The motion system is live and separate**: scroll reveals (`Reveal`), 3D card
+tilt (`useTilt`), hero parallax and counting figures, all in
+`styles/motion.css` with one `prefers-reduced-motion` block that switches the
+lot off. See `frontend/README.md` for the rules.
+
 ## Dependencies
 
 - Runtime: React 19 and React DOM 19

@@ -19,11 +19,8 @@ interface HomeHeroProps {
  * The two differ in structure, not just in styling, so they branch in JS
  * rather than in CSS. Only one is ever in the DOM, so the browser downloads
  * one image.
- */
-
-/**
- * The photograph is edited in the admin's Website Content section. The mobile
- * frame is 16:9, so a landscape photo in that ratio shows without cropping.
+ *
+ * The photograph is edited in the admin's Website Content section.
  */
 
 const scrollCueKeyframes = `
@@ -145,15 +142,12 @@ export default function HomeHero({ navigate }: HomeHeroProps) {
         style={{
           ...ctaBase,
           background: 'var(--gold-gradient)',
-          color: '#060606',
+          color: '#0C0B09',
           border: 'none',
           fontWeight: 800,
           padding: isMobile ? '18px 24px' : '16px 40px',
           boxShadow: '0 2px 24px rgba(255,255,255,0.10)',
-          transition: 'box-shadow 0.2s, transform 0.15s',
         }}
-        onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 6px 40px rgba(255,255,255,0.18)'; e.currentTarget.style.transform = 'translateY(-2px)' }}
-        onMouseLeave={e => { e.currentTarget.style.boxShadow = '0 2px 24px rgba(255,255,255,0.10)'; e.currentTarget.style.transform = 'translateY(0)' }}
       >
         Book Your Ride
       </button>
@@ -165,10 +159,7 @@ export default function HomeHero({ navigate }: HomeHeroProps) {
           background: 'transparent',
           color: '#FFFFFF',
           border: '1.5px solid #FFFFFF',
-          transition: 'background 0.2s, color 0.2s',
         }}
-        onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)' }}
-        onMouseLeave={e => { e.currentTarget.style.background = 'transparent' }}
       >
         Explore Addis
       </button>
@@ -183,10 +174,7 @@ export default function HomeHero({ navigate }: HomeHeroProps) {
             background: 'transparent',
             color: 'rgba(255,255,255,0.88)',
             border: '1.5px solid rgba(255,255,255,0.42)',
-            transition: 'background 0.2s, border-color 0.2s, color 0.2s',
           }}
-          onMouseEnter={e => { e.currentTarget.style.borderColor = '#FFFFFF'; e.currentTarget.style.color = '#FFFFFF'; e.currentTarget.style.background = 'rgba(255,255,255,0.06)' }}
-          onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.42)'; e.currentTarget.style.color = 'rgba(255,255,255,0.88)'; e.currentTarget.style.background = 'transparent' }}
         >
           Get Quote
         </button>
@@ -236,7 +224,7 @@ export default function HomeHero({ navigate }: HomeHeroProps) {
               position: 'absolute',
               inset: 0,
               background:
-                'linear-gradient(180deg, rgba(6,6,6,0.35) 0%, rgba(6,6,6,0.10) 30%, rgba(6,6,6,0.55) 72%, rgba(6,6,6,0.92) 90%, #060606 100%)',
+                'linear-gradient(180deg, rgba(12,11,9,0.12) 0%, rgba(12,11,9,0.04) 32%, rgba(12,11,9,0.5) 72%, rgba(12,11,9,0.9) 90%, #0C0B09 100%)',
             }}
           />
         </div>
@@ -270,10 +258,12 @@ export default function HomeHero({ navigate }: HomeHeroProps) {
           }}
         />
       </div>
-      {/* Left-heavy overlay so text stays readable while the right reveals the city. */}
-      <div style={{ position: 'absolute', inset: 0, background: 'rgba(3,3,3,0.52)' }} />
-      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(105deg, rgba(3,3,3,0.72) 0%, rgba(3,3,3,0.38) 55%, rgba(3,3,3,0.10) 100%)' }} />
-      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 200, background: 'linear-gradient(to top, #030303 0%, transparent 100%)' }} />
+      {/* The photograph is already a night scene, so it needs far less
+          darkening than a daylight one: enough to hold the headline on the
+          left, almost nothing on the right where the skyline reads. */}
+      <div style={{ position: 'absolute', inset: 0, background: 'rgba(9,8,7,0.18)' }} />
+      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(105deg, rgba(9,8,7,0.82) 0%, rgba(9,8,7,0.45) 48%, rgba(9,8,7,0.05) 100%)' }} />
+      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 200, background: 'linear-gradient(to top, #090807 0%, transparent 100%)' }} />
 
       <div
         className="gutter"

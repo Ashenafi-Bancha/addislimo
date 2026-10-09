@@ -56,7 +56,7 @@ export default function Services({ navigate }: Props) {
               }}
             >
               <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'var(--gold-gradient)' }} />
-              <div style={{ height: 240, overflow: 'hidden', position: 'relative', background: '#090909' }}>
+              <div style={{ height: 240, overflow: 'hidden', position: 'relative', background: '#0F0E0C' }}>
                 <img
                   src={s.img}
                   alt={s.title}
@@ -68,7 +68,7 @@ export default function Services({ navigate }: Props) {
                 />
                 <div style={{
                   position: 'absolute', inset: 0,
-                  background: 'linear-gradient(to top, rgba(11,11,11,0.7) 0%, transparent 60%)',
+                  background: 'linear-gradient(to top, rgba(17,15,13,0.7) 0%, transparent 60%)',
                 }} />
               </div>
               <div style={{ padding: '28px 32px 32px' }}>

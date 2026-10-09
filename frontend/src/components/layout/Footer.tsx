@@ -10,7 +10,7 @@ export default function Footer({ navigate }: FooterProps) {
   const phoneHref = business.phoneHref.replace(/[^\d+]/g, '')
 
   return (
-    <footer style={{ background: '#030303', borderTop: '1px solid rgba(255,255,255,0.2)', paddingTop: 72, paddingBottom: 40 }}>
+    <footer style={{ background: '#090807', borderTop: '1px solid rgba(255,255,255,0.2)', paddingTop: 72, paddingBottom: 40 }}>
       {/* Gold top accent line */}
       <div style={{ height: 1, background: 'linear-gradient(to right, transparent, #FFFFFF, transparent)', marginBottom: 72, maxWidth: 1340, margin: '0 auto 72px' }} />
 

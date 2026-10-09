@@ -9,6 +9,7 @@ import { serviceCatalog, type CatalogService } from '@/data/service-catalog'
 import { differentiators, homeServices, type Differentiator, type HomeService } from '@/data/services'
 import { trustBadges, type TrustBadge } from '@/data/trust'
 import type { Partner, Vehicle } from '@/types'
+import aaHeroImage from '@/assets/images/aa-hero-image.jpg'
 import airportHeroImage from '@/assets/images/bole-international-airlines.jpg'
 
 /**
@@ -129,7 +130,7 @@ export const contentDefaults: SiteContent = {
     headlineAccent: 'in Class.',
     intro:
       'Premium chauffeur and transportation services in Addis Ababa, designed for travelers, executives, businesses, events and unforgettable journeys.',
-    image: 'https://images.unsplash.com/photo-1771350368994-9d87f0d8431f?w=1920&h=1080&fit=crop&auto=format',
+    image: aaHeroImage,
   },
   home_sections: {
     whyEyebrow: 'Why Addis Limo',

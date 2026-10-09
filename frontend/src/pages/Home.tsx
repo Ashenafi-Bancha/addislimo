@@ -28,7 +28,7 @@ export default function Home({ navigate }: HomeProps) {
       {/* ── TRUSTED BY ── */}
       <section style={{
         padding: '100px 0',
-        background: 'linear-gradient(180deg, #0A0A0A 0%, var(--ink) 100%)',
+        background: 'linear-gradient(180deg, #100E0C 0%, var(--ink) 100%)',
         borderTop: '1px solid rgba(255,255,255,0.08)',
         borderBottom: '1px solid rgba(255,255,255,0.08)',
         overflow: 'hidden',
@@ -52,8 +52,8 @@ export default function Home({ navigate }: HomeProps) {
 
         {/* Marquee row 1 — left */}
         <div style={{ position: 'relative', marginBottom: 16 }}>
-          <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 160, background: 'linear-gradient(to right, #0A0A0A, transparent)', zIndex: 2, pointerEvents: 'none' }} />
-          <div style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: 160, background: 'linear-gradient(to left, #0A0A0A, transparent)', zIndex: 2, pointerEvents: 'none' }} />
+          <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 160, background: 'linear-gradient(to right, #100E0C, transparent)', zIndex: 2, pointerEvents: 'none' }} />
+          <div style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: 160, background: 'linear-gradient(to left, #100E0C, transparent)', zIndex: 2, pointerEvents: 'none' }} />
           <div style={{ display: 'flex', animation: 'marqueeLeft 36s linear infinite', width: 'max-content' }}>
             {[...Array(2)].map((_, rep) => (
               <div key={rep} style={{ display: 'flex', gap: 14, paddingRight: 14 }}>
@@ -119,7 +119,7 @@ export default function Home({ navigate }: HomeProps) {
           backgroundImage: `url(${copy.featureImage})`,
           backgroundSize: 'cover', backgroundPosition: 'center',
         }} />
-        <div style={{ position: 'absolute', inset: 0, background: 'rgba(3,3,3,0.80)' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'rgba(9,8,7,0.80)' }} />
         <div style={{ position: 'absolute', left: 0, top: '12%', height: '76%', width: 3, background: 'var(--gold-gradient)' }} />
 
         <div className="gutter" style={{ position: 'relative', maxWidth: 1380, margin: '0 auto', padding: '0 48px', height: '100%', display: 'flex', alignItems: 'center' }}>
@@ -175,17 +175,17 @@ export default function Home({ navigate }: HomeProps) {
         <div style={{ maxWidth: 1200, margin: '0 auto' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2 }}>
             <div style={{ background: 'var(--gold-gradient)', padding: '60px 52px', position: 'relative' }}>
-              <p style={{ fontFamily: 'var(--font-body)', fontSize: 9, fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(6,6,6,0.5)', marginBottom: 14 }}>For Passengers</p>
-              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(24px,3vw,36px)', fontWeight: 700, color: '#060606', lineHeight: 1.15, marginBottom: 16 }}>
+              <p style={{ fontFamily: 'var(--font-body)', fontSize: 9, fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(12,11,9,0.5)', marginBottom: 14 }}>For Passengers</p>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(24px,3vw,36px)', fontWeight: 700, color: '#0C0B09', lineHeight: 1.15, marginBottom: 16 }}>
                 {copy.passengerTitle.split('\n').map((line, i) => (
                   <span key={i}>{i > 0 && <br />}{line}</span>
                 ))}
               </h3>
-              <p style={{ fontSize: 14, color: 'rgba(6,6,6,0.62)', lineHeight: 1.75, marginBottom: 36 }}>
+              <p style={{ fontSize: 14, color: 'rgba(12,11,9,0.62)', lineHeight: 1.75, marginBottom: 36 }}>
                 {copy.passengerText}
               </p>
               <button onClick={() => navigate('booking')} style={{
-                background: '#060606', color: '#FFFFFF', border: 'none', cursor: 'pointer',
+                background: '#0C0B09', color: '#FFFFFF', border: 'none', cursor: 'pointer',
                 fontFamily: 'var(--font-body)', fontSize: 11, fontWeight: 800,
                 letterSpacing: '0.18em', textTransform: 'uppercase',
                 padding: '13px 30px', borderRadius: '50px',
@@ -193,7 +193,7 @@ export default function Home({ navigate }: HomeProps) {
               }}>Book a Ride</button>
             </div>
 
-            <div style={{ background: '#111111', padding: '60px 52px', border: '1px solid rgba(255,255,255,0.15)', position: 'relative' }}>
+            <div style={{ background: '#17150F', padding: '60px 52px', border: '1px solid rgba(255,255,255,0.15)', position: 'relative' }}>
               <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'var(--gold-gradient)' }} />
               <p className="label-caps" style={{ marginBottom: 14 }}>For Partners</p>
               <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(24px,3vw,36px)', fontWeight: 700, color: '#FFFFFF', lineHeight: 1.15, marginBottom: 6 }}>
@@ -296,7 +296,7 @@ function VehicleCard({ vehicle, index, onBook }: { vehicle: Vehicle; index: numb
         <span aria-hidden="true" className="tilt-sheen" style={{ zIndex: 3 }} />
         {/* Above the photo, so the rule is not clipped by it. */}
         <div style={{ ...cardTopRule(active), zIndex: 2 }} />
-        <div style={{ height: 230, overflow: 'hidden', background: '#0a0a0a' }}>
+        <div style={{ height: 230, overflow: 'hidden', background: '#100E0C' }}>
           <img
             src={vehicle.img}
             alt={vehicle.name}
