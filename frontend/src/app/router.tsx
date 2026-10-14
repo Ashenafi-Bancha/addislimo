@@ -2,6 +2,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 import type { ReactNode } from 'react'
 import { DEFAULT_PAGE, hrefFor, pageFromHash, routes, type Page } from './routes'
 import { site } from '@/config/site'
+import { t, useLang } from '@/features/i18n'
 
 /**
  * A deliberately small hash router.
@@ -55,9 +56,12 @@ export function RouterProvider({ children }: { children: ReactNode }) {
     return () => window.removeEventListener('hashchange', onHashChange)
   }, [])
 
+  const lang = useLang()
   useEffect(() => {
-    document.title = `${routes[page].title} · ${site.name}`
-  }, [page])
+    // The admin console stays in English; only public page titles translate.
+    const title = routes[page].chrome === 'site' ? t(routes[page].title) : routes[page].title
+    document.title = `${title} · ${site.name}`
+  }, [page, lang])
 
   const navigate = useCallback((next: Page) => {
     const href = hrefFor(next)

@@ -337,3 +337,26 @@ video {
   .booking-layout { grid-template-columns: 1fr !important; }
   .booking-summary { position: static !important; order: 2; }
 }
+
+/* The language toggle shares the phone header with the brand, the booking
+   button and the menu. On the narrowest phones everything tightens a notch,
+   and the wordmark gives way to the AL emblem, which still reads as the brand. */
+@media (max-width: 480px) {
+  .nav-mobile-actions { gap: 8px !important; }
+  .nav-mobile-cta { padding: 9px 12px !important; }
+  .lang-switch { padding: 2px; }
+  .lang-switch-option { padding: 6px 8px; font-size: 10px; }
+}
+
+@media (max-width: 400px) {
+  .nav-brand-name { display: none !important; }
+}
+
+/* The language toggle joined the desktop header, so up to 1240px the header
+   switches to the compact phone layout (see Nav.tsx), and just above that
+   the links close up a little to keep every label on one line. */
+@media (min-width: 1241px) and (max-width: 1320px) {
+  header nav.hide-mobile { gap: 14px !important; }
+  header .nav-link { letter-spacing: 0.05em !important; white-space: nowrap; }
+  header .hide-mobile > button { white-space: nowrap; padding: 10px 18px !important; }
+}

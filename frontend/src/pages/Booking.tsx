@@ -3,6 +3,7 @@ import type { Page } from '@/app/routes'
 import Reveal from '@/components/ui/Reveal'
 import { serviceOptions, stepLabels, vehicleOptions } from '@/features/booking/booking.data'
 import { useContent } from '@/features/cms'
+import { t, tf } from '@/features/i18n'
 
 interface Props {
   navigate: (p: Page) => void
@@ -48,21 +49,21 @@ export default function Booking({ navigate }: Props) {
   }, [])
 
   const errors: Record<number, Record<string, string>> = {
-    1: { service: service ? '' : 'Choose the service you need.' },
+    1: { service: service ? '' : t('Choose the service you need.') },
     2: {
-      pickup: pickup.trim() ? '' : 'Where should the chauffeur collect you?',
-      destination: destination.trim() ? '' : 'Where are you going?',
+      pickup: pickup.trim() ? '' : t('Where should the chauffeur collect you?'),
+      destination: destination.trim() ? '' : t('Where are you going?'),
     },
     3: {
-      date: !date ? 'Choose the date of your trip.' : date < today ? 'That date has passed. Choose today or later.' : '',
-      time: time ? '' : 'Choose a pickup time.',
+      date: !date ? t('Choose the date of your trip.') : date < today ? t('That date has passed. Choose today or later.') : '',
+      time: time ? '' : t('Choose a pickup time.'),
     },
-    4: { vehicle: vehicle ? '' : 'Choose a vehicle class.' },
+    4: { vehicle: vehicle ? '' : t('Choose a vehicle class.') },
     5: {
-      firstName: firstName.trim() ? '' : 'Enter your first name.',
-      lastName: lastName.trim() ? '' : 'Enter your last name.',
-      email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()) ? '' : 'Enter a valid email address.',
-      phone: phone.trim() === '' || phone.replace(/\D/g, '').length >= 7 ? '' : 'Enter a reachable phone number.',
+      firstName: firstName.trim() ? '' : t('Enter your first name.'),
+      lastName: lastName.trim() ? '' : t('Enter your last name.'),
+      email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()) ? '' : t('Enter a valid email address.'),
+      phone: phone.trim() === '' || phone.replace(/\D/g, '').length >= 7 ? '' : t('Enter a reachable phone number.'),
     },
   }
 
@@ -88,16 +89,22 @@ export default function Booking({ navigate }: Props) {
     if ([1, 2, 3, 4, 5].every((n) => stepValid(n as Step))) navigate('confirmation')
   }
 
-  const serviceLabel = serviceOptions.find((s) => s.id === service)?.label ?? ''
-  const vehicleLabel = vehicleOptions.find((v) => v.id === vehicle)?.label ?? ''
+  const serviceLabel = t(serviceOptions.find((s) => s.id === service)?.label ?? '')
+  const vehicleLabel = t(vehicleOptions.find((v) => v.id === vehicle)?.label ?? '')
 
   const summary: [string, string][] = [
-    ['Service', serviceLabel],
-    ['Pickup', pickup.trim()],
-    ['Destination', destination.trim()],
-    ['Date and time', date && time ? `${date} at ${time}` : ''],
-    ['Travellers', `${passengers} passenger${passengers === '1' ? '' : 's'}, ${luggage} bag${luggage === '1' ? '' : 's'}`],
-    ['Vehicle', vehicleLabel],
+    [t('Service'), serviceLabel],
+    [t('Pickup'), pickup.trim()],
+    [t('Destination'), destination.trim()],
+    [t('Date and time'), date && time ? tf('{date} at {time}', { date, time }) : ''],
+    [
+      t('Travellers'),
+      [
+        tf(passengers === '1' ? '{n} passenger' : '{n} passengers', { n: passengers }),
+        tf(luggage === '1' ? '{n} bag' : '{n} bags', { n: luggage }),
+      ].join(', '),
+    ],
+    [t('Vehicle'), vehicleLabel],
   ]
 
   return (
@@ -105,7 +112,7 @@ export default function Booking({ navigate }: Props) {
       <div style={{ maxWidth: 1180, margin: '0 auto', padding: 'clamp(40px, 6vw, 72px) 20px 80px' }}>
         {/* Header */}
         <Reveal style={{ marginBottom: 34, maxWidth: 680 }}>
-          <p className="label-caps" style={{ color: '#FFFFFF', marginBottom: 12 }}>Reservation</p>
+          <p className="label-caps" style={{ color: '#FFFFFF', marginBottom: 12 }}>{t('Reservation')}</p>
           <h1
             style={{
               fontFamily: 'var(--font-display)',
@@ -116,13 +123,13 @@ export default function Booking({ navigate }: Props) {
               color: '#FFFFFF',
             }}
           >
-            Book your journey{' '}
+            {t('Book your journey')}{' '}
             <span style={{ fontStyle: 'italic', fontWeight: 600, background: 'var(--gold-gradient-h)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
-              in five steps.
+              {t('in five steps.')}
             </span>
           </h1>
           <p style={{ fontSize: 15, lineHeight: 1.75, color: 'rgba(255,255,255,0.62)', margin: 0 }}>
-            It takes about a minute. We confirm the chauffeur, the vehicle and the price before anything is charged.
+            {t('It takes about a minute. We confirm the chauffeur, the vehicle and the price before anything is charged.')}
           </p>
         </Reveal>
 
@@ -132,11 +139,11 @@ export default function Booking({ navigate }: Props) {
             <div style={{ marginBottom: 26 }}>
               <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 12, marginBottom: 12 }}>
                 <p style={{ margin: 0, fontFamily: 'var(--font-body)', fontSize: 13.5, fontWeight: 600, color: '#FFFFFF' }}>
-                  Step {step} of 5
-                  <span style={{ color: 'rgba(255,255,255,0.45)', fontWeight: 500 }}> · {stepLabels[step - 1]}</span>
+                  {tf('Step {n} of 5', { n: step })}
+                  <span style={{ color: 'rgba(255,255,255,0.45)', fontWeight: 500 }}> · {t(stepLabels[step - 1])}</span>
                 </p>
                 <p style={{ margin: 0, fontFamily: 'var(--font-body)', fontSize: 12, color: 'rgba(255,255,255,0.45)' }}>
-                  {Math.round((step / 5) * 100)}% complete
+                  {tf('{n}% complete', { n: Math.round((step / 5) * 100) })}
                 </p>
               </div>
 
@@ -175,7 +182,7 @@ export default function Booking({ navigate }: Props) {
                       }}
                     >
                       <span aria-hidden="true" style={{ fontSize: 11 }}>{done ? '✓' : n}</span>
-                      {label}
+                      {t(label)}
                     </button>
                   )
                 })}
@@ -195,10 +202,10 @@ export default function Booking({ navigate }: Props) {
               }}
             >
               {step === 1 && (
-                <StepShell title="What do you need?" lead="Pick the service closest to your trip. You can tell us more at the end.">
-                  <div role="radiogroup" aria-label="Service" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 12 }}>
+                <StepShell title={t('What do you need?')} lead={t('Pick the service closest to your trip. You can tell us more at the end.')}>
+                  <div role="radiogroup" aria-label={t('Service')} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 12 }}>
                     {serviceOptions.map((s) => (
-                      <ChoiceCard key={s.id} selected={service === s.id} onSelect={() => setService(s.id)} title={s.label} subtitle={s.desc} />
+                      <ChoiceCard key={s.id} selected={service === s.id} onSelect={() => setService(s.id)} title={t(s.label)} subtitle={t(s.desc)} />
                     ))}
                   </div>
                   {showError(1, 'service') && <p className="field-error" style={{ marginTop: 14 }}>{errors[1].service}</p>}
@@ -206,12 +213,12 @@ export default function Booking({ navigate }: Props) {
               )}
 
               {step === 2 && (
-                <StepShell title="Where are you going?" lead="A hotel name, a landmark or a full address all work.">
+                <StepShell title={t('Where are you going?')} lead={t('A hotel name, a landmark or a full address all work.')}>
                   <div style={{ display: 'grid', gap: 18 }}>
-                    <Field id="bk-pickup" label="Pickup location" value={pickup} error={showError(2, 'pickup')} hint="For arrivals, Bole International Airport is the usual pickup.">
+                    <Field id="bk-pickup" label={t('Pickup location')} value={pickup} error={showError(2, 'pickup')} hint={t('For arrivals, Bole International Airport is the usual pickup.')}>
                       <input id="bk-pickup" value={pickup} onChange={(e) => setPickup(e.target.value)} placeholder=" " autoComplete="off" />
                     </Field>
-                    <Field id="bk-destination" label="Destination" value={destination} error={showError(2, 'destination')}>
+                    <Field id="bk-destination" label={t('Destination')} value={destination} error={showError(2, 'destination')}>
                       <input id="bk-destination" value={destination} onChange={(e) => setDestination(e.target.value)} placeholder=" " autoComplete="off" />
                     </Field>
                   </div>
@@ -219,20 +226,20 @@ export default function Booking({ navigate }: Props) {
               )}
 
               {step === 3 && (
-                <StepShell title="When shall we collect you?" lead="Give us the local time in Addis Ababa.">
+                <StepShell title={t('When shall we collect you?')} lead={t('Give us the local time in Addis Ababa.')}>
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))', gap: 18 }}>
-                    <Field id="bk-date" label="Date" value={date} error={showError(3, 'date')}>
+                    <Field id="bk-date" label={t('Date')} value={date} error={showError(3, 'date')}>
                       <input id="bk-date" type="date" min={today} value={date} onChange={(e) => setDate(e.target.value)} placeholder=" " />
                     </Field>
-                    <Field id="bk-time" label="Pickup time" value={time} error={showError(3, 'time')}>
+                    <Field id="bk-time" label={t('Pickup time')} value={time} error={showError(3, 'time')}>
                       <input id="bk-time" type="time" value={time} onChange={(e) => setTime(e.target.value)} placeholder=" " />
                     </Field>
-                    <Field id="bk-passengers" label="Passengers" value={passengers}>
+                    <Field id="bk-passengers" label={t('Passengers')} value={passengers}>
                       <select id="bk-passengers" value={passengers} onChange={(e) => setPassengers(e.target.value)}>
                         {[1, 2, 3, 4, 5, 6, 7].map((n) => <option key={n}>{n}</option>)}
                       </select>
                     </Field>
-                    <Field id="bk-luggage" label="Luggage pieces" value={luggage}>
+                    <Field id="bk-luggage" label={t('Luggage pieces')} value={luggage}>
                       <select id="bk-luggage" value={luggage} onChange={(e) => setLuggage(e.target.value)}>
                         {[0, 1, 2, 3, 4, 5, 6].map((n) => <option key={n}>{n}</option>)}
                       </select>
@@ -242,15 +249,15 @@ export default function Booking({ navigate }: Props) {
               )}
 
               {step === 4 && (
-                <StepShell title="Which vehicle class?" lead="The exact car comes from our partner network, matched to your class.">
-                  <div role="radiogroup" aria-label="Vehicle class" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 12 }}>
+                <StepShell title={t('Which vehicle class?')} lead={t('The exact car comes from our partner network, matched to your class.')}>
+                  <div role="radiogroup" aria-label={t('Vehicle class')} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 12 }}>
                     {vehicleOptions.map((v) => (
                       <ChoiceCard
                         key={v.id}
                         selected={vehicle === v.id}
                         onSelect={() => setVehicle(v.id)}
-                        title={v.label}
-                        subtitle={`${v.capacity} passengers · ${v.note}`}
+                        title={t(v.label)}
+                        subtitle={`${tf('{n} passengers', { n: v.capacity })} · ${t(v.note)}`}
                         glyph={v.img}
                       />
                     ))}
@@ -260,22 +267,22 @@ export default function Booking({ navigate }: Props) {
               )}
 
               {step === 5 && (
-                <StepShell title="Where do we confirm?" lead={`We reply by email, and by WhatsApp if you leave a number. Dispatch answers ${business.hours}.`}>
+                <StepShell title={t('Where do we confirm?')} lead={tf('We reply by email, and by WhatsApp if you leave a number. Dispatch answers {hours}.', { hours: business.hours })}>
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 18 }}>
-                    <Field id="bk-first" label="First name" value={firstName} error={showError(5, 'firstName')}>
+                    <Field id="bk-first" label={t('First name')} value={firstName} error={showError(5, 'firstName')}>
                       <input id="bk-first" value={firstName} onChange={(e) => setFirstName(e.target.value)} placeholder=" " autoComplete="given-name" />
                     </Field>
-                    <Field id="bk-last" label="Last name" value={lastName} error={showError(5, 'lastName')}>
+                    <Field id="bk-last" label={t('Last name')} value={lastName} error={showError(5, 'lastName')}>
                       <input id="bk-last" value={lastName} onChange={(e) => setLastName(e.target.value)} placeholder=" " autoComplete="family-name" />
                     </Field>
-                    <Field id="bk-email" label="Email address" value={email} error={showError(5, 'email')}>
+                    <Field id="bk-email" label={t('Email address')} value={email} error={showError(5, 'email')}>
                       <input id="bk-email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder=" " autoComplete="email" inputMode="email" />
                     </Field>
-                    <Field id="bk-phone" label="Phone or WhatsApp" value={phone} error={showError(5, 'phone')} hint="Optional, but it is the fastest way to reach you.">
+                    <Field id="bk-phone" label={t('Phone or WhatsApp')} value={phone} error={showError(5, 'phone')} hint={t('Optional, but it is the fastest way to reach you.')}>
                       <input id="bk-phone" type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder=" " autoComplete="tel" inputMode="tel" />
                     </Field>
                     <div style={{ gridColumn: '1 / -1' }}>
-                      <Field id="bk-notes" label="Anything we should know?" value={notes}>
+                      <Field id="bk-notes" label={t('Anything we should know?')} value={notes}>
                         <textarea id="bk-notes" rows={3} value={notes} onChange={(e) => setNotes(e.target.value)} placeholder=" " />
                       </Field>
                     </div>
@@ -304,7 +311,7 @@ export default function Booking({ navigate }: Props) {
                     padding: '15px 24px',
                   }}
                 >
-                  ← Back
+                  {t('← Back')}
                 </button>
               )}
 
@@ -328,14 +335,14 @@ export default function Booking({ navigate }: Props) {
                   boxShadow: '0 4px 28px rgba(255,255,255,0.16)',
                 }}
               >
-                {step < 5 ? 'Continue →' : 'Request this booking'}
+                {step < 5 ? t('Continue →') : t('Request this booking')}
               </button>
             </div>
 
             {/* Said once, under the final action, rather than buried in a panel. */}
             {step === 5 && (
               <p style={{ margin: '14px 0 0', fontSize: 12.5, lineHeight: 1.7, color: 'rgba(255,255,255,0.45)' }}>
-                Sending this does not charge anything. Our team confirms the vehicle and the price with you first.
+                {t('Sending this does not charge anything. Our team confirms the vehicle and the price with you first.')}
               </p>
             )}
           </div>
@@ -352,7 +359,7 @@ export default function Booking({ navigate }: Props) {
               padding: '22px 22px 20px',
             }}
           >
-            <p className="label-caps" style={{ marginBottom: 16 }}>Your booking</p>
+            <p className="label-caps" style={{ marginBottom: 16 }}>{t('Your booking')}</p>
             <dl style={{ margin: 0, display: 'grid', gap: 13 }}>
               {summary.map(([key, value]) => (
                 <div key={key}>
@@ -367,13 +374,13 @@ export default function Booking({ navigate }: Props) {
                       overflowWrap: 'anywhere',
                     }}
                   >
-                    {value || 'Not chosen yet'}
+                    {value || t('Not chosen yet')}
                   </dd>
                 </div>
               ))}
             </dl>
             <p style={{ margin: '18px 0 0', paddingTop: 14, borderTop: '1px solid rgba(255,255,255,0.08)', fontSize: 12, lineHeight: 1.65, color: 'rgba(255,255,255,0.45)' }}>
-              Prefer to talk? Call {business.phone}.
+              {tf('Prefer to talk? Call {phone}.', { phone: business.phone })}
             </p>
           </aside>
         </div>

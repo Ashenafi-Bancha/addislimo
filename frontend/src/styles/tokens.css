@@ -9,8 +9,8 @@
  */
 
 :root {
-  --font-display: 'Playfair Display', Georgia, serif;
-  --font-body: 'Manrope', system-ui, sans-serif;
+  --font-display: 'Playfair Display', 'Noto Serif Ethiopic', Georgia, serif;
+  --font-body: 'Manrope', 'Noto Sans Ethiopic', system-ui, sans-serif;
 
   /* Accent system — white/silver */
   --gold:         #FFFFFF;

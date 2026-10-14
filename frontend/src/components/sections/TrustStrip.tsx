@@ -4,6 +4,7 @@ import { cardTopRule, raisedCard } from '@/components/ui/cardStyles'
 import type { Differentiator } from '@/data/services'
 import { useContent } from '@/features/cms'
 import { useTilt } from '@/hooks'
+import { t } from '@/features/i18n'
 
 /**
  * "Why Addis Limo" — the trust section, directly beneath the partner row.
@@ -44,7 +45,7 @@ export default function TrustStrip() {
               lineHeight: 1.25,
             }}
           >
-            Reliable.{' '}
+            {t('Reliable.')}{' '}
             <span
               style={{
                 fontStyle: 'italic',
@@ -55,9 +56,9 @@ export default function TrustStrip() {
                 backgroundClip: 'text',
               }}
             >
-              Refined.
+              {t('Refined.')}
             </span>{' '}
-            Ready.
+            {t('Ready.')}
           </h2>
         </Reveal>
 

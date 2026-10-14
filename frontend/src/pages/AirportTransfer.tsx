@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useContent } from '@/features/cms'
 import type { Page } from '@/app/routes'
 import Reveal from '@/components/ui/Reveal'
+import { t } from '@/features/i18n'
 
 interface Props { navigate: (p: Page) => void }
 
@@ -33,7 +34,7 @@ export default function AirportTransfer({ navigate }: Props) {
           <div style={{ display: 'flex', gap: 3, color: 'rgba(255,255,255,0.80)', fontSize: 12, marginBottom: 16 }}>
             {['★','★','★','★','★'].map((s,i)=><span key={i}>{s}</span>)}
           </div>
-          <p className="label-caps" style={{ color: '#FFFFFF', marginBottom: 16 }}>Bole International Airport</p>
+          <p className="label-caps" style={{ color: '#FFFFFF', marginBottom: 16 }}>{t('Bole International Airport')}</p>
           <h1 style={{
             fontFamily: 'var(--font-display)',
             fontSize: 'clamp(36px, 5vw, 68px)',
@@ -42,9 +43,9 @@ export default function AirportTransfer({ navigate }: Props) {
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text',
-          }}>Arrive in Addis.<br /><em>Travel with Confidence.</em></h1>
+          }}>{t('Arrive in Addis.')}<br /><em>{t('Travel with Confidence.')}</em></h1>
           <p style={{ fontSize: 17, color: 'rgba(255,255,255,0.85)', maxWidth: 540, lineHeight: 1.75 }}>
-            From Bole International Airport to your hotel, residence, office or destination, enjoy a seamless private chauffeur experience.
+            {t('From Bole International Airport to your hotel, residence, office or destination, enjoy a seamless private chauffeur experience.')}
           </p>
         </div>
       </section>
@@ -53,40 +54,40 @@ export default function AirportTransfer({ navigate }: Props) {
       <section style={{ padding: '0 32px', marginTop: -48, position: 'relative', zIndex: 10 }}>
         <div style={{ maxWidth: 900, margin: '0 auto' }}>
           <div className="booking-glass" style={{ padding: '40px 48px' }}>
-            <p className="label-caps" style={{ color: '#FFFFFF', marginBottom: 4 }}>Airport: Bole International Airport</p>
+            <p className="label-caps" style={{ color: '#FFFFFF', marginBottom: 4 }}>{t('Airport: Bole International Airport')}</p>
             <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 600, color: '#FFFFFF', marginBottom: 32 }}>
-              Book Your Airport Transfer
+              {t('Book Your Airport Transfer')}
             </h2>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '0 28px', alignItems: 'end' }}>
               <div>
-                <label className="label-caps" style={{ color: 'rgba(255,255,255,0.85)', display: 'block', marginBottom: 4, fontSize: 10 }}>Flight Number</label>
-                <input className="input-gold" placeholder="e.g. ET 502" value={flightNum} onChange={e => setFlightNum(e.target.value)} />
+                <label className="label-caps" style={{ color: 'rgba(255,255,255,0.85)', display: 'block', marginBottom: 4, fontSize: 10 }}>{t('Flight Number')}</label>
+                <input className="input-gold" placeholder={t('e.g. ET 502')} value={flightNum} onChange={e => setFlightNum(e.target.value)} />
               </div>
               <div>
-                <label className="label-caps" style={{ color: 'rgba(255,255,255,0.85)', display: 'block', marginBottom: 4, fontSize: 10 }}>Arrival Date</label>
+                <label className="label-caps" style={{ color: 'rgba(255,255,255,0.85)', display: 'block', marginBottom: 4, fontSize: 10 }}>{t('Arrival Date')}</label>
                 <input className="input-gold" type="date" value={date} onChange={e => setDate(e.target.value)} style={{ colorScheme: 'dark' }} />
               </div>
               <div>
-                <label className="label-caps" style={{ color: 'rgba(255,255,255,0.85)', display: 'block', marginBottom: 4, fontSize: 10 }}>Arrival Time</label>
+                <label className="label-caps" style={{ color: 'rgba(255,255,255,0.85)', display: 'block', marginBottom: 4, fontSize: 10 }}>{t('Arrival Time')}</label>
                 <input className="input-gold" type="time" value={time} onChange={e => setTime(e.target.value)} style={{ colorScheme: 'dark' }} />
               </div>
               <div>
-                <label className="label-caps" style={{ color: 'rgba(255,255,255,0.85)', display: 'block', marginBottom: 4, fontSize: 10 }}>Destination</label>
-                <input className="input-gold" placeholder="Hotel, address..." value={dest} onChange={e => setDest(e.target.value)} />
+                <label className="label-caps" style={{ color: 'rgba(255,255,255,0.85)', display: 'block', marginBottom: 4, fontSize: 10 }}>{t('Destination')}</label>
+                <input className="input-gold" placeholder={t('Hotel, address...')} value={dest} onChange={e => setDest(e.target.value)} />
               </div>
               <div>
-                <label className="label-caps" style={{ color: 'rgba(255,255,255,0.85)', display: 'block', marginBottom: 4, fontSize: 10 }}>Passengers</label>
+                <label className="label-caps" style={{ color: 'rgba(255,255,255,0.85)', display: 'block', marginBottom: 4, fontSize: 10 }}>{t('Passengers')}</label>
                 <select className="input-gold" value={pax} onChange={e => setPax(e.target.value)}>
                   {[1,2,3,4,5,6,7].map(n => <option key={n}>{n}</option>)}
                 </select>
               </div>
               <div>
-                <label className="label-caps" style={{ color: 'rgba(255,255,255,0.85)', display: 'block', marginBottom: 4, fontSize: 10 }}>Vehicle</label>
+                <label className="label-caps" style={{ color: 'rgba(255,255,255,0.85)', display: 'block', marginBottom: 4, fontSize: 10 }}>{t('Vehicle')}</label>
                 <select className="input-gold" value={veh} onChange={e => setVeh(e.target.value)}>
-                  <option>Executive Sedan</option>
-                  <option>Premium SUV</option>
-                  <option>Luxury SUV</option>
-                  <option>Business Van</option>
+                  <option value="Executive Sedan">{t('Executive Sedan')}</option>
+                  <option value="Premium SUV">{t('Premium SUV')}</option>
+                  <option value="Luxury SUV">{t('Luxury SUV')}</option>
+                  <option value="Business Van">{t('Business Van')}</option>
                 </select>
               </div>
               <div>
@@ -101,7 +102,7 @@ export default function AirportTransfer({ navigate }: Props) {
                     boxShadow: '0 2px 24px rgba(255,255,255,0.10)',
                     transition: 'box-shadow 0.2s, transform 0.15s',
                   }}
-                >Book Transfer</button>
+                >{t('Book Transfer')}</button>
               </div>
             </div>
           </div>
@@ -111,8 +112,8 @@ export default function AirportTransfer({ navigate }: Props) {
       {/* Process steps */}
       <section style={{ padding: '96px 32px', maxWidth: 1100, margin: '0 auto' }}>
         <div style={{ textAlign: 'center', marginBottom: 56 }}>
-          <p className="label-caps" style={{ color: '#FFFFFF', marginBottom: 12 }}>How It Works</p>
-          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 38, fontWeight: 600, color: '#FFFFFF' }}>Four Simple Steps</h2>
+          <p className="label-caps" style={{ color: '#FFFFFF', marginBottom: 12 }}>{t('How It Works')}</p>
+          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 38, fontWeight: 600, color: '#FFFFFF' }}>{t('Four Simple Steps')}</h2>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, marginTop: 16 }}>
             <div style={{ height: 1, width: 56, background: 'linear-gradient(to right, transparent, #FFFFFF)' }} />
             <span style={{ color: '#FFFFFF', fontSize: 10 }}>✦</span>
@@ -140,8 +141,8 @@ export default function AirportTransfer({ navigate }: Props) {
       <section style={{ background: 'var(--surface)', padding: '80px 32px' }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: 56 }}>
-            <p className="label-caps" style={{ color: '#FFFFFF', marginBottom: 12 }}>Service Features</p>
-            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 36, fontWeight: 600, color: '#FFFFFF' }}>Everything Included</h2>
+            <p className="label-caps" style={{ color: '#FFFFFF', marginBottom: 12 }}>{t('Service Features')}</p>
+            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 36, fontWeight: 600, color: '#FFFFFF' }}>{t('Everything Included')}</h2>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, marginTop: 16 }}>
               <div style={{ height: 1, width: 56, background: 'linear-gradient(to right, transparent, #FFFFFF)' }} />
               <span style={{ color: '#FFFFFF', fontSize: 10 }}>✦</span>
@@ -164,10 +165,10 @@ export default function AirportTransfer({ navigate }: Props) {
 
       {/* Where we take you — tabbed destination groups from the client document */}
       <section style={{ padding: '80px 32px', maxWidth: 1100, margin: '0 auto' }}>
-        <p className="label-caps" style={{ color: '#FFFFFF', marginBottom: 16 }}>Popular Destinations</p>
-        <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 32, fontWeight: 600, color: '#FFFFFF', marginBottom: 8 }}>Where We Take You</h2>
+        <p className="label-caps" style={{ color: '#FFFFFF', marginBottom: 16 }}>{t('Popular Destinations')}</p>
+        <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 32, fontWeight: 600, color: '#FFFFFF', marginBottom: 8 }}>{t('Where We Take You')}</h2>
         <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.70)', marginBottom: 32, fontStyle: 'italic' }}>
-          Sample destinations. We serve any address in Addis Ababa.
+          {t('Sample destinations. We serve any address in Addis Ababa.')}
         </p>
 
         {/* Tab row */}
@@ -208,7 +209,7 @@ export default function AirportTransfer({ navigate }: Props) {
           <div style={{
             border: '1px dashed rgba(255,255,255,0.2)', padding: '10px 20px', borderRadius: '50px',
             fontSize: 13, color: 'rgba(255,255,255,0.30)',
-          }}>+ Any Location in Addis</div>
+          }}>{t('+ Any Location in Addis')}</div>
         </div>
       </section>
     </div>

@@ -70,6 +70,10 @@ path is missing, or when the repository contradicts this guide.
   (`useContent`, save/reset/export), `published.json` (committed edits). See
   "Editable content" in `docs/ARCHITECTURE.md`
 - `src/features/booking/` — booking wizard options
+- `src/features/i18n/` — English / Amharic. Wrap new public copy in `t()`
+  (or `tf()` for sentences with values) and add its Amharic to `am.ts`, keyed
+  by the English. `useContent` translates editable content the same way. The
+  admin console stays English
 - `src/features/admin/` — the operations console: seed data, a shared
   in-memory store whose actions mirror future API calls, selectors that compute
   every figure, and `layout/`, `ui/`, `views/`. Every `/admin/*` route renders

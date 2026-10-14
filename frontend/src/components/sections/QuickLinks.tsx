@@ -3,6 +3,7 @@ import type { Page } from '@/app/routes'
 import Reveal from '@/components/ui/Reveal'
 import type { QuickLink } from '@/config/site'
 import { useContent } from '@/features/cms'
+import { t } from '@/features/i18n'
 
 interface QuickLinksProps {
   navigate: (page: Page) => void
@@ -23,7 +24,7 @@ export default function QuickLinks({ navigate }: QuickLinksProps) {
       {/* Heading */}
       <Reveal style={{ marginBottom: 44, display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 24, flexWrap: 'wrap' }}>
         <div>
-          <p className="label-caps" style={{ marginBottom: 14 }}>Quick Links</p>
+          <p className="label-caps" style={{ marginBottom: 14 }}>{t('Quick Links')}</p>
           <h2
             style={{
               fontFamily: 'var(--font-display)',
@@ -34,7 +35,7 @@ export default function QuickLinks({ navigate }: QuickLinksProps) {
               margin: 0,
             }}
           >
-            Know what you need?{' '}
+            {t('Know what you need?')}{' '}
             <span
               style={{
                 fontStyle: 'italic',
@@ -45,7 +46,7 @@ export default function QuickLinks({ navigate }: QuickLinksProps) {
                 backgroundClip: 'text',
               }}
             >
-              Go straight there.
+              {t('Go straight there.')}
             </span>
           </h2>
         </div>

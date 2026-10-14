@@ -1,6 +1,7 @@
 import type { Page } from '@/app/routes'
 import { site } from '@/config/site'
 import { useContent } from '@/features/cms'
+import { t } from '@/features/i18n'
 
 interface FooterProps { navigate: (p: Page) => void }
 
@@ -80,7 +81,7 @@ export default function Footer({ navigate }: FooterProps) {
             },
           ].map(col => (
             <div key={col.heading}>
-              <p className="label-caps" style={{ marginBottom: 20 }}>{col.heading}</p>
+              <p className="label-caps" style={{ marginBottom: 20 }}>{t(col.heading)}</p>
               {col.links.map(l => (
                 <button key={l.label} onClick={() => navigate(l.page)} style={{
                   display: 'block', background: 'none', border: 'none', cursor: 'pointer',
@@ -89,13 +90,13 @@ export default function Footer({ navigate }: FooterProps) {
                 }}
                   onMouseEnter={e => (e.currentTarget.style.color = '#FFFFFF')}
                   onMouseLeave={e => (e.currentTarget.style.color = 'var(--ivory-muted)')}
-                >{l.label}</button>
+                >{t(l.label)}</button>
               ))}
             </div>
           ))}
 
           <div>
-            <p className="label-caps" style={{ marginBottom: 20 }}>Contact</p>
+            <p className="label-caps" style={{ marginBottom: 20 }}>{t('Contact')}</p>
 
             {/* Contact rows with icons */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 28 }}>
@@ -144,15 +145,15 @@ export default function Footer({ navigate }: FooterProps) {
                   </svg>
                 </div>
                 {whatsappHref ? (
-                  <a href={`https://wa.me/${whatsappHref}`} target="_blank" rel="noopener noreferrer" style={{ fontSize: 13, color: '#FFFFFF', textDecoration: 'none' }}>WhatsApp us</a>
+                  <a href={`https://wa.me/${whatsappHref}`} target="_blank" rel="noopener noreferrer" style={{ fontSize: 13, color: '#FFFFFF', textDecoration: 'none' }}>{t('WhatsApp us')}</a>
                 ) : (
-                  <span style={{ fontSize: 13, color: 'var(--ivory-muted)' }}>WhatsApp (coming soon)</span>
+                  <span style={{ fontSize: 13, color: 'var(--ivory-muted)' }}>{t('WhatsApp (coming soon)')}</span>
                 )}
               </div>
             </div>
 
             {/* Social media */}
-            <p style={{ fontFamily: 'var(--font-body)', fontSize: 9, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.30)', marginBottom: 12 }}>Follow us on</p>
+            <p style={{ fontFamily: 'var(--font-body)', fontSize: 9, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.30)', marginBottom: 12 }}>{t('Follow us on')}</p>
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
 
               {/* Instagram */}
@@ -243,7 +244,7 @@ export default function Footer({ navigate }: FooterProps) {
         {/* Bottom bar */}
         <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: 24, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
           <p style={{ fontSize: 11, color: 'var(--ivory-muted)', letterSpacing: '0.04em' }}>
-            &copy; {new Date().getFullYear()} {site.name}. All rights reserved. {site.city}, {site.country}.
+            © {new Date().getFullYear()} {site.name}. {t('All rights reserved.')} {t(site.city)}, {t(site.country)}.
           </p>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
             {[
@@ -261,7 +262,7 @@ export default function Footer({ navigate }: FooterProps) {
                 }}
                   onMouseEnter={e => e.currentTarget.style.color = '#FFFFFF'}
                   onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.30)'}
-                >{item.label}</button>
+                >{t(item.label)}</button>
               </span>
             ))}
           </div>

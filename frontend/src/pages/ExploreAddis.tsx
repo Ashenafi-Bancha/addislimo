@@ -4,6 +4,7 @@ import { useContent } from '@/features/cms'
 import { cardTopRule, raisedCard } from '@/components/ui/cardStyles'
 import type { Page } from '@/app/routes'
 import Reveal from '@/components/ui/Reveal'
+import { t, tf } from '@/features/i18n'
 
 interface Props { navigate: (p: Page) => void }
 
@@ -28,7 +29,7 @@ export default function ExploreAddis({ navigate }: Props) {
           <div style={{ display: 'flex', gap: 3, color: 'rgba(255,255,255,0.80)', fontSize: 12, marginBottom: 16 }}>
             {['★','★','★','★','★'].map((s,i)=><span key={i}>{s}</span>)}
           </div>
-          <p className="label-caps" style={{ color: '#FFFFFF', marginBottom: 16 }}>Addis Ababa · Ethiopia</p>
+          <p className="label-caps" style={{ color: '#FFFFFF', marginBottom: 16 }}>{t('Addis Ababa · Ethiopia')}</p>
           <h1 style={{
             fontFamily: 'var(--font-display)',
             fontSize: 'clamp(36px, 5vw, 68px)',
@@ -37,9 +38,9 @@ export default function ExploreAddis({ navigate }: Props) {
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text',
-          }}>Explore Addis.<br /><em>Experience More.</em></h1>
+          }}>{t('Explore Addis.')}<br /><em>{t('Experience More.')}</em></h1>
           <p style={{ fontSize: 17, color: 'rgba(255,255,255,0.85)', maxWidth: 520, lineHeight: 1.75, marginBottom: 36 }}>
-            Discover the culture, history, food, nature and energy of Ethiopia&apos;s capital with comfortable private transportation.
+            {t('Discover the culture, history, food, nature and energy of Ethiopia\'s capital with comfortable private transportation.')}
           </p>
           <button
             onClick={() => navigate('booking')}
@@ -52,7 +53,7 @@ export default function ExploreAddis({ navigate }: Props) {
               boxShadow: '0 2px 24px rgba(255,255,255,0.10)',
               transition: 'box-shadow 0.2s, transform 0.15s',
             }}
-          >Plan My Tour</button>
+          >{t('Plan My Tour')}</button>
         </div>
       </section>
 
@@ -74,7 +75,7 @@ export default function ExploreAddis({ navigate }: Props) {
                   whiteSpace: 'nowrap',
                   transition: 'color 0.2s, border-color 0.2s',
                 }}
-              >{c.label}</button>
+              >{t(c.label)}</button>
             ))}
           </div>
         </div>
@@ -83,7 +84,7 @@ export default function ExploreAddis({ navigate }: Props) {
       {/* Destinations grid */}
       <section style={{ padding: '56px 32px', maxWidth: 1280, margin: '0 auto' }}>
         <p style={{ color: 'rgba(255,255,255,0.70)', fontSize: 13, marginBottom: 32 }}>
-          {filtered.length} experience{filtered.length !== 1 ? 's' : ''} · Private chauffeur available for all destinations
+          {tf(filtered.length === 1 ? '{n} experience' : '{n} experiences', { n: filtered.length })} {t('· Private chauffeur available for all destinations')}
         </p>
         <div className="destination-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 18 }}>
           {filtered.map((d, i) => {
@@ -133,7 +134,7 @@ export default function ExploreAddis({ navigate }: Props) {
                     letterSpacing: '0.18em', textTransform: 'uppercase',
                     padding: '10px 20px', transition: 'background 0.2s',
                   }}
-                >Book a Ride</button>
+                >{t('Book a Ride')}</button>
               </div>
             </div>
             </Reveal>
@@ -148,19 +149,19 @@ export default function ExploreAddis({ navigate }: Props) {
           <div style={{ display: 'flex', gap: 3, color: 'rgba(255,255,255,0.80)', fontSize: 12, marginBottom: 16, justifyContent: 'center' }}>
             {['★','★','★','★','★'].map((s,i)=><span key={i}>{s}</span>)}
           </div>
-          <p className="label-caps" style={{ color: '#FFFFFF', marginBottom: 16 }}>Custom Itinerary</p>
+          <p className="label-caps" style={{ color: '#FFFFFF', marginBottom: 16 }}>{t('Custom Itinerary')}</p>
           <h2 style={{
             fontFamily: 'var(--font-display)',
             fontSize: 'clamp(28px, 4vw, 44px)',
             fontWeight: 600, color: '#FFFFFF', lineHeight: 1.15, marginBottom: 8,
-          }}>Create Your Addis Experience</h2>
+          }}>{t('Create Your Addis Experience')}</h2>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, marginBottom: 20 }}>
             <div style={{ height: 1, width: 56, background: 'linear-gradient(to right, transparent, #FFFFFF)' }} />
             <span style={{ color: '#FFFFFF', fontSize: 10 }}>✦</span>
             <div style={{ height: 1, width: 56, background: 'linear-gradient(to left, transparent, #FFFFFF)' }} />
           </div>
           <p style={{ fontSize: 15, color: 'rgba(255,255,255,0.75)', lineHeight: 1.75, marginBottom: 36 }}>
-            Choose your museums, restaurants, parks and cultural experiences. We coordinate the chauffeur and route. You simply explore.
+            {t('Choose your museums, restaurants, parks and cultural experiences. We coordinate the chauffeur and route. You simply explore.')}
           </p>
           <button
             onClick={() => navigate('booking')}
@@ -173,7 +174,7 @@ export default function ExploreAddis({ navigate }: Props) {
               boxShadow: '0 2px 24px rgba(255,255,255,0.10)',
               transition: 'box-shadow 0.2s, transform 0.15s',
             }}
-          >Request Custom Experience</button>
+          >{t('Request Custom Experience')}</button>
         </div>
       </section>
     </div>
