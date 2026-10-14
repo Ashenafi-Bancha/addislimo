@@ -10,6 +10,7 @@ import Corporate from '@/pages/Corporate'
 import ExploreAddis from '@/pages/ExploreAddis'
 import Home from '@/pages/Home'
 import Services from '@/pages/Services'
+import { useLang } from '@/features/i18n'
 import { useRouter } from './router'
 import { routes, type Page } from './routes'
 
@@ -44,6 +45,9 @@ const pageComponents: Record<Page, PageComponent> = {
 
 export default function App() {
   const { page, navigate } = useRouter()
+  // Subscribing here re-renders the whole tree when the language changes, so
+  // every `t()` call below picks it up (see `features/i18n/lang.ts`).
+  useLang()
   const Page = pageComponents[page]
 
   return (

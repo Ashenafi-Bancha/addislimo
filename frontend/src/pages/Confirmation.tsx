@@ -1,4 +1,5 @@
 import type { Page } from '@/app/routes'
+import { t } from '@/features/i18n'
 interface Props { navigate: (p: Page) => void }
 
 export default function Confirmation({ navigate }: Props) {
@@ -20,7 +21,7 @@ export default function Confirmation({ navigate }: Props) {
         <div style={{ display: 'flex', gap: 3, color: 'rgba(255,255,255,0.80)', fontSize: 14, marginBottom: 16, justifyContent: 'center' }}>
           {['★','★','★','★','★'].map((s,i)=><span key={i}>{s}</span>)}
         </div>
-        <p className="label-caps" style={{ color: '#FFFFFF', marginBottom: 16 }}>Booking Submitted</p>
+        <p className="label-caps" style={{ color: '#FFFFFF', marginBottom: 16 }}>{t('Booking Submitted')}</p>
         <h1 style={{
           fontFamily: 'var(--font-display)',
           fontSize: 'clamp(32px, 5vw, 52px)',
@@ -29,14 +30,14 @@ export default function Confirmation({ navigate }: Props) {
           WebkitBackgroundClip: 'text',
           WebkitTextFillColor: 'transparent',
           backgroundClip: 'text',
-        }}>Your Journey Is<br /><em>Confirmed.</em></h1>
+        }}>{t('Your Journey Is')}<br /><em>{t('Confirmed.')}</em></h1>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, marginBottom: 20 }}>
           <div style={{ height: 1, width: 56, background: 'linear-gradient(to right, transparent, #FFFFFF)' }} />
           <span style={{ color: '#FFFFFF', fontSize: 10 }}>✦</span>
           <div style={{ height: 1, width: 56, background: 'linear-gradient(to left, transparent, #FFFFFF)' }} />
         </div>
         <p style={{ fontSize: 16, color: 'rgba(255,255,255,0.75)', lineHeight: 1.75, marginBottom: 48 }}>
-          Thank you for choosing Addis Limo. Your booking request has been received and our team will confirm your chauffeur and vehicle shortly.
+          {t('Thank you for choosing Addis Limo. Your booking request has been received and our team will confirm your chauffeur and vehicle shortly.')}
         </p>
 
         {/* Booking details */}
@@ -47,7 +48,7 @@ export default function Confirmation({ navigate }: Props) {
           position: 'relative', overflow: 'hidden',
         }}>
           <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'var(--gold-gradient)' }} />
-          <p className="label-caps" style={{ color: '#FFFFFF', marginBottom: 20, fontSize: 9 }}>Booking Reference</p>
+          <p className="label-caps" style={{ color: '#FFFFFF', marginBottom: 20, fontSize: 9 }}>{t('Booking Reference')}</p>
           <div style={{
             fontFamily: 'var(--font-display)',
             fontSize: 32, fontWeight: 700, color: '#FFFFFF',
@@ -56,10 +57,10 @@ export default function Confirmation({ navigate }: Props) {
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px 32px', fontSize: 14 }}>
             {[
-              ['Status', 'Pending Confirmation'],
-              ['Driver Status', 'Being Assigned'],
-              ['Expected Response', 'Within 2 hours'],
-              ['Contact Method', 'Email / WhatsApp'],
+              [t('Status'), t('Pending Confirmation')],
+              [t('Driver Status'), t('Being Assigned')],
+              [t('Expected Response'), t('Within 2 hours')],
+              [t('Contact Method'), t('Email / WhatsApp')],
             ].map(([k, v]) => (
               <div key={k}>
                 <p className="label-caps" style={{ color: 'rgba(255,255,255,0.5)', marginBottom: 4, fontSize: 9 }}>{k}</p>
@@ -81,7 +82,7 @@ export default function Confirmation({ navigate }: Props) {
             animation: 'pulse 2s infinite',
           }} />
           <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.85)' }}>
-            Our team is reviewing your booking and will contact you shortly.
+            {t('Our team is reviewing your booking and will contact you shortly.')}
           </p>
         </div>
 
@@ -97,7 +98,7 @@ export default function Confirmation({ navigate }: Props) {
               boxShadow: '0 2px 24px rgba(255,255,255,0.10)',
               transition: 'box-shadow 0.2s, transform 0.15s',
             }}
-          >Return Home</button>
+          >{t('Return Home')}</button>
           <button
             style={{
               background: 'transparent', color: '#FFFFFF',
@@ -106,7 +107,7 @@ export default function Confirmation({ navigate }: Props) {
               letterSpacing: '0.18em', textTransform: 'uppercase',
               padding: '14px 32px', transition: 'background 0.2s',
             }}
-          >Contact Addis Limo</button>
+          >{t('Contact Addis Limo')}</button>
         </div>
 
         <style>{`

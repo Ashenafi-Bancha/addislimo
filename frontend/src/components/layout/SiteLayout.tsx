@@ -42,6 +42,9 @@ export default function SiteLayout({ chrome, page, navigate, children }: SiteLay
         key={isAdminConsolePage(page) ? 'admin-console' : page}
         className="page-enter"
         style={{ position: 'relative' }}
+        // The admin console and sign-in stay in English whatever the visitor
+        // picked, so they are marked as English for screen readers and CSS.
+        lang={withChrome ? undefined : 'en'}
       >
         {/* Admin pages carry their own "Back to Site" link in the sidebar. */}
         {withChrome && page !== 'home' && <BackToHome navigate={navigate} />}

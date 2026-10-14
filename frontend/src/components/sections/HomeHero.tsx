@@ -2,6 +2,7 @@ import type { CSSProperties } from 'react'
 import type { Page } from '@/app/routes'
 import { useContent } from '@/features/cms'
 import { useMediaQuery, useParallax } from '@/hooks'
+import { t } from '@/features/i18n'
 
 interface HomeHeroProps {
   navigate: (page: Page) => void
@@ -149,7 +150,7 @@ export default function HomeHero({ navigate }: HomeHeroProps) {
           boxShadow: '0 2px 24px rgba(255,255,255,0.10)',
         }}
       >
-        Book Your Ride
+        {t('Book Your Ride')}
       </button>
       <button
         onClick={() => navigate('explore')}
@@ -161,7 +162,7 @@ export default function HomeHero({ navigate }: HomeHeroProps) {
           border: '1.5px solid #FFFFFF',
         }}
       >
-        Explore Addis
+        {t('Explore Addis')}
       </button>
       {/* Three stacked full-width buttons crowd a phone, and "Get Quote" goes
           to the same place as "Book Your Ride", so it is desktop only. */}
@@ -176,7 +177,7 @@ export default function HomeHero({ navigate }: HomeHeroProps) {
             border: '1.5px solid rgba(255,255,255,0.42)',
           }}
         >
-          Get Quote
+          {t('Get Quote')}
         </button>
       )}
     </div>
@@ -197,7 +198,7 @@ export default function HomeHero({ navigate }: HomeHeroProps) {
       }}
     >
       <span style={{ fontFamily: 'var(--font-body)', fontSize: 9, fontWeight: 700, letterSpacing: '0.28em', textTransform: 'uppercase' }}>
-        Scroll
+        {t('Scroll')}
       </span>
       <div style={{ width: 1.5, height: 36, background: 'linear-gradient(to bottom, #FFFFFF, transparent)', animation: 'scrollLine 1.8s ease infinite' }} />
     </div>
@@ -212,7 +213,7 @@ export default function HomeHero({ navigate }: HomeHeroProps) {
         <div style={{ position: 'relative', width: '100%', aspectRatio: '16 / 9', marginTop: 72, flexShrink: 0 }}>
           <img
             src={hero.image}
-            alt="The Addis Ababa skyline"
+            alt={t('The Addis Ababa skyline')}
             fetchPriority="high"
             className="kenburns"
             style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}

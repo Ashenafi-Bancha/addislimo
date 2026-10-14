@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import type { Page } from '@/app/routes'
+import { t } from '@/features/i18n'
 
 interface BackToHomeProps {
   navigate: (page: Page) => void
@@ -21,7 +22,7 @@ export default function BackToHome({ navigate }: BackToHomeProps) {
       onClick={() => navigate('home')}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      aria-label="Back to home page"
+      aria-label={t('Back to home page')}
       style={{
         position: 'absolute',
         top: 92,
@@ -61,7 +62,7 @@ export default function BackToHome({ navigate }: BackToHomeProps) {
       >
         ←
       </span>
-      Back to Home
+      {t('Back to Home')}
     </button>
   )
 }

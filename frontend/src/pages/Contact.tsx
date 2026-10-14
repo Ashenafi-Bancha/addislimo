@@ -6,6 +6,7 @@ import { cardTopRule, raisedCard } from '@/components/ui/cardStyles'
 import { site } from '@/config/site'
 import { useContent } from '@/features/cms'
 import { useTilt } from '@/hooks/useTilt'
+import { t, tf } from '@/features/i18n'
 
 interface Props {
   navigate: (p: Page) => void
@@ -30,7 +31,7 @@ export default function Contact({ navigate }: Props) {
       <section className="halo" style={{ position: 'relative', padding: '92px 32px 64px', textAlign: 'center', overflow: 'hidden' }}>
         <div style={{ position: 'relative', maxWidth: 760, margin: '0 auto' }}>
           <Reveal>
-            <p className="label-caps" style={{ color: '#FFFFFF', marginBottom: 14 }}>Talk to us</p>
+            <p className="label-caps" style={{ color: '#FFFFFF', marginBottom: 14 }}>{t('Talk to us')}</p>
           </Reveal>
           <Reveal index={1}>
             <h1
@@ -43,15 +44,15 @@ export default function Contact({ navigate }: Props) {
                 color: '#FFFFFF',
               }}
             >
-              Every journey starts{' '}
+              {t('Every journey starts')}{' '}
               <span style={{ fontStyle: 'italic', fontWeight: 600, background: 'var(--gold-gradient-h)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
-                with a conversation.
+                {t('with a conversation.')}
               </span>
             </h1>
           </Reveal>
           <Reveal index={2}>
             <p style={{ fontSize: 16, lineHeight: 1.8, color: 'rgba(255,255,255,0.72)', margin: 0 }}>
-              Reserve a chauffeur, plan a delegation, or ask anything about our service in {site.city}. Our dispatch desk answers {business.hours}.
+              {tf('Reserve a chauffeur, plan a delegation, or ask anything about our service in {city}. Our dispatch desk answers {hours}.', { city: t(site.city), hours: business.hours })}
             </p>
           </Reveal>
         </div>
@@ -63,28 +64,28 @@ export default function Contact({ navigate }: Props) {
           <ContactCard
             index={0}
             icon="☎"
-            label="Call dispatch"
+            label={t('Call dispatch')}
             value={business.phone}
             href={phoneHref ? `tel:${phoneHref}` : undefined}
-            note={phoneHref ? 'Tap to call' : 'Number coming soon'}
+            note={phoneHref ? t('Tap to call') : t('Number coming soon')}
           />
           <ContactCard
             index={1}
             icon="✉"
-            label="Email"
+            label={t('Email')}
             value={business.email}
             href={`mailto:${business.email}`}
-            note="We reply the same day"
+            note={t('We reply the same day')}
           />
           <ContactCard
             index={2}
             icon="✆"
-            label="WhatsApp"
-            value={whatsapp ? `+${whatsapp}` : 'Coming soon'}
+            label={t('WhatsApp')}
+            value={whatsapp ? `+${whatsapp}` : t('Coming soon')}
             href={whatsapp ? `https://wa.me/${whatsapp}` : undefined}
-            note={whatsapp ? 'Message us anytime' : 'Being set up'}
+            note={whatsapp ? t('Message us anytime') : t('Being set up')}
           />
-          <ContactCard index={3} icon="◉" label="Where we operate" value={business.address} note={`Dispatch ${business.hours}`} />
+          <ContactCard index={3} icon="◉" label={t('Where we operate')} value={business.address} note={tf('Dispatch {hours}', { hours: business.hours })} />
         </div>
       </section>
 
@@ -92,15 +93,15 @@ export default function Contact({ navigate }: Props) {
       <section style={{ padding: '64px 32px 96px', maxWidth: 1180, margin: '0 auto' }}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 36, alignItems: 'start' }}>
           <Reveal variant="left">
-            <p className="label-caps" style={{ marginBottom: 12 }}>Send a message</p>
+            <p className="label-caps" style={{ marginBottom: 12 }}>{t('Send a message')}</p>
             <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(26px, 3.2vw, 40px)', fontWeight: 700, color: '#FFFFFF', lineHeight: 1.15, margin: '0 0 16px' }}>
-              Tell us about your trip.
+              {t('Tell us about your trip.')}
             </h2>
             <p style={{ fontSize: 14.5, lineHeight: 1.8, color: 'rgba(255,255,255,0.66)', margin: '0 0 28px' }}>
-              Share the date, the pickup point and how many travellers. We confirm the vehicle, the chauffeur and the price before anything is booked.
+              {t('Share the date, the pickup point and how many travellers. We confirm the vehicle, the chauffeur and the price before anything is booked.')}
             </p>
             <button onClick={() => navigate('booking')} className="shine press" style={{ ...pillGhost, padding: '14px 30px' }}>
-              Or book in five steps
+              {t('Or book in five steps')}
             </button>
           </Reveal>
 
@@ -174,9 +175,9 @@ function MessageForm({ email }: { email: string }) {
   const [tried, setTried] = useState(false)
 
   const errors = {
-    name: name.trim() ? '' : 'Please enter your name.',
-    from: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(from.trim()) ? '' : 'Please enter a valid email address.',
-    message: message.trim().length > 4 ? '' : 'Please tell us what you need.',
+    name: name.trim() ? '' : t('Please enter your name.'),
+    from: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(from.trim()) ? '' : t('Please enter a valid email address.'),
+    message: message.trim().length > 4 ? '' : t('Please tell us what you need.'),
   }
   const valid = Object.values(errors).every((e) => !e)
 
@@ -199,31 +200,31 @@ function MessageForm({ email }: { email: string }) {
   return (
     <form onSubmit={submit} noValidate style={{ ...raisedCard(false), padding: 'clamp(22px, 4vw, 34px)' }}>
       <div style={{ display: 'grid', gap: 16 }}>
-        <FormField id="ct-name" label="Your name" error={tried ? errors.name : ''}>
+        <FormField id="ct-name" label={t('Your name')} error={tried ? errors.name : ''}>
           <input id="ct-name" value={name} onChange={(e) => setName(e.target.value)} autoComplete="name" style={fieldStyle} />
         </FormField>
-        <FormField id="ct-email" label="Email" error={tried ? errors.from : ''}>
+        <FormField id="ct-email" label={t('Email')} error={tried ? errors.from : ''}>
           <input id="ct-email" type="email" value={from} onChange={(e) => setFrom(e.target.value)} autoComplete="email" style={fieldStyle} />
         </FormField>
-        <FormField id="ct-phone" label="Phone (optional)" error="">
+        <FormField id="ct-phone" label={t('Phone (optional)')} error="">
           <input id="ct-phone" type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} autoComplete="tel" style={fieldStyle} />
         </FormField>
-        <FormField id="ct-message" label="How can we help?" error={tried ? errors.message : ''}>
+        <FormField id="ct-message" label={t('How can we help?')} error={tried ? errors.message : ''}>
           <textarea
             id="ct-message"
             rows={5}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            placeholder="Airport pickup on 12 June, two travellers, arriving from Nairobi."
+            placeholder={t('Airport pickup on 12 June, two travellers, arriving from Nairobi.')}
             style={{ ...fieldStyle, height: 'auto', padding: '12px 14px', lineHeight: 1.6, resize: 'vertical' }}
           />
         </FormField>
 
         <button type="submit" className="shine shine-dark press" style={{ ...pillGold, width: '100%', padding: '16px 28px' }}>
-          Write this message
+          {t('Write this message')}
         </button>
         <p style={{ margin: 0, fontSize: 12, lineHeight: 1.6, color: 'rgba(255,255,255,0.45)' }}>
-          This opens your email app with the message ready, so you can see exactly what is sent. Prefer to talk? Call the dispatch desk above.
+          {t('This opens your email app with the message ready, so you can see exactly what is sent. Prefer to talk? Call the dispatch desk above.')}
         </p>
       </div>
     </form>

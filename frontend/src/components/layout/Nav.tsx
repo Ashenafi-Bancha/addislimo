@@ -2,6 +2,8 @@ import { useState } from 'react'
 import type { Page } from '@/app/routes'
 import { mainNav as links, primaryCta, site } from '@/config/site'
 import { useScrolled } from '@/hooks'
+import LanguageSwitcher from '@/components/ui/LanguageSwitcher'
+import { t } from '@/features/i18n'
 
 interface NavProps { current: Page; navigate: (p: Page) => void }
 
@@ -51,7 +53,7 @@ export default function Nav({ current, navigate }: NavProps) {
                 lineHeight: 1,
               }}>{site.name.toUpperCase()}</span>
               <span className="nav-brand-tagline" style={{ fontFamily: 'var(--font-body)', fontSize: 8, fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.78)' }}>
-                {site.tagline}
+                {t(site.tagline)}
               </span>
             </div>
           </button>
@@ -69,12 +71,13 @@ export default function Nav({ current, navigate }: NavProps) {
               }}
                 onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = '#FFFFFF'; (e.currentTarget as HTMLElement).style.opacity = '1' }}
                 onMouseLeave={e => { if (current !== l.page) { (e.currentTarget as HTMLElement).style.color = '#FFFFFF'; (e.currentTarget as HTMLElement).style.opacity = '0.82' } }}
-              >{l.label}</button>
+              >{t(l.label)}</button>
             ))}
           </nav>
 
-          {/* Right: phone + CTA */}
+          {/* Right: language + CTA */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }} className="hide-mobile">
+            <LanguageSwitcher compact />
             <button
               onClick={() => navigate(primaryCta.page)}
               style={{
@@ -91,14 +94,16 @@ export default function Nav({ current, navigate }: NavProps) {
               onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 4px 32px rgba(255,255,255,0.18)'; e.currentTarget.style.transform = 'translateY(-1px)' }}
               onMouseLeave={e => { e.currentTarget.style.boxShadow = '0 2px 20px rgba(255,255,255,0.12)'; e.currentTarget.style.transform = 'translateY(0)' }}
             >
-              {primaryCta.label}
+              {t(primaryCta.label)}
             </button>
           </div>
 
           {/* Mobile: a compact booking CTA sits beside the hamburger, so the
               primary action is reachable without opening the menu. */}
           <div className="show-mobile nav-mobile-actions" style={{ display: 'none', alignItems: 'center', gap: 14 }}>
+            <LanguageSwitcher compact />
             <button
+              className="nav-mobile-cta"
               onClick={() => navigate(primaryCta.page)}
               style={{
                 background: 'var(--gold-gradient)',
@@ -111,9 +116,9 @@ export default function Nav({ current, navigate }: NavProps) {
                 boxShadow: '0 2px 16px rgba(255,255,255,0.14)',
                 whiteSpace: 'nowrap',
               }}
-            >{primaryCta.label}</button>
+            >{t(primaryCta.label)}</button>
 
-            <button onClick={() => setOpen(!open)} style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', flexDirection: 'column', gap: 5, padding: 4 }} aria-label="Menu" aria-expanded={open}>
+            <button onClick={() => setOpen(!open)} style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', flexDirection: 'column', gap: 5, padding: 4 }} aria-label={t('Menu')} aria-expanded={open}>
               {[0,1,2].map(i => <span key={i} style={{ display: 'block', width: 22, height: 2, background: '#FFFFFF' }} />)}
             </button>
           </div>
@@ -131,7 +136,7 @@ export default function Nav({ current, navigate }: NavProps) {
               color: current === l.page ? '#FFFFFF' : '#FFFFFF',
               padding: '12px 0', letterSpacing: '0.08em', textTransform: 'uppercase',
               borderBottom: '1px solid rgba(255,255,255,0.07)',
-            }}>{l.label}</button>
+            }}>{t(l.label)}</button>
           ))}
           <button onClick={() => { navigate(primaryCta.page); setOpen(false) }} style={{
             marginTop: 18, width: '100%', borderRadius: '50px',
@@ -139,13 +144,13 @@ export default function Nav({ current, navigate }: NavProps) {
             border: 'none', cursor: 'pointer',
             fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 800,
             letterSpacing: '0.16em', textTransform: 'uppercase', padding: '14px 0',
-          }}>{primaryCta.label}</button>
+          }}>{t(primaryCta.label)}</button>
         </div>
       )}
 
       <style>{`
-        @media(max-width:980px){.hide-mobile{display:none!important}.show-mobile{display:flex!important}}
-        @media(min-width:981px){.show-mobile{display:none!important}}
+        @media(max-width:1240px){.hide-mobile{display:none!important}.show-mobile{display:flex!important}}
+        @media(min-width:1241px){.show-mobile{display:none!important}}
       `}</style>
     </header>
   )

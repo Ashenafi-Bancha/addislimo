@@ -10,6 +10,7 @@ import HomeHero from '@/components/sections/HomeHero'
 import TrustStrip from '@/components/sections/TrustStrip'
 import QuickLinks from '@/components/sections/QuickLinks'
 import type { Page } from '@/app/routes'
+import { t } from '@/features/i18n'
 
 interface HomeProps { navigate: (p: Page) => void }
 
@@ -143,7 +144,7 @@ export default function Home({ navigate }: HomeProps) {
               className="shine press"
               onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)' }}
               onMouseLeave={e => { e.currentTarget.style.background = 'transparent' }}
-            >Explore Addis</button>
+            >{t('Explore Addis')}</button>
           </Reveal>
         </div>
       </section>
@@ -159,7 +160,7 @@ export default function Home({ navigate }: HomeProps) {
           <button style={pillOutline} className="shine press" onClick={() => navigate('booking')}
             onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)' }}
             onMouseLeave={e => { e.currentTarget.style.background = 'transparent' }}
-          >Request a Vehicle</button>
+          >{t('Request a Vehicle')}</button>
         </Reveal>
 
         <div className="fleet-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 18 }}>
@@ -175,7 +176,7 @@ export default function Home({ navigate }: HomeProps) {
         <div style={{ maxWidth: 1200, margin: '0 auto' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2 }}>
             <div style={{ background: 'var(--gold-gradient)', padding: '60px 52px', position: 'relative' }}>
-              <p style={{ fontFamily: 'var(--font-body)', fontSize: 9, fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(12,11,9,0.5)', marginBottom: 14 }}>For Passengers</p>
+              <p style={{ fontFamily: 'var(--font-body)', fontSize: 9, fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(12,11,9,0.5)', marginBottom: 14 }}>{t('For Passengers')}</p>
               <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(24px,3vw,36px)', fontWeight: 700, color: '#0C0B09', lineHeight: 1.15, marginBottom: 16 }}>
                 {copy.passengerTitle.split('\n').map((line, i) => (
                   <span key={i}>{i > 0 && <br />}{line}</span>
@@ -190,17 +191,17 @@ export default function Home({ navigate }: HomeProps) {
                 letterSpacing: '0.18em', textTransform: 'uppercase',
                 padding: '13px 30px', borderRadius: '50px',
                 transition: 'background 0.2s',
-              }}>Book a Ride</button>
+              }}>{t('Book a Ride')}</button>
             </div>
 
             <div style={{ background: '#17150F', padding: '60px 52px', border: '1px solid rgba(255,255,255,0.15)', position: 'relative' }}>
               <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'var(--gold-gradient)' }} />
-              <p className="label-caps" style={{ marginBottom: 14 }}>For Partners</p>
+              <p className="label-caps" style={{ marginBottom: 14 }}>{t('For Partners')}</p>
               <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(24px,3vw,36px)', fontWeight: 700, color: '#FFFFFF', lineHeight: 1.15, marginBottom: 6 }}>
-                Grow With
+                {t('Grow With')}
               </h3>
               <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(22px,2.8vw,34px)', fontWeight: 600, fontStyle: 'italic', background: 'var(--gold-gradient-h)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', lineHeight: 1.15, marginBottom: 16 }}>
-                Addis Limo.
+                {t('Addis Limo.')}
               </h3>
               <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.72)', lineHeight: 1.75, marginBottom: 36 }}>
                 {copy.partnerText}
@@ -208,7 +209,7 @@ export default function Home({ navigate }: HomeProps) {
               <button onClick={() => navigate('about')} style={pillOutline}
                 onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)' }}
                 onMouseLeave={e => { e.currentTarget.style.background = 'transparent' }}
-              >Become a Partner</button>
+              >{t('Become a Partner')}</button>
             </div>
           </div>
         </div>
@@ -268,7 +269,7 @@ function ServiceCard({ service, index, onOpen }: { service: HomeService; index: 
               transition: 'opacity 0.3s, transform 0.3s',
             }}
           >
-            Learn More →
+            {t('Learn More →')}
           </p>
         </div>
       </div>
@@ -309,11 +310,11 @@ function VehicleCard({ vehicle, index, onBook }: { vehicle: Vehicle; index: numb
           <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.72)', marginBottom: 18, lineHeight: 1.6 }}>{vehicle.desc}</p>
           <div style={{ display: 'flex', gap: 24, borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: 16 }}>
             <div>
-              <p className="label-caps" style={{ fontSize: 8, marginBottom: 4 }}>Capacity</p>
-              <p style={{ fontSize: 13, color: '#FFFFFF', fontWeight: 600 }}>{vehicle.capacity} pax</p>
+              <p className="label-caps" style={{ fontSize: 8, marginBottom: 4 }}>{t('Capacity')}</p>
+              <p style={{ fontSize: 13, color: '#FFFFFF', fontWeight: 600 }}>{vehicle.capacity} {t('pax')}</p>
             </div>
             <div>
-              <p className="label-caps" style={{ fontSize: 8, marginBottom: 4 }}>Luggage</p>
+              <p className="label-caps" style={{ fontSize: 8, marginBottom: 4 }}>{t('Luggage')}</p>
               <p style={{ fontSize: 13, color: '#FFFFFF', fontWeight: 600 }}>{vehicle.luggage}</p>
             </div>
           </div>

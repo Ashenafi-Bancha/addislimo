@@ -1,4 +1,5 @@
 import { useSyncExternalStore } from 'react'
+import { translateContent, useLang } from '@/features/i18n'
 import { contentDefaults, type ContentKey, type SiteContent } from './content'
 import published from './published.json'
 
@@ -96,12 +97,16 @@ function subscribe(listener: () => void) {
   }
 }
 
-/** Read one content group. Re-renders when it is edited, in any tab. */
+/**
+ * Read one content group, in the visitor's language. Re-renders when it is
+ * edited, in any tab, and when the language changes.
+ */
 export function useContent<K extends ContentKey>(key: K): SiteContent[K] {
-  return useSyncExternalStore(subscribe, () => content[key], () => content[key])
+  useLang()
+  return translateContent(useSyncExternalStore(subscribe, () => content[key], () => content[key]))
 }
 
-/** Read every group at once, for the admin editor. */
+/** Read every group at once, untranslated, for the admin editor. */
 export function useAllContent(): SiteContent {
   return useSyncExternalStore(subscribe, () => content, () => content)
 }

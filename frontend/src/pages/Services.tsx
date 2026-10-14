@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useContent } from '@/features/cms'
 import type { Page } from '@/app/routes'
 import Reveal from '@/components/ui/Reveal'
+import { t } from '@/features/i18n'
 
 interface Props { navigate: (p: Page) => void }
 
@@ -18,7 +19,7 @@ export default function Services({ navigate }: Props) {
         background: 'var(--surface)',
       }}>
         <div style={{ maxWidth: 1280, margin: '0 auto' }}>
-          <p className="label-caps" style={{ color: '#FFFFFF', marginBottom: 16 }}>Our Services</p>
+          <p className="label-caps" style={{ color: '#FFFFFF', marginBottom: 16 }}>{t('Our Services')}</p>
           <h1 style={{
             fontFamily: 'var(--font-display)',
             fontSize: 'clamp(36px, 5vw, 64px)',
@@ -27,14 +28,14 @@ export default function Services({ navigate }: Props) {
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text',
-          }}>Premium Transportation,<br /><em>Every Journey.</em></h1>
+          }}>{t('Premium Transportation,')}<br /><em>{t('Every Journey.')}</em></h1>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>
             <div style={{ height: 1, width: 56, background: 'linear-gradient(to right, transparent, #FFFFFF)' }} />
             <span style={{ color: '#FFFFFF', fontSize: 10 }}>✦</span>
             <div style={{ height: 1, width: 56, background: 'linear-gradient(to left, transparent, #FFFFFF)' }} />
           </div>
           <p style={{ fontSize: 17, color: 'rgba(255,255,255,0.82)', maxWidth: 560, lineHeight: 1.75 }}>
-            From airport arrivals to diplomatic missions, corporate travel to city explorations, Addis Limo delivers international-standard chauffeur services across Addis Ababa.
+            {t('From airport arrivals to diplomatic missions, corporate travel to city explorations, Addis Limo delivers international-standard chauffeur services across Addis Ababa.')}
           </p>
         </div>
       </section>
