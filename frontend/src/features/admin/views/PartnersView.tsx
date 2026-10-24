@@ -15,6 +15,7 @@ import SearchField from '../ui/SearchField'
 import StatusBadge from '../ui/StatusBadge'
 import { buttonDanger, buttonGhost, buttonPrimary, buttonSecondary, panel, tabular } from '../ui/styles'
 import PartnerForm from './forms/PartnerForm'
+import { t, tf } from '@/features/i18n'
 
 type Filter = 'all' | PartnerStatus
 
@@ -31,7 +32,7 @@ export default function PartnersView() {
   const confirmDelete = () => {
     if (!deleting) return
     adminActions.deletePartner(deleting.id)
-    notify(`${deleting.name} deleted`, 'critical')
+    notify(tf('{name} deleted', { name: deleting.name }), 'critical')
     setDeleting(null)
   }
 
@@ -58,19 +59,19 @@ export default function PartnersView() {
   return (
     <>
       <PageHeader
-        title="Partners"
-        description={`${plural(counts.Active, 'active fleet partner')} · ${counts.Pending} awaiting approval`}
+        title={t('Partners')}
+        description={`${plural(counts.Active, 'active fleet partner')} · ${tf('{n} awaiting approval', { n: counts.Pending })}`}
         actions={
           <button onClick={() => setEditing(null)} className="admin-btn" style={buttonPrimary}>
             <Icon name="plus" size={16} strokeWidth={2} />
-            Add partner
+            {t('Add partner')}
           </button>
         }
       />
 
       <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center', marginBottom: 16 }}>
         <FilterTabs
-          label="Filter partners by status"
+          label={t('Filter partners by status')}
           value={filter}
           onChange={setFilter}
           tabs={[
@@ -80,12 +81,12 @@ export default function PartnersView() {
             { id: 'Suspended', label: 'Suspended', count: counts.Suspended },
           ]}
         />
-        <SearchField value={query} onChange={setQuery} placeholder="Search partners" style={{ flex: '1 1 220px', maxWidth: 340, marginLeft: 'auto' }} />
+        <SearchField value={query} onChange={setQuery} placeholder={t('Search partners')} style={{ flex: '1 1 220px', maxWidth: 340, marginLeft: 'auto' }} />
       </div>
 
       {rows.length === 0 ? (
         <div style={panel}>
-          <EmptyState icon="partners" title="No partners match" description="Try another status or search." />
+          <EmptyState icon="partners" title={t('No partners match')} description={t('Try another status or search.')} />
         </div>
       ) : (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: 16 }}>
@@ -123,7 +124,7 @@ function PartnerCard({ data, onEdit, onDelete }: { data: PartnerPerformance; onE
         <div style={{ minWidth: 0 }}>
           <h2 style={{ margin: 0, fontFamily: 'var(--font-body)', fontSize: 16, fontWeight: 700, color: '#FFFFFF' }}>{partner.name}</h2>
           <p style={{ margin: '3px 0 0', fontFamily: 'var(--font-body)', fontSize: 12.5, color: 'var(--admin-text-muted)' }}>
-            {partner.type} · joined {timeAgo(partner.joinedAt)}
+            {t(partner.type)} · {tf('joined {when}', { when: timeAgo(partner.joinedAt) })}
           </p>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 10, flexShrink: 0 }}>
@@ -165,7 +166,7 @@ function PartnerCard({ data, onEdit, onDelete }: { data: PartnerPerformance; onE
           ['Revenue', revenue ? formatCompactETB(revenue).replace('ETB ', '') : '0'],
         ].map(([k, v]) => (
           <div key={k}>
-            <dt style={{ fontFamily: 'var(--font-body)', fontSize: 11, color: 'var(--admin-text-faint)', whiteSpace: 'nowrap' }}>{k}</dt>
+            <dt style={{ fontFamily: 'var(--font-body)', fontSize: 11, color: 'var(--admin-text-faint)', whiteSpace: 'nowrap' }}>{t(k)}</dt>
             <dd style={{ margin: '3px 0 0', fontFamily: 'var(--font-body)', fontSize: 16, fontWeight: 700, color: '#FFFFFF', ...tabular }}>{v}</dd>
           </div>
         ))}
@@ -173,15 +174,15 @@ function PartnerCard({ data, onEdit, onDelete }: { data: PartnerPerformance; onE
 
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, fontFamily: 'var(--font-body)', fontSize: 12.5, color: 'var(--admin-text-muted)' }}>
         <span>
-          Commission <strong style={{ color: '#FFFFFF', ...tabular }}>{partner.commissionRate}%</strong>
+          {t('Commission')} <strong style={{ color: '#FFFFFF', ...tabular }}>{partner.commissionRate}%</strong>
         </span>
         {partner.rating > 0 ? (
           <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
             <Icon name="star" size={13} style={{ color: '#FFFFFF' }} />
-            <strong style={{ color: '#FFFFFF', ...tabular }}>{partner.rating.toFixed(1)}</strong> rating
+            <strong style={{ color: '#FFFFFF', ...tabular }}>{partner.rating.toFixed(1)}</strong> {t('rating')}
           </span>
         ) : (
-          <span>No ratings yet</span>
+          <span>{t('No ratings yet')}</span>
         )}
       </div>
 
@@ -189,12 +190,12 @@ function PartnerCard({ data, onEdit, onDelete }: { data: PartnerPerformance; onE
       <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 'auto' }}>
         {partner.status === 'Pending' && (
           <>
-            <button onClick={() => setStatus('Active', `${partner.name} approved`, 'good')} className="admin-btn" style={{ ...buttonPrimary, flex: 1 }}>
+            <button onClick={() => setStatus('Active', tf('{name} approved', { name: partner.name }), 'good')} className="admin-btn" style={{ ...buttonPrimary, flex: 1 }}>
               <Icon name="check" size={15} strokeWidth={2} />
-              Approve
+              {t('Approve')}
             </button>
-            <button onClick={() => setStatus('Suspended', `${partner.name} declined`, 'critical')} className="admin-btn-danger" style={{ ...buttonDanger, flex: 1 }}>
-              Decline
+            <button onClick={() => setStatus('Suspended', tf('{name} declined', { name: partner.name }), 'critical')} className="admin-btn-danger" style={{ ...buttonDanger, flex: 1 }}>
+              {t('Decline')}
             </button>
           </>
         )}
@@ -202,20 +203,20 @@ function PartnerCard({ data, onEdit, onDelete }: { data: PartnerPerformance; onE
         {partner.status === 'Active' &&
           (confirmSuspend ? (
             <>
-              <button onClick={() => setConfirmSuspend(false)} className="admin-btn-ghost" style={{ ...buttonGhost, flex: 1 }}>Keep active</button>
-              <button onClick={() => setStatus('Suspended', `${partner.name} suspended`, 'critical')} className="admin-btn-danger" style={{ ...buttonDanger, flex: 1 }}>
-                Confirm suspend
+              <button onClick={() => setConfirmSuspend(false)} className="admin-btn-ghost" style={{ ...buttonGhost, flex: 1 }}>{t('Keep active')}</button>
+              <button onClick={() => setStatus('Suspended', tf('{name} suspended', { name: partner.name }), 'critical')} className="admin-btn-danger" style={{ ...buttonDanger, flex: 1 }}>
+                {t('Confirm suspend')}
               </button>
             </>
           ) : (
             <button onClick={() => setConfirmSuspend(true)} className="admin-btn-ghost" style={{ ...buttonGhost, flex: 1, justifyContent: 'center' }}>
-              Suspend partner
+              {t('Suspend partner')}
             </button>
           ))}
 
         {partner.status === 'Suspended' && (
-          <button onClick={() => setStatus('Active', `${partner.name} reinstated`, 'good')} className="admin-btn-secondary" style={{ ...buttonSecondary, flex: 1 }}>
-            Reinstate
+          <button onClick={() => setStatus('Active', tf('{name} reinstated', { name: partner.name }), 'good')} className="admin-btn-secondary" style={{ ...buttonSecondary, flex: 1 }}>
+            {t('Reinstate')}
           </button>
         )}
       </div>

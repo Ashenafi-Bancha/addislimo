@@ -19,6 +19,7 @@ import { toneColor } from '../status'
 import { buttonPrimary, cellPrimary, cellSecondary, panel, tabular, td, th } from '../ui/styles'
 import DriverForm from './forms/DriverForm'
 import VehicleForm from './forms/VehicleForm'
+import { t, tf } from '@/features/i18n'
 
 type Tab = 'vehicles' | 'drivers'
 
@@ -41,14 +42,14 @@ export default function FleetView() {
   const confirmVehicleDelete = () => {
     if (!deletingVehicle) return
     adminActions.deleteVehicle(deletingVehicle.id)
-    notify(`${vehicleLabel(deletingVehicle)} ${deletingVehicle.plate} deleted`, 'critical')
+    notify(tf('{name} deleted', { name: `${vehicleLabel(deletingVehicle)} ${deletingVehicle.plate}` }), 'critical')
     setDeletingVehicle(null)
   }
 
   const confirmDriverDelete = () => {
     if (!deletingDriver) return
     adminActions.deleteDriver(deletingDriver.id)
-    notify(`${deletingDriver.name} deleted`, 'critical')
+    notify(tf('{name} deleted', { name: deletingDriver.name }), 'critical')
     setDeletingDriver(null)
   }
 
@@ -88,8 +89,8 @@ export default function FleetView() {
   return (
     <>
       <PageHeader
-        title="Fleet & Drivers"
-        description={`${plural(state.vehicles.length, 'vehicle')} and ${plural(state.drivers.length, 'driver')} across ${plural(state.partners.length, 'partner')}`}
+        title={t('Fleet & Drivers')}
+        description={tf('{vehicles} and {drivers} across {partners}', { vehicles: plural(state.vehicles.length, 'vehicle'), drivers: plural(state.drivers.length, 'driver'), partners: plural(state.partners.length, 'partner') })}
         actions={
           <button
             onClick={() => (tab === 'vehicles' ? setEditingVehicle(null) : setEditingDriver(null))}
@@ -97,21 +98,21 @@ export default function FleetView() {
             style={buttonPrimary}
           >
             <Icon name="plus" size={16} strokeWidth={2} />
-            {tab === 'vehicles' ? 'Add vehicle' : 'Add driver'}
+            {tab === 'vehicles' ? t('Add vehicle') : t('Add driver')}
           </button>
         }
       />
 
       {/* Availability at a glance */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 14, marginBottom: 16 }}>
-        <Summary title="Vehicles" icon="car" items={vehicleSummary.map(([s, n]) => ({ label: s, n, meta: vehicleStatusMeta[s as VehicleStatus] }))} />
-        <Summary title="Drivers" icon="users" items={driverSummary.map(([s, n]) => ({ label: s, n, meta: driverStatusMeta[s as DriverStatus] }))} />
+        <Summary title={t('Vehicles')} icon="car" items={vehicleSummary.map(([s, n]) => ({ label: s, n, meta: vehicleStatusMeta[s as VehicleStatus] }))} />
+        <Summary title={t('Drivers')} icon="users" items={driverSummary.map(([s, n]) => ({ label: s, n, meta: driverStatusMeta[s as DriverStatus] }))} />
       </div>
 
       <section style={{ ...panel, overflow: 'hidden' }}>
         <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center', padding: 14, borderBottom: '1px solid var(--admin-hairline)' }}>
           <FilterTabs
-            label="Fleet list"
+            label={t('Fleet list')}
             value={tab}
             onChange={setTab}
             tabs={[
@@ -122,26 +123,26 @@ export default function FleetView() {
           <SearchField
             value={query}
             onChange={setQuery}
-            placeholder={tab === 'vehicles' ? 'Search model, plate or partner' : 'Search name, phone or licence'}
+            placeholder={tab === 'vehicles' ? t('Search model, plate or partner') : t('Search name, phone or licence')}
             style={{ flex: '1 1 220px', maxWidth: 360, marginLeft: 'auto' }}
           />
         </div>
 
         {tab === 'vehicles' ? (
           vehicles.length === 0 ? (
-            <EmptyState icon="car" title="No vehicles match" />
+            <EmptyState icon="car" title={t('No vehicles match')} />
           ) : wide ? (
             <div className="admin-table-wrap">
               <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 760 }}>
                 <thead>
                   <tr>
-                    <th style={th}>Vehicle</th>
-                    <th style={th}>Plate</th>
-                    <th style={th}>Class</th>
-                    <th style={{ ...th, textAlign: 'right' }}>Seats</th>
-                    <th style={th}>Partner</th>
-                    <th style={th}>Status</th>
-                    <th style={{ ...th, textAlign: 'right' }}>Actions</th>
+                    <th style={th}>{t('Vehicle')}</th>
+                    <th style={th}>{t('Plate')}</th>
+                    <th style={th}>{t('Class')}</th>
+                    <th style={{ ...th, textAlign: 'right' }}>{t('Seats')}</th>
+                    <th style={th}>{t('Partner')}</th>
+                    <th style={th}>{t('Status')}</th>
+                    <th style={{ ...th, textAlign: 'right' }}>{t('Actions')}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -154,7 +155,7 @@ export default function FleetView() {
                           <span style={cellSecondary}>{v.year}</span>
                         </td>
                         <td style={{ ...td, ...tabular, letterSpacing: '0.04em', whiteSpace: 'nowrap' }}>{v.plate}</td>
-                        <td style={td}>{classLabels.get(v.vehicleClass) ?? v.vehicleClass}</td>
+                        <td style={td}>{t(classLabels.get(v.vehicleClass) ?? v.vehicleClass)}</td>
                         <td style={{ ...td, textAlign: 'right', ...tabular }}>{v.seats}</td>
                         <td style={td}>{partners.get(v.partnerId)?.name}</td>
                         <td style={td}><StatusBadge label={s} meta={vehicleStatusMeta[s]} size="sm" /></td>
@@ -178,7 +179,7 @@ export default function FleetView() {
                       <StatusBadge label={s} meta={vehicleStatusMeta[s]} size="sm" />
                     </span>
                     <span style={mobileSub}>
-                      <span style={tabular}>{v.plate}</span> · {classLabels.get(v.vehicleClass)} · {v.seats} seats
+                      <span style={tabular}>{v.plate}</span> · {t(classLabels.get(v.vehicleClass) ?? v.vehicleClass)} · {plural(v.seats, 'seat')}
                     </span>
                     <span style={{ ...mobileSub, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
                       <span>{partners.get(v.partnerId)?.name} · {v.year}</span>
@@ -190,19 +191,19 @@ export default function FleetView() {
             </ul>
           )
         ) : drivers.length === 0 ? (
-          <EmptyState icon="users" title="No drivers match" />
+          <EmptyState icon="users" title={t('No drivers match')} />
         ) : wide ? (
           <div className="admin-table-wrap">
             <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 760 }}>
               <thead>
                 <tr>
-                  <th style={th}>Driver</th>
-                  <th style={th}>Phone</th>
-                  <th style={th}>Partner</th>
-                  <th style={{ ...th, textAlign: 'right' }}>Trips</th>
-                  <th style={{ ...th, textAlign: 'right' }}>Rating</th>
-                  <th style={th}>Status</th>
-                  <th style={{ ...th, textAlign: 'right' }}>Actions</th>
+                  <th style={th}>{t('Driver')}</th>
+                  <th style={th}>{t('Phone')}</th>
+                  <th style={th}>{t('Partner')}</th>
+                  <th style={{ ...th, textAlign: 'right' }}>{t('Trips')}</th>
+                  <th style={{ ...th, textAlign: 'right' }}>{t('Rating')}</th>
+                  <th style={th}>{t('Status')}</th>
+                  <th style={{ ...th, textAlign: 'right' }}>{t('Actions')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -219,7 +220,7 @@ export default function FleetView() {
                       </td>
                       <td style={td}>{partners.get(d.partnerId)?.name}</td>
                       <td style={{ ...td, textAlign: 'right', ...tabular }}>{tripsByDriver.get(d.id) ?? 0}</td>
-                      <td style={{ ...td, textAlign: 'right', ...tabular }}>{d.rating > 0 ? d.rating.toFixed(1) : 'New'}</td>
+                      <td style={{ ...td, textAlign: 'right', ...tabular }}>{d.rating > 0 ? d.rating.toFixed(1) : t('New')}</td>
                       <td style={td}><StatusBadge label={s} meta={driverStatusMeta[s]} size="sm" /></td>
                       <td style={{ ...td, textAlign: 'right', whiteSpace: 'nowrap' }}>
                         <RowActions label={d.name} onEdit={() => setEditingDriver(d)} onDelete={() => setDeletingDriver(d)} />
@@ -244,7 +245,7 @@ export default function FleetView() {
                     <a href={`tel:${d.phone.replace(/\s/g, '')}`} style={{ color: 'inherit', textDecoration: 'none', ...tabular }}>{d.phone}</a> · {partners.get(d.partnerId)?.name}
                   </span>
                   <span style={{ ...mobileSub, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
-                    <span>{plural(tripsByDriver.get(d.id) ?? 0, 'trip')} · {d.rating > 0 ? `${d.rating.toFixed(1)} rating` : 'New driver'}</span>
+                    <span>{plural(tripsByDriver.get(d.id) ?? 0, 'trip')} · {d.rating > 0 ? tf('{rating} rating', { rating: d.rating.toFixed(1) }) : t('New driver')}</span>
                     <RowActions label={d.name} onEdit={() => setEditingDriver(d)} onDelete={() => setDeletingDriver(d)} />
                   </span>
                 </li>
@@ -293,7 +294,7 @@ function Summary({
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
         <Icon name={icon} size={16} style={{ color: 'var(--admin-text-muted)' }} />
         <span style={{ fontFamily: 'var(--font-body)', fontSize: 13, fontWeight: 700, color: '#FFFFFF' }}>{title}</span>
-        <span style={{ marginLeft: 'auto', fontFamily: 'var(--font-body)', fontSize: 12.5, color: 'var(--admin-text-muted)', ...tabular }}>{total} total</span>
+        <span style={{ marginLeft: 'auto', fontFamily: 'var(--font-body)', fontSize: 12.5, color: 'var(--admin-text-muted)', ...tabular }}>{tf('{n} total', { n: total })}</span>
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: `repeat(${items.length}, minmax(0, 1fr))`, gap: 8 }}>
         {items.map((i) => (
@@ -301,7 +302,7 @@ function Summary({
             <div style={{ fontFamily: 'var(--font-body)', fontSize: 22, fontWeight: 700, color: '#FFFFFF', lineHeight: 1.1, ...tabular }}>{i.n}</div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 4, fontFamily: 'var(--font-body)', fontSize: 12, color: 'var(--admin-text-muted)', whiteSpace: 'nowrap' }}>
               <Glyph glyph={i.meta.glyph} color={toneColor[i.meta.tone]} size={10} />
-              {i.label}
+              {t(i.label)}
             </div>
           </div>
         ))}

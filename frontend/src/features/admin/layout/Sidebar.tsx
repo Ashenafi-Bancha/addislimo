@@ -1,10 +1,12 @@
 import type { AdminConsolePage, Page } from '@/app/routes'
 import BrandMark from '@/components/ui/BrandMark'
+import LanguageSwitcher from '@/components/ui/LanguageSwitcher'
 import { site } from '@/config/site'
 import { initialsOf } from '@/lib/utils'
 import { adminNav } from '../nav'
 import type { AdminSession } from '../session'
 import Icon from '../ui/Icon'
+import { t, tf } from '@/features/i18n'
 
 interface SidebarProps {
   current: AdminConsolePage
@@ -26,7 +28,7 @@ export default function Sidebar({ current, navigate, session, onSignOut, badges,
 
   return (
     <aside
-      aria-label="Admin navigation"
+      aria-label={t('Admin navigation')}
       style={{
         width: 256,
         height: '100%',
@@ -82,14 +84,14 @@ export default function Sidebar({ current, navigate, session, onSignOut, badges,
                 marginTop: 5,
               }}
             >
-              Operations
+              {t('Operations')}
             </span>
           </span>
         </button>
         {onClose && (
           <button
             onClick={onClose}
-            aria-label="Close menu"
+            aria-label={t('Close menu')}
             className="admin-icon-btn"
             style={{ width: 34, height: 34, display: 'grid', placeItems: 'center', background: 'transparent', border: '1px solid var(--admin-hairline)', borderRadius: 8, color: 'rgba(255,255,255,0.8)', cursor: 'pointer' }}
           >
@@ -113,7 +115,7 @@ export default function Sidebar({ current, navigate, session, onSignOut, badges,
                 margin: '0 10px 6px',
               }}
             >
-              {group.label}
+              {t(group.label)}
             </p>
             {group.items.map((item) => {
               const active = item.page === current
@@ -152,10 +154,10 @@ export default function Sidebar({ current, navigate, session, onSignOut, badges,
                     />
                   )}
                   <Icon name={item.icon} size={17} style={{ opacity: active ? 1 : 0.8 }} />
-                  <span style={{ flex: 1 }}>{item.label}</span>
+                  <span style={{ flex: 1 }}>{t(item.label)}</span>
                   {typeof badge === 'number' && badge > 0 && (
                     <span
-                      aria-label={`${badge} need attention`}
+                      aria-label={tf('{n} need attention', { n: badge })}
                       style={{
                         minWidth: 20,
                         height: 20,
@@ -204,8 +206,16 @@ export default function Sidebar({ current, navigate, session, onSignOut, badges,
           }}
         >
           <Icon name="external" size={16} />
-          View public site
+          {t('View public site')}
         </button>
+
+        {/* On phones the top bar has no room for it, so the drawer carries it. */}
+        {onClose && (
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, padding: '6px 10px' }}>
+            <span style={{ fontFamily: 'var(--font-body)', fontSize: 13, color: 'rgba(255,255,255,0.62)' }}>{t('Language')}</span>
+            <LanguageSwitcher compact />
+          </div>
+        )}
 
         <div
           style={{
@@ -247,8 +257,8 @@ export default function Sidebar({ current, navigate, session, onSignOut, badges,
           </span>
           <button
             onClick={onSignOut}
-            aria-label="Sign out"
-            title="Sign out"
+            aria-label={t('Sign out')}
+            title={t('Sign out')}
             className="admin-icon-btn"
             style={{ width: 32, height: 32, flexShrink: 0, display: 'grid', placeItems: 'center', background: 'transparent', border: '1px solid var(--admin-hairline)', borderRadius: 8, color: 'rgba(255,255,255,0.75)', cursor: 'pointer' }}
           >

@@ -1,4 +1,6 @@
+import { t, tf } from '@/features/i18n'
 import type { Booking } from '@/types'
+import { plural } from './format'
 import { LIVE_STATUSES, OPEN_STATUSES } from './selectors'
 import type { AdminState } from './types'
 
@@ -20,8 +22,6 @@ export interface DeleteCheck {
   consequences: string[]
 }
 
-const plural = (n: number, one: string, many = `${one}s`) => `${n} ${n === 1 ? one : many}`
-
 const refs = (bookings: Booking[]) => bookings.slice(0, 3).map((b) => b.id).join(', ') + (bookings.length > 3 ? '…' : '')
 
 export function checkPartnerDelete(state: AdminState, partnerId: string): DeleteCheck {
@@ -29,15 +29,18 @@ export function checkPartnerDelete(state: AdminState, partnerId: string): Delete
   if (trips.length > 0) {
     return {
       allowed: false,
-      reason: `This partner has ${plural(trips.length, 'booking')} on record, and deleting them would erase commission and payout history. Suspend the partner instead: they stop receiving trips and their history stays.`,
+      reason: tf(
+        'This partner has {count} on record, and deleting them would erase commission and payout history. Suspend the partner instead: they stop receiving trips and their history stays.',
+        { count: plural(trips.length, 'booking') },
+      ),
       consequences: [],
     }
   }
   const drivers = state.drivers.filter((d) => d.partnerId === partnerId).length
   const vehicles = state.vehicles.filter((v) => v.partnerId === partnerId).length
   const consequences = []
-  if (vehicles) consequences.push(`Their ${plural(vehicles, 'vehicle')} will be deleted too.`)
-  if (drivers) consequences.push(`Their ${plural(drivers, 'driver')} will be deleted too.`)
+  if (vehicles) consequences.push(tf('Their {count} will be deleted too.', { count: plural(vehicles, 'vehicle') }))
+  if (drivers) consequences.push(tf('Their {count} will be deleted too.', { count: plural(drivers, 'driver') }))
   return { allowed: true, consequences }
 }
 
@@ -46,14 +49,19 @@ function checkAssignee(state: AdminState, key: 'driverId' | 'vehicleId', id: str
   if (open.length > 0) {
     return {
       allowed: false,
-      reason: `This ${noun} is assigned to ${plural(open.length, 'open booking')} (${refs(open)}). Reassign ${open.length === 1 ? 'it' : 'them'} first, then delete.`,
+      reason: tf(
+        open.length === 1
+          ? 'This {noun} is assigned to {count} ({refs}). Reassign it first, then delete.'
+          : 'This {noun} is assigned to {count} ({refs}). Reassign them first, then delete.',
+        { noun: t(noun), count: plural(open.length, 'open booking'), refs: refs(open) },
+      ),
       consequences: [],
     }
   }
   const past = state.bookings.filter((b) => b[key] === id).length
   return {
     allowed: true,
-    consequences: past ? [`${plural(past, 'past booking')} will show "Removed ${noun}".`] : [],
+    consequences: past ? [tf('{count} will show "Removed {noun}".', { count: plural(past, 'past booking'), noun: t(noun) })] : [],
   }
 }
 
@@ -66,13 +74,13 @@ export function checkBookingDelete(state: AdminState, id: string): DeleteCheck {
   if (booking && LIVE_STATUSES.has(booking.status)) {
     return {
       allowed: false,
-      reason: 'This trip is under way. Finish or cancel it before deleting the record.',
+      reason: t('This trip is under way. Finish or cancel it before deleting the record.'),
       consequences: [],
     }
   }
   return {
     allowed: true,
-    consequences: booking?.status === 'Completed' ? ['Its revenue and commission leave the finance figures.'] : [],
+    consequences: booking?.status === 'Completed' ? [t('Its revenue and commission leave the finance figures.')] : [],
   }
 }
 
@@ -83,13 +91,13 @@ export function checkCustomerDelete(state: AdminState, email: string): DeleteChe
   if (live.length > 0) {
     return {
       allowed: false,
-      reason: `This customer is on a trip right now (${refs(live)}). Delete them once it has finished.`,
+      reason: tf('This customer is on a trip right now ({refs}). Delete them once it has finished.', { refs: refs(live) }),
       consequences: [],
     }
   }
   const completed = theirs.filter((b) => b.status === 'Completed').length
-  const consequences = [`All ${plural(theirs.length, 'booking')} for this customer will be deleted.`]
-  if (completed) consequences.push(`Revenue from ${plural(completed, 'completed trip')} leaves the finance figures.`)
+  const consequences = [tf('All {count} for this customer will be deleted.', { count: plural(theirs.length, 'booking') })]
+  if (completed) consequences.push(tf('Revenue from {count} leaves the finance figures.', { count: plural(completed, 'completed trip') }))
   return { allowed: true, consequences }
 }
 

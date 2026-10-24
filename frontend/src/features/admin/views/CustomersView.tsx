@@ -17,6 +17,7 @@ import RowActions from '../ui/RowActions'
 import SearchField from '../ui/SearchField'
 import { buttonSecondary, cellPrimary, cellSecondary, panel, tabular, td, th } from '../ui/styles'
 import CustomerForm from './forms/CustomerForm'
+import { t, tf } from '@/features/i18n'
 
 type Sort = 'spend' | 'recent' | 'trips'
 
@@ -54,7 +55,7 @@ export default function CustomersView({ navigate }: CustomersViewProps) {
   const confirmDelete = () => {
     if (!deleting) return
     adminActions.deleteCustomer(deleting.email)
-    notify(`${deleting.name} and their bookings deleted`, 'critical')
+    notify(tf('{name} and their bookings deleted', { name: deleting.name }), 'critical')
     setDeleting(null)
   }
 
@@ -76,28 +77,28 @@ export default function CustomersView({ navigate }: CustomersViewProps) {
       { header: 'Last trip', value: (c) => formatDate(c.lastTripAt) },
     ])
     downloadCsv(datedFilename('customers'), csv)
-    notify(`Exported ${rows.length} customers`, 'good')
+    notify(tf('Exported {count}', { count: plural(rows.length, 'customer') }), 'good')
   }
 
   return (
     <>
       <PageHeader
-        title="Customers"
-        description={`${plural(customers.length, 'customer')} · ${repeat} ${repeat === 1 ? 'has' : 'have'} booked more than once`}
+        title={t('Customers')}
+        description={`${plural(customers.length, 'customer')} · ${tf(repeat === 1 ? '{n} has booked more than once' : '{n} have booked more than once', { n: repeat })}`}
         actions={
           <button onClick={exportCsv} disabled={rows.length === 0} className="admin-btn-secondary" style={buttonSecondary}>
             <Icon name="download" size={16} />
-            Export CSV
+            {t('Export CSV')}
           </button>
         }
       />
 
       <section style={{ ...panel, overflow: 'hidden' }}>
         <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center', padding: 14, borderBottom: '1px solid var(--admin-hairline)' }}>
-          <SearchField value={query} onChange={setQuery} placeholder="Search name, email or phone" style={{ flex: '1 1 240px', maxWidth: 380 }} />
+          <SearchField value={query} onChange={setQuery} placeholder={t('Search name, email or phone')} style={{ flex: '1 1 240px', maxWidth: 380 }} />
           <div style={{ marginLeft: 'auto' }}>
             <FilterTabs
-              label="Sort customers"
+              label={t('Sort customers')}
               value={sort}
               onChange={setSort}
               tabs={[
@@ -110,19 +111,19 @@ export default function CustomersView({ navigate }: CustomersViewProps) {
         </div>
 
         {rows.length === 0 ? (
-          <EmptyState icon="customers" title="No customers match" />
+          <EmptyState icon="customers" title={t('No customers match')} />
         ) : wide ? (
           <div className="admin-table-wrap">
             <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 820 }}>
               <thead>
                 <tr>
-                  <th style={th}>Customer</th>
-                  <th style={th}>Phone</th>
-                  <th style={{ ...th, textAlign: 'right' }}>Bookings</th>
-                  <th style={{ ...th, textAlign: 'right' }}>Total spend</th>
-                  <th style={th}>Most booked</th>
-                  <th style={th}>Last trip</th>
-                  <th style={{ ...th, textAlign: 'right' }}>Actions</th>
+                  <th style={th}>{t('Customer')}</th>
+                  <th style={th}>{t('Phone')}</th>
+                  <th style={{ ...th, textAlign: 'right' }}>{t('Bookings')}</th>
+                  <th style={{ ...th, textAlign: 'right' }}>{t('Total spend')}</th>
+                  <th style={th}>{t('Most booked')}</th>
+                  <th style={th}>{t('Last trip')}</th>
+                  <th style={{ ...th, textAlign: 'right' }}>{t('Actions')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -133,7 +134,7 @@ export default function CustomersView({ navigate }: CustomersViewProps) {
                     tabIndex={0}
                     onClick={() => viewBookings(c)}
                     onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && (e.preventDefault(), viewBookings(c))}
-                    aria-label={`View bookings for ${c.name}`}
+                    aria-label={tf('View bookings for {name}', { name: c.name })}
                   >
                     <td style={td}>
                       <span style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
@@ -147,13 +148,13 @@ export default function CustomersView({ navigate }: CustomersViewProps) {
                     <td style={{ ...td, whiteSpace: 'nowrap', ...tabular }}>{c.phone}</td>
                     <td style={{ ...td, textAlign: 'right', ...tabular }}>
                       {c.trips}
-                      {c.trips > c.completedTrips && <span style={cellSecondary}>{c.completedTrips} completed</span>}
+                      {c.trips > c.completedTrips && <span style={cellSecondary}>{tf('{n} completed', { n: c.completedTrips })}</span>}
                     </td>
                     <td style={{ ...td, textAlign: 'right', fontWeight: 600, color: '#FFFFFF', whiteSpace: 'nowrap', ...tabular }}>{formatETB(c.totalSpend)}</td>
                     <td style={td}>{serviceLabel(c.topService)}</td>
                     <td style={{ ...td, whiteSpace: 'nowrap' }}>
                       <span style={{ color: '#FFFFFF' }}>{formatDate(c.lastTripAt)}</span>
-                      <span style={cellSecondary}>first booked {timeAgo(c.firstBookedAt)}</span>
+                      <span style={cellSecondary}>{tf('first booked {when}', { when: timeAgo(c.firstBookedAt) })}</span>
                     </td>
                     <td style={{ ...td, textAlign: 'right', whiteSpace: 'nowrap' }}>
                       <RowActions label={c.name} onEdit={() => setEditing(c)} onDelete={() => setDeleting(c)} />
@@ -179,7 +180,7 @@ export default function CustomersView({ navigate }: CustomersViewProps) {
                       <span style={{ fontSize: 13.5, fontWeight: 700, color: '#FFFFFF', whiteSpace: 'nowrap', ...tabular }}>{formatETB(c.totalSpend)}</span>
                     </span>
                     <span style={{ display: 'block', fontSize: 12.5, color: 'var(--admin-text-muted)', marginTop: 3 }}>
-                      {c.trips} booking{c.trips === 1 ? '' : 's'} · {serviceLabel(c.topService)} · last {formatDate(c.lastTripAt)}
+                      {plural(c.trips, 'booking')} · {serviceLabel(c.topService)} · {tf('last {date}', { date: formatDate(c.lastTripAt) })}
                     </span>
                   </span>
                 </button>

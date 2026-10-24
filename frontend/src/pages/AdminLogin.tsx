@@ -1,3 +1,4 @@
+import LanguageSwitcher from '@/components/ui/LanguageSwitcher'
 import { useEffect, useState, type FormEvent } from 'react'
 import type { Page } from '@/app/routes'
 import BrandMark from '@/components/ui/BrandMark'
@@ -6,6 +7,7 @@ import { getSession, signIn } from '@/features/admin/session'
 import Icon, { type IconName } from '@/features/admin/ui/Icon'
 import { buttonPrimary, fieldLabel, input } from '@/features/admin/ui/styles'
 import { useMediaQuery } from '@/hooks'
+import { t } from '@/features/i18n'
 
 interface Props {
   navigate: (p: Page) => void
@@ -34,7 +36,7 @@ export default function AdminLogin({ navigate }: Props) {
     e.preventDefault()
     setError('')
     if (!email.trim() || !password) {
-      setError('Enter your email address and password.')
+      setError(t('Enter your email address and password.'))
       return
     }
     setLoading(true)
@@ -44,7 +46,7 @@ export default function AdminLogin({ navigate }: Props) {
       const session = signIn(email, password)
       setLoading(false)
       if (session) navigate('admin')
-      else setError('That email and password do not match an admin account.')
+      else setError(t('That email and password do not match an admin account.'))
     }, 600)
   }
 
@@ -80,15 +82,15 @@ export default function AdminLogin({ navigate }: Props) {
             <BrandMark size={42} />
             <div>
               <p style={{ margin: 0, fontFamily: 'var(--font-display)', fontSize: 16, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', lineHeight: 1 }}>{site.name}</p>
-              <p style={{ margin: '5px 0 0', fontFamily: 'var(--font-body)', fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.6)' }}>Operations</p>
+              <p style={{ margin: '5px 0 0', fontFamily: 'var(--font-body)', fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.6)' }}>{t('Operations')}</p>
             </div>
           </div>
 
           <div style={{ position: 'relative' }}>
             <p style={{ margin: 0, fontFamily: 'var(--font-display)', fontSize: 'clamp(28px, 2.8vw, 40px)', fontWeight: 700, lineHeight: 1.1 }}>
-              Every trip,
+              {t('Every trip,')}
               <br />
-              <span style={{ fontStyle: 'italic', fontWeight: 600, color: 'rgba(255,255,255,0.82)' }}>in one place.</span>
+              <span style={{ fontStyle: 'italic', fontWeight: 600, color: 'rgba(255,255,255,0.82)' }}>{t('in one place.')}</span>
             </p>
             <ul style={{ listStyle: 'none', margin: '28px 0 0', padding: 0, display: 'grid', gap: 14 }}>
               {capabilities.map((c) => (
@@ -96,39 +98,42 @@ export default function AdminLogin({ navigate }: Props) {
                   <span style={{ width: 34, height: 34, borderRadius: 9, display: 'grid', placeItems: 'center', background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.14)' }}>
                     <Icon name={c.icon} size={16} />
                   </span>
-                  {c.text}
+                  {t(c.text)}
                 </li>
               ))}
             </ul>
           </div>
 
           <p style={{ position: 'relative', margin: 0, fontFamily: 'var(--font-body)', fontSize: 12, color: 'rgba(255,255,255,0.45)' }}>
-            &copy; {new Date().getFullYear()} {site.name} · Authorised staff only
+            © {new Date().getFullYear()} {site.name} · {t('Authorised staff only')}
           </p>
         </aside>
       )}
 
       {/* Form. A div, not <main>: SiteLayout already provides the page landmark. */}
-      <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: compact ? '32px 20px' : '48px 40px' }}>
+      <div style={{ position: 'relative', flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: compact ? '64px 20px 32px' : '48px 40px' }}>
+        <div style={{ position: 'absolute', top: compact ? 16 : 24, right: compact ? 16 : 24 }}>
+          <LanguageSwitcher compact />
+        </div>
         <div style={{ width: '100%', maxWidth: 400 }}>
           {compact && (
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12, marginBottom: 36, textAlign: 'center' }}>
               <BrandMark size={44} />
               <div>
                 <p style={{ margin: 0, fontFamily: 'var(--font-display)', fontSize: 15, fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', lineHeight: 1 }}>{site.name}</p>
-                <p style={{ margin: '5px 0 0', fontFamily: 'var(--font-body)', fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--admin-text-muted)' }}>Operations</p>
+                <p style={{ margin: '5px 0 0', fontFamily: 'var(--font-body)', fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--admin-text-muted)' }}>{t('Operations')}</p>
               </div>
             </div>
           )}
 
-          <h1 style={{ margin: 0, fontFamily: 'var(--font-display)', fontSize: 32, fontWeight: 700, lineHeight: 1.1, textAlign: 'center' }}>Sign in</h1>
+          <h1 style={{ margin: 0, fontFamily: 'var(--font-display)', fontSize: 32, fontWeight: 700, lineHeight: 1.1, textAlign: 'center' }}>{t('Sign in')}</h1>
           <p style={{ margin: '8px 0 32px', fontFamily: 'var(--font-body)', fontSize: 14, color: 'var(--admin-text-muted)', textAlign: 'center' }}>
-            Use your Addis Limo Admin account.
+            {t('Use your Addis Limo Admin account.')}
           </p>
 
           <form onSubmit={handleSubmit} noValidate style={{ display: 'grid', gap: 18 }}>
             <div>
-              <label htmlFor="admin-email" style={fieldLabel}>Email address</label>
+              <label htmlFor="admin-email" style={fieldLabel}>{t('Email address')}</label>
               <div style={{ position: 'relative' }}>
                 <span style={fieldIcon}><Icon name="mail" size={16} /></span>
                 <input
@@ -146,7 +151,7 @@ export default function AdminLogin({ navigate }: Props) {
             </div>
 
             <div>
-              <label htmlFor="admin-password" style={fieldLabel}>Password</label>
+              <label htmlFor="admin-password" style={fieldLabel}>{t('Password')}</label>
               <div style={{ position: 'relative' }}>
                 <span style={fieldIcon}><Icon name="lock" size={16} /></span>
                 <input
@@ -155,7 +160,7 @@ export default function AdminLogin({ navigate }: Props) {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   autoComplete="current-password"
-                  placeholder="Your password"
+                  placeholder={t('Your password')}
                   aria-invalid={Boolean(error)}
                   className="admin-input"
                   style={{ ...input, height: 46, paddingLeft: 40, paddingRight: 46, fontSize: 14.5 }}
@@ -163,7 +168,7 @@ export default function AdminLogin({ navigate }: Props) {
                 <button
                   type="button"
                   onClick={() => setShowPassword((v) => !v)}
-                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                  aria-label={showPassword ? t('Hide password') : t('Show password')}
                   style={{ position: 'absolute', right: 6, top: '50%', transform: 'translateY(-50%)', width: 34, height: 34, display: 'grid', placeItems: 'center', background: 'transparent', border: 'none', borderRadius: 7, color: 'var(--admin-text-muted)', cursor: 'pointer' }}
                 >
                   <Icon name={showPassword ? 'eyeOff' : 'eye'} size={17} />
@@ -199,10 +204,10 @@ export default function AdminLogin({ navigate }: Props) {
               {loading ? (
                 <>
                   <span aria-hidden="true" style={{ width: 16, height: 16, border: '2px solid rgba(0,0,0,0.25)', borderTopColor: '#0C0B09', borderRadius: '50%', animation: 'adminSpin 0.7s linear infinite' }} />
-                  Signing in
+                  {t('Signing in')}
                 </>
               ) : (
-                'Sign in'
+                t('Sign in')
               )}
             </button>
           </form>
@@ -212,7 +217,7 @@ export default function AdminLogin({ navigate }: Props) {
             style={{ marginTop: 30, display: 'inline-flex', alignItems: 'center', gap: 8, background: 'none', border: 'none', padding: 0, fontFamily: 'var(--font-body)', fontSize: 13, fontWeight: 600, color: 'var(--admin-text-muted)', cursor: 'pointer' }}
           >
             <Icon name="arrowLeft" size={15} />
-            Return to website
+            {t('Return to website')}
           </button>
         </div>
       </div>

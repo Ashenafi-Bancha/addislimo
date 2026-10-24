@@ -22,6 +22,7 @@ import {
   td,
   th,
 } from '../ui/styles'
+import { t, tf } from '@/features/i18n'
 
 type StatusFilter = 'all' | 'open' | BookingStatus
 type Scope = 'all' | 'today' | 'upcoming' | 'past'
@@ -53,10 +54,10 @@ export default function BookingsView() {
     const tomorrowStart = todayStart + 24 * 60 * 60 * 1000
 
     return state.bookings.filter((b) => {
-      const t = new Date(b.scheduledAt).getTime()
-      if (scope === 'today' && (t < todayStart || t >= tomorrowStart)) return false
-      if (scope === 'upcoming' && t < Date.now()) return false
-      if (scope === 'past' && t >= Date.now()) return false
+      const at = new Date(b.scheduledAt).getTime()
+      if (scope === 'today' && (at < todayStart || at >= tomorrowStart)) return false
+      if (scope === 'upcoming' && at < Date.now()) return false
+      if (scope === 'past' && at >= Date.now()) return false
       if (!q) return true
       const driver = b.driverId ? drivers.get(b.driverId)?.name ?? '' : ''
       return [b.id, b.customerName, b.customerEmail, b.customerPhone, b.pickup, b.destination, driver, serviceLabel(b.serviceId), partners.get(b.partnerId)?.name ?? '']
@@ -102,7 +103,7 @@ export default function BookingsView() {
       { header: 'Commission (ETB)', value: (b) => b.commission },
     ])
     downloadCsv(datedFilename('bookings'), csv)
-    notify(`Exported ${rows.length} booking${rows.length === 1 ? '' : 's'}`, 'good')
+    notify(tf('Exported {count}', { count: plural(rows.length, 'booking') }), 'good')
   }
 
   const clearFilters = () => {
@@ -116,12 +117,12 @@ export default function BookingsView() {
   return (
     <>
       <PageHeader
-        title="Bookings"
-        description={`${plural(state.bookings.length, 'booking')} · ${pendingTotal} awaiting confirmation`}
+        title={t('Bookings')}
+        description={`${plural(state.bookings.length, 'booking')} · ${tf('{n} awaiting confirmation', { n: pendingTotal })}`}
         actions={
           <button onClick={exportCsv} disabled={rows.length === 0} className="admin-btn-secondary" style={buttonSecondary}>
             <Icon name="download" size={16} />
-            Export CSV
+            {t('Export CSV')}
           </button>
         }
       />
@@ -133,36 +134,36 @@ export default function BookingsView() {
             <SearchField
               value={query}
               onChange={setQuery}
-              placeholder="Search reference, customer, place or driver"
-              label="Search bookings"
+              placeholder={t('Search reference, customer, place or driver')}
+              label={t('Search bookings')}
               style={{ flex: '1 1 260px' }}
             />
-            <select value={scope} onChange={(e) => setScope(e.target.value as Scope)} aria-label="Date range" style={{ ...select, width: 'auto', flex: '0 0 150px' }}>
+            <select value={scope} onChange={(e) => setScope(e.target.value as Scope)} aria-label={t('Date range')} style={{ ...select, width: 'auto', flex: '0 0 150px' }}>
               {(Object.keys(scopeLabels) as Scope[]).map((s) => (
-                <option key={s} value={s}>{scopeLabels[s]}</option>
+                <option key={s} value={s}>{t(scopeLabels[s])}</option>
               ))}
             </select>
             <button
               onClick={() => setNewestFirst((v) => !v)}
               className="admin-btn-secondary"
               style={{ ...buttonSecondary, height: 40, flex: '0 0 auto' }}
-              aria-label={newestFirst ? 'Sorted latest first. Switch to earliest first' : 'Sorted earliest first. Switch to latest first'}
+              aria-label={newestFirst ? t('Sorted latest first. Switch to earliest first') : t('Sorted earliest first. Switch to latest first')}
             >
               <Icon name={newestFirst ? 'trendDown' : 'trendUp'} size={15} />
-              {newestFirst ? 'Latest first' : 'Earliest first'}
+              {newestFirst ? t('Latest first') : t('Earliest first')}
             </button>
           </div>
-          <FilterTabs tabs={tabs} value={status} onChange={setStatus} label="Filter by status" />
+          <FilterTabs tabs={tabs} value={status} onChange={setStatus} label={t('Filter by status')} />
         </div>
 
         {rows.length === 0 ? (
           <EmptyState
             icon="search"
-            title="No bookings match"
-            description="Try a different search, date range or status."
+            title={t('No bookings match')}
+            description={t('Try a different search, date range or status.')}
             action={
               <button onClick={clearFilters} className="admin-btn-secondary" style={buttonSecondary}>
-                Clear filters
+                {t('Clear filters')}
               </button>
             }
           />
@@ -171,19 +172,19 @@ export default function BookingsView() {
             <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 900 }}>
               <thead>
                 <tr>
-                  <th style={th}>Booking</th>
-                  <th style={th}>Customer</th>
-                  <th style={th}>Route</th>
-                  <th style={th}>Scheduled</th>
-                  <th style={th}>Driver</th>
-                  <th style={{ ...th, textAlign: 'right' }}>Amount</th>
-                  <th style={th}>Status</th>
-                  <th style={{ ...th, width: 36 }}><span className="sr-only">Open</span></th>
+                  <th style={th}>{t('Booking')}</th>
+                  <th style={th}>{t('Customer')}</th>
+                  <th style={th}>{t('Route')}</th>
+                  <th style={th}>{t('Scheduled')}</th>
+                  <th style={th}>{t('Driver')}</th>
+                  <th style={{ ...th, textAlign: 'right' }}>{t('Amount')}</th>
+                  <th style={th}>{t('Status')}</th>
+                  <th style={{ ...th, width: 36 }}><span className="sr-only">{t('Open')}</span></th>
                 </tr>
               </thead>
               <tbody>
                 {rows.map((b) => (
-                  <BookingRow key={b.id} booking={b} driverName={b.driverId ? drivers.get(b.driverId)?.name ?? 'Removed driver' : undefined} />
+                  <BookingRow key={b.id} booking={b} driverName={b.driverId ? drivers.get(b.driverId)?.name ?? t('Removed driver') : undefined} />
                 ))}
               </tbody>
             </table>
@@ -191,14 +192,14 @@ export default function BookingsView() {
         ) : (
           <ul style={{ listStyle: 'none', margin: 0, padding: 0 }}>
             {rows.map((b) => (
-              <BookingCard key={b.id} booking={b} driverName={b.driverId ? drivers.get(b.driverId)?.name ?? 'Removed driver' : undefined} />
+              <BookingCard key={b.id} booking={b} driverName={b.driverId ? drivers.get(b.driverId)?.name ?? t('Removed driver') : undefined} />
             ))}
           </ul>
         )}
 
         {rows.length > 0 && (
           <div style={{ padding: '12px 16px', borderTop: '1px solid var(--admin-hairline)', fontFamily: 'var(--font-body)', fontSize: 12.5, color: 'var(--admin-text-muted)' }}>
-            Showing {rows.length} of {plural(state.bookings.length, 'booking')}
+            {tf('Showing {shown} of {total}', { shown: rows.length, total: plural(state.bookings.length, 'booking') })}
           </div>
         )}
       </section>
@@ -220,7 +221,7 @@ function BookingRow({ booking: b, driverName }: { booking: Booking; driverName?:
       tabIndex={0}
       onClick={() => adminActions.openBooking(b.id)}
       onKeyDown={(e) => openOnKey(e, b.id)}
-      aria-label={`Open booking ${b.id} for ${b.customerName}`}
+      aria-label={tf('Open booking {id} for {name}', { id: b.id, name: b.customerName })}
     >
       <td style={td}>
         <span style={{ ...cellPrimary, ...tabular }}>{b.id}</span>
@@ -232,7 +233,7 @@ function BookingRow({ booking: b, driverName }: { booking: Booking; driverName?:
       </td>
       <td style={{ ...td, maxWidth: 260 }}>
         <span style={{ display: 'block', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: '#FFFFFF' }}>{b.pickup}</span>
-        <span style={{ ...cellSecondary, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>to {b.destination}</span>
+        <span style={{ ...cellSecondary, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{tf('to {place}', { place: b.destination })}</span>
       </td>
       <td style={{ ...td, whiteSpace: 'nowrap' }}>
         <span style={{ ...cellPrimary, ...tabular }}>{formatTime(b.scheduledAt)}</span>
@@ -242,7 +243,7 @@ function BookingRow({ booking: b, driverName }: { booking: Booking; driverName?:
         {driverName ? (
           <span style={{ color: '#FFFFFF' }}>{driverName}</span>
         ) : (
-          <span style={{ color: 'var(--admin-text-muted)', fontStyle: 'italic' }}>Unassigned</span>
+          <span style={{ color: 'var(--admin-text-muted)', fontStyle: 'italic' }}>{t('Unassigned')}</span>
         )}
       </td>
       <td style={{ ...td, textAlign: 'right', whiteSpace: 'nowrap', color: '#FFFFFF', fontWeight: 600, ...tabular }}>{formatETB(b.amount)}</td>
@@ -280,12 +281,12 @@ function BookingCard({ booking: b, driverName }: { booking: Booking; driverName?
         </span>
         <span style={{ display: 'block', fontSize: 14.5, fontWeight: 600, color: '#FFFFFF', marginTop: 8 }}>{b.customerName}</span>
         <span style={{ display: 'block', fontSize: 12.5, color: 'var(--admin-text-muted)', marginTop: 2 }}>
-          {serviceLabel(b.serviceId)} · {b.pickup} to {b.destination}
+          {serviceLabel(b.serviceId)} · {tf('{from} to {to}', { from: b.pickup, to: b.destination })}
         </span>
         <span style={{ display: 'flex', justifyContent: 'space-between', gap: 10, marginTop: 10, fontSize: 12.5 }}>
           <span style={{ color: 'rgba(255,255,255,0.8)', ...tabular }}>
             {formatDate(b.scheduledAt)}, {formatTime(b.scheduledAt)}
-            <span style={{ color: 'var(--admin-text-muted)' }}> · {driverName ?? 'Unassigned'}</span>
+            <span style={{ color: 'var(--admin-text-muted)' }}> · {driverName ?? t('Unassigned')}</span>
           </span>
           <span style={{ fontWeight: 700, color: '#FFFFFF', whiteSpace: 'nowrap', ...tabular }}>{formatETB(b.amount)}</span>
         </span>

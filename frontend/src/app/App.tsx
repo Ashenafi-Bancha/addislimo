@@ -1,7 +1,6 @@
+import { lazy, Suspense } from 'react'
 import SiteLayout from '@/components/layout/SiteLayout'
 import About from '@/pages/About'
-import AdminDashboard from '@/pages/AdminDashboard'
-import AdminLogin from '@/pages/AdminLogin'
 import AirportTransfer from '@/pages/AirportTransfer'
 import Booking from '@/pages/Booking'
 import Confirmation from '@/pages/Confirmation'
@@ -16,6 +15,10 @@ import { routes, type Page } from './routes'
 
 /** `null` is allowed so a guarded page can render nothing while it redirects. */
 type PageComponent = (props: { navigate: (page: Page) => void }) => React.ReactElement | null
+
+// The operations console is staff-only, so visitors never download it.
+const AdminDashboard = lazy(() => import('@/pages/AdminDashboard')) as unknown as PageComponent
+const AdminLogin = lazy(() => import('@/pages/AdminLogin')) as unknown as PageComponent
 
 /**
  * Every page id maps to exactly one component. `routes.ts` decides the URL and
@@ -52,7 +55,9 @@ export default function App() {
 
   return (
     <SiteLayout chrome={routes[page].chrome} page={page} navigate={navigate}>
-      <Page navigate={navigate} />
+      <Suspense fallback={null}>
+        <Page navigate={navigate} />
+      </Suspense>
     </SiteLayout>
   )
 }

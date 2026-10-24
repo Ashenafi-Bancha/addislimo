@@ -19,6 +19,7 @@ import RowActions from '../ui/RowActions'
 import StatusBadge from '../ui/StatusBadge'
 import { buttonDanger, buttonGhost, buttonPrimary, fieldLabel, input, select, tabular } from '../ui/styles'
 import BookingDetailsForm from './forms/BookingDetailsForm'
+import { t, tf } from '@/features/i18n'
 
 /** Statuses that describe a trip someone is already driving or about to. */
 const NEEDS_DRIVER: ReadonlySet<BookingStatus> = new Set(['Assigned', 'Driver En Route', 'In Progress'])
@@ -32,9 +33,9 @@ export default function BookingDrawer() {
     <Drawer
       open={booking !== null}
       onClose={adminActions.closeBooking}
-      label={booking ? `Booking ${booking.id}` : 'Booking'}
+      label={booking ? tf('Booking {id}', { id: booking.id }) : t('Booking')}
       title={booking ? booking.id : ''}
-      subtitle={booking ? `${serviceLabel(booking.serviceId)} · booked ${timeAgo(booking.createdAt)}` : undefined}
+      subtitle={booking ? `${serviceLabel(booking.serviceId)} · ${tf('booked {when}', { when: timeAgo(booking.createdAt) })}` : undefined}
       footer={null}
     >
       {/* Keyed so each booking starts from its own saved values. */}
@@ -55,7 +56,7 @@ function BookingEditor({ booking }: { booking: Booking }) {
 
   const confirmDelete = () => {
     adminActions.deleteBooking(booking.id)
-    notify(`${booking.id} deleted`, 'critical')
+    notify(tf('{name} deleted', { name: booking.id }), 'critical')
   }
 
   return (
@@ -115,7 +116,7 @@ function DispatchEditor({ booking, onEditDetails, onDelete }: { booking: Booking
       notes: notes.trim() || undefined,
     })
     notify(
-      autoAssign ? `${booking.id} saved and moved to Assigned` : `${booking.id} saved`,
+      autoAssign ? tf('{name} saved and moved to Assigned', { name: booking.id }) : tf('{name} saved', { name: booking.id }),
       'good',
     )
     adminActions.closeBooking()
@@ -123,7 +124,7 @@ function DispatchEditor({ booking, onEditDetails, onDelete }: { booking: Booking
 
   const cancel = () => {
     adminActions.updateBooking(booking.id, { status: 'Cancelled' })
-    notify(`${booking.id} cancelled`, 'critical')
+    notify(tf('{name} cancelled', { name: booking.id }), 'critical')
     adminActions.closeBooking()
   }
 
@@ -136,33 +137,33 @@ function DispatchEditor({ booking, onEditDetails, onDelete }: { booking: Booking
           <span style={{ fontFamily: 'var(--font-body)', fontSize: 20, fontWeight: 700, color: '#FFFFFF', ...tabular }}>
             {formatETB(booking.amount)}
           </span>
-          <RowActions label={`booking ${booking.id}`} onEdit={onEditDetails} onDelete={onDelete} />
+          <RowActions label={tf('booking {id}', { id: booking.id })} onEdit={onEditDetails} onDelete={onDelete} />
         </span>
       </div>
 
-      <Section title="Schedule">
-        <Fact icon="clock" label="Pickup" value={formatSchedule(booking.scheduledAt)} />
-        <Fact icon="users" label="Passengers" value={String(booking.passengers)} />
+      <Section title={t('Schedule')}>
+        <Fact icon="clock" label={t('Pickup')} value={formatSchedule(booking.scheduledAt)} />
+        <Fact icon="users" label={t('Passengers')} value={String(booking.passengers)} />
       </Section>
 
-      <Section title="Route">
+      <Section title={t('Route')}>
         <div style={{ position: 'relative', paddingLeft: 26 }}>
           <span aria-hidden="true" style={{ position: 'absolute', left: 8, top: 12, bottom: 12, width: 1, background: 'linear-gradient(to bottom, rgba(255,255,255,0.5), rgba(255,255,255,0.12))' }} />
-          <RoutePoint icon="pin" label="Pickup" value={booking.pickup} />
-          <RoutePoint icon="flag" label="Destination" value={booking.destination} />
+          <RoutePoint icon="pin" label={t('Pickup')} value={booking.pickup} />
+          <RoutePoint icon="flag" label={t('Destination')} value={booking.destination} />
         </div>
       </Section>
 
-      <Section title="Customer">
-        <Fact icon="user" label="Name" value={booking.customerName} />
-        <Fact icon="phone" label="Phone" value={<a href={`tel:${booking.customerPhone.replace(/\s/g, '')}`} style={linkStyle}>{booking.customerPhone}</a>} />
-        <Fact icon="mail" label="Email" value={<a href={`mailto:${booking.customerEmail}`} style={linkStyle}>{booking.customerEmail}</a>} />
+      <Section title={t('Customer')}>
+        <Fact icon="user" label={t('Name')} value={booking.customerName} />
+        <Fact icon="phone" label={t('Phone')} value={<a href={`tel:${booking.customerPhone.replace(/\s/g, '')}`} style={linkStyle}>{booking.customerPhone}</a>} />
+        <Fact icon="mail" label={t('Email')} value={<a href={`mailto:${booking.customerEmail}`} style={linkStyle}>{booking.customerEmail}</a>} />
       </Section>
 
-      <Section title="Dispatch">
+      <Section title={t('Dispatch')}>
         <Fact
           icon="partners"
-          label="Partner"
+          label={t('Partner')}
           value={
             partner ? (
               <>
@@ -175,17 +176,17 @@ function DispatchEditor({ booking, onEditDetails, onDelete }: { booking: Booking
                 </a>
               </>
             ) : (
-              'Unknown partner'
+              t('Unknown partner')
             )
           }
         />
 
         <div style={{ display: 'grid', gap: 14, marginTop: 14 }}>
           <div>
-            <label htmlFor="bd-driver" style={fieldLabel}>Driver</label>
+            <label htmlFor="bd-driver" style={fieldLabel}>{t('Driver')}</label>
             <select id="bd-driver" value={driverId} onChange={(e) => setDriverId(e.target.value)} disabled={closed} style={select}>
-              <option value="">Unassigned</option>
-              {driverId && !drivers.some((d) => d.id === driverId) && <option value={driverId}>Removed driver</option>}
+              <option value="">{t('Unassigned')}</option>
+              {driverId && !drivers.some((d) => d.id === driverId) && <option value={driverId}>{t('Removed driver')}</option>}
               {drivers.map((d) => {
                 const s = driverState.get(d.id)
                 const busyElsewhere = s === 'On Trip' && d.id !== booking.driverId
@@ -197,15 +198,15 @@ function DispatchEditor({ booking, onEditDetails, onDelete }: { booking: Booking
               })}
             </select>
             {autoAssign && (
-              <p style={hintStyle}>Saving will move this booking to Assigned.</p>
+              <p style={hintStyle}>{t('Saving will move this booking to Assigned.')}</p>
             )}
           </div>
 
           <div>
-            <label htmlFor="bd-vehicle" style={fieldLabel}>Vehicle</label>
+            <label htmlFor="bd-vehicle" style={fieldLabel}>{t('Vehicle')}</label>
             <select id="bd-vehicle" value={vehicleId} onChange={(e) => setVehicleId(e.target.value)} disabled={closed} style={select}>
-              <option value="">Unassigned</option>
-              {vehicleId && !vehicles.some((v) => v.id === vehicleId) && <option value={vehicleId}>Removed vehicle</option>}
+              <option value="">{t('Unassigned')}</option>
+              {vehicleId && !vehicles.some((v) => v.id === vehicleId) && <option value={vehicleId}>{t('Removed vehicle')}</option>}
               {vehicles.map((v) => {
                 const s = vehicleState.get(v.id)
                 return (
@@ -215,11 +216,11 @@ function DispatchEditor({ booking, onEditDetails, onDelete }: { booking: Booking
                 )
               })}
             </select>
-            {missingVehicle && <p style={hintStyle}>Choose the vehicle this driver will use.</p>}
+            {missingVehicle && <p style={hintStyle}>{t('Choose the vehicle this driver will use.')}</p>}
           </div>
 
           <div>
-            <label htmlFor="bd-status" style={fieldLabel}>Status</label>
+            <label htmlFor="bd-status" style={fieldLabel}>{t('Status')}</label>
             <select id="bd-status" value={status} onChange={(e) => setStatus(e.target.value as BookingStatus)} disabled={closed} style={select}>
               {BOOKING_STATUSES.filter((s) => s !== 'Cancelled').map((s) => (
                 <option key={s} value={s}>{s}</option>
@@ -228,24 +229,24 @@ function DispatchEditor({ booking, onEditDetails, onDelete }: { booking: Booking
             {missingDriver && (
               <p role="alert" style={{ ...hintStyle, color: '#FFFFFF', display: 'flex', alignItems: 'center', gap: 6 }}>
                 <Icon name="alert" size={13} style={{ color: 'var(--status-warning)' }} />
-                Assign a driver before marking it {finalStatus}.
+                {tf('Assign a driver before marking it {status}.', { status: t(finalStatus) })}
               </p>
             )}
           </div>
         </div>
       </Section>
 
-      <Section title="Payment">
-        <Row label="Booking value" value={formatETB(booking.amount)} />
-        <Row label={`Addis Limo commission (${rate}%)`} value={formatETB(booking.commission)} />
-        <Row label={`Payout to ${partner?.name ?? 'partner'}`} value={formatETB(booking.amount - booking.commission)} strong />
+      <Section title={t('Payment')}>
+        <Row label={t('Booking value')} value={formatETB(booking.amount)} />
+        <Row label={tf('Addis Limo commission ({rate}%)', { rate })} value={formatETB(booking.commission)} />
+        <Row label={tf('Payout to {name}', { name: partner?.name ?? t('partner') })} value={formatETB(booking.amount - booking.commission)} strong />
       </Section>
 
-      <Section title="Notes">
+      <Section title={t('Notes')}>
         <textarea
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
-          placeholder="Instructions for dispatch or the driver"
+          placeholder={t('Instructions for dispatch or the driver')}
           rows={3}
           style={{ ...input, height: 'auto', padding: '10px 12px', lineHeight: 1.5, resize: 'vertical' }}
         />
@@ -270,24 +271,24 @@ function DispatchEditor({ booking, onEditDetails, onDelete }: { booking: Booking
         {confirmingCancel ? (
           <>
             <p className="admin-action-note" style={{ flex: '1 1 100%', margin: '0 0 4px', fontFamily: 'var(--font-body)', fontSize: 13, color: 'rgba(255,255,255,0.85)' }}>
-              Cancel {booking.id}? The customer is not notified automatically.
+              {tf('Cancel {id}? The customer is not notified automatically.', { id: booking.id })}
             </p>
-            <button onClick={() => setConfirmingCancel(false)} className="admin-btn-ghost admin-action-secondary" style={buttonGhost}>Keep booking</button>
+            <button onClick={() => setConfirmingCancel(false)} className="admin-btn-ghost admin-action-secondary" style={buttonGhost}>{t('Keep booking')}</button>
             <div className="admin-action-spacer" style={{ flex: 1 }} />
-            <button onClick={cancel} className="admin-btn-danger admin-action-primary" style={buttonDanger}>Yes, cancel booking</button>
+            <button onClick={cancel} className="admin-btn-danger admin-action-primary" style={buttonDanger}>{t('Yes, cancel booking')}</button>
           </>
         ) : (
           <>
             {!closed && (
               <button onClick={() => setConfirmingCancel(true)} className="admin-btn-danger admin-action-secondary" style={buttonDanger}>
-                Cancel booking
+                {t('Cancel booking')}
               </button>
             )}
             <div className="admin-action-spacer" style={{ flex: 1 }} />
-            <button onClick={adminActions.closeBooking} className="admin-btn-ghost admin-action-secondary" style={buttonGhost}>Close</button>
+            <button onClick={adminActions.closeBooking} className="admin-btn-ghost admin-action-secondary" style={buttonGhost}>{t('Close')}</button>
             {!closed && (
               <button onClick={save} disabled={!dirty || missingDriver || missingVehicle} className="admin-btn admin-action-primary" style={buttonPrimary}>
-                Save changes
+                {t('Save changes')}
               </button>
             )}
           </>
