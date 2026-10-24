@@ -1,6 +1,7 @@
 import type { MouseEvent } from 'react'
 import Icon from './Icon'
 import { iconButton } from './styles'
+import { t, tf } from '@/features/i18n'
 
 interface RowActionsProps {
   /** Names the record, so screen readers hear "Edit Elite Cars". */
@@ -24,7 +25,7 @@ export default function RowActions({ label, onEdit, onDelete }: RowActionsProps)
   return (
     <span style={{ display: 'inline-flex', gap: 6 }} onKeyDown={(e) => e.stopPropagation()}>
       {onEdit && (
-        <button type="button" onClick={run(onEdit)} aria-label={`Edit ${label}`} title="Edit" className="admin-icon-btn" style={small}>
+        <button type="button" onClick={run(onEdit)} aria-label={tf('Edit {name}', { name: label })} title={t('Edit')} className="admin-icon-btn" style={small}>
           <Icon name="edit" size={15} />
         </button>
       )}
@@ -32,8 +33,8 @@ export default function RowActions({ label, onEdit, onDelete }: RowActionsProps)
         <button
           type="button"
           onClick={run(onDelete)}
-          aria-label={`Delete ${label}`}
-          title="Delete"
+          aria-label={tf('Delete {name}', { name: label })}
+          title={t('Delete')}
           className="admin-icon-btn-danger"
           style={{ ...small, borderColor: 'rgba(208,59,59,0.35)' }}
         >

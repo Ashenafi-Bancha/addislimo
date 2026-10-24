@@ -1,3 +1,4 @@
+import { t } from '@/features/i18n'
 import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import type { AdminConsolePage, Page } from '@/app/routes'
 import { useMediaQuery } from '@/hooks'
@@ -93,7 +94,7 @@ export default function AdminShell({ current, navigate, session, onSignOut, chil
           onOpenMenu={compact ? () => setMenuOpen(true) : undefined}
           compact={compact}
           attention={attention}
-          sectionLabel={sectionForPage(current).label}
+          sectionLabel={t(sectionForPage(current).label)}
         />
         <div
           className="admin-content"

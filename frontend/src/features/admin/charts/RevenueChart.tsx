@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { useElementWidth } from '@/hooks'
-import { formatCompact, formatETB } from '../format'
+import { formatCompact, formatETB, locale, plural } from '../format'
 import type { DailyRevenue } from '../selectors'
+import { t, tf } from '@/features/i18n'
 
 interface RevenueChartProps {
   data: DailyRevenue[]
@@ -39,8 +40,8 @@ function columnPath(x: number, y: number, w: number, h: number): string {
   return `M${x},${y + h}V${y + r}Q${x},${y} ${x + r},${y}H${x + w - r}Q${x + w},${y} ${x + w},${y + r}V${y + h}Z`
 }
 
-const dayLabel = (d: Date) => d.toLocaleDateString('en-GB', { day: 'numeric' })
-const longDate = (d: Date) => d.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' })
+const dayLabel = (d: Date) => d.toLocaleDateString(locale(), { day: 'numeric' })
+const longDate = (d: Date) => d.toLocaleDateString(locale(), { weekday: 'long', day: 'numeric', month: 'long' })
 
 export default function RevenueChart({ data, height = 240 }: RevenueChartProps) {
   const [ref, width] = useElementWidth<HTMLDivElement>()
@@ -68,7 +69,7 @@ export default function RevenueChart({ data, height = 240 }: RevenueChartProps) 
   return (
     <div ref={ref} style={{ position: 'relative', width: '100%', height }} onMouseLeave={() => setActive(null)}>
       {width > 0 && (
-        <svg width={width} height={height} role="img" aria-label="Revenue from completed trips per day, last 14 days" style={{ display: 'block', overflow: 'visible' }}>
+        <svg width={width} height={height} role="img" aria-label={t('Revenue from completed trips per day, last 14 days')} style={{ display: 'block', overflow: 'visible' }}>
           {/* Grid and y-axis */}
           {ticks.map((t) => (
             <g key={t}>
@@ -124,7 +125,7 @@ export default function RevenueChart({ data, height = 240 }: RevenueChartProps) 
                       fill: d.isToday ? '#FFFFFF' : 'rgba(255,255,255,0.45)',
                     }}
                   >
-                    {d.isToday ? 'Today' : dayLabel(d.date)}
+                    {d.isToday ? t('Today') : dayLabel(d.date)}
                   </text>
                 )}
 
@@ -136,7 +137,7 @@ export default function RevenueChart({ data, height = 240 }: RevenueChartProps) 
                   height={plotH}
                   fill="transparent"
                   tabIndex={0}
-                  aria-label={`${longDate(d.date)}: ${formatETB(d.revenue)} from ${d.trips} trip${d.trips === 1 ? '' : 's'}`}
+                  aria-label={tf('{date}: {amount} from {trips}', { date: longDate(d.date), amount: formatETB(d.revenue), trips: plural(d.trips, 'trip') })}
                   onMouseEnter={() => setActive(i)}
                   onFocus={() => setActive(i)}
                   onBlur={() => setActive(null)}
@@ -167,25 +168,25 @@ export default function RevenueChart({ data, height = 240 }: RevenueChartProps) 
           }}
         >
           <div style={{ fontSize: 11.5, color: 'rgba(255,255,255,0.6)' }}>
-            {tip.isToday ? 'Today so far' : longDate(tip.date)}
+            {tip.isToday ? t('Today so far') : longDate(tip.date)}
           </div>
           <div style={{ fontSize: 15, fontWeight: 700, color: '#FFFFFF', marginTop: 2, fontVariantNumeric: 'tabular-nums' }}>
             {formatETB(tip.revenue)}
           </div>
           <div style={{ fontSize: 11.5, color: 'rgba(255,255,255,0.6)', marginTop: 1 }}>
-            {tip.trips} completed trip{tip.trips === 1 ? '' : 's'}
+            {plural(tip.trips, 'completed trip')}
           </div>
         </div>
       )}
 
       {/* The same numbers as a table, for screen readers. */}
       <table className="sr-only">
-        <caption>Revenue from completed trips per day</caption>
+        <caption>{t('Revenue from completed trips per day')}</caption>
         <thead>
           <tr>
-            <th scope="col">Day</th>
-            <th scope="col">Revenue</th>
-            <th scope="col">Trips</th>
+            <th scope="col">{t('Day')}</th>
+            <th scope="col">{t('Revenue')}</th>
+            <th scope="col">{t('Trips')}</th>
           </tr>
         </thead>
         <tbody>

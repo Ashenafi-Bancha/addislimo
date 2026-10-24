@@ -1,5 +1,6 @@
 import type { StatusGlyph, StatusMeta } from '../status'
 import { toneColor } from '../status'
+import { t } from '@/features/i18n'
 
 interface StatusBadgeProps {
   label: string
@@ -37,7 +38,7 @@ export default function StatusBadge({ label, meta, size = 'md' }: StatusBadgePro
       }}
     >
       <Glyph glyph={meta.glyph} color={color} size={small ? 10 : 11} />
-      {label}
+      {t(label)}
     </span>
   )
 }

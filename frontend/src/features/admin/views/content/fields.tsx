@@ -4,6 +4,7 @@ import { blankItem, type FieldSpec } from '@/features/cms/schema'
 import Field, { formGrid, textarea } from '../../ui/Field'
 import Icon from '../../ui/Icon'
 import { buttonSecondary, iconButton, input, select } from '../../ui/styles'
+import { t, tf } from '@/features/i18n'
 
 /**
  * Inputs for every field type in the content schema. Each takes a value and
@@ -21,7 +22,7 @@ export function ItemFields({ fields, value, onChange, idPrefix }: { fields: Fiel
         const id = `${idPrefix}-${f.key}`
         const wide = f.full || f.type === 'objectList' || f.type === 'stringList' || f.type === 'image'
         return (
-          <Field key={f.key} label={f.label} htmlFor={id} hint={f.hint} style={wide ? { gridColumn: '1 / -1' } : undefined}>
+          <Field key={f.key} label={t(f.label)} htmlFor={id} hint={f.hint && t(f.hint)} style={wide ? { gridColumn: '1 / -1' } : undefined}>
             <FieldInput id={id} spec={f} value={value[f.key]} onChange={(v) => onChange({ ...value, [f.key]: v })} />
           </Field>
         )
@@ -47,7 +48,7 @@ function FieldInput({ id, spec, value, onChange }: { id: string; spec: FieldSpec
     case 'select':
       return (
         <select id={id} value={String(value ?? '')} onChange={(e) => onChange(e.target.value)} style={select}>
-          {spec.options?.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+          {spec.options?.map((o) => <option key={o.value} value={o.value}>{t(o.label)}</option>)}
         </select>
       )
     case 'image':
@@ -78,10 +79,13 @@ function ImageInput({ id, value, onChange }: { id: string; value: string; onChan
       const prepared = await prepareImage(file)
       onChange(prepared.dataUrl)
       setBroken(false)
-      const shrunk = prepared.bytes < prepared.originalBytes ? `, resized from ${formatBytes(prepared.originalBytes)} to ${formatBytes(prepared.bytes)}` : ''
-      setMessage({ tone: 'good', text: `${file.name} added${shrunk}. Press Save to publish it.` })
+      const text =
+        prepared.bytes < prepared.originalBytes
+          ? tf('{file} added, resized from {from} to {to}. Press Save to publish it.', { file: file.name, from: formatBytes(prepared.originalBytes), to: formatBytes(prepared.bytes) })
+          : tf('{file} added. Press Save to publish it.', { file: file.name })
+      setMessage({ tone: 'good', text })
     } catch (error) {
-      setMessage({ tone: 'critical', text: error instanceof Error ? error.message : 'That image could not be used.' })
+      setMessage({ tone: 'critical', text: error instanceof Error ? t(error.message) : t('That image could not be used.') })
     } finally {
       setBusy(false)
     }
@@ -115,30 +119,30 @@ function ImageInput({ id, value, onChange }: { id: string; value: string; onChan
         <div style={{ flex: '1 1 220px', minWidth: 0, display: 'grid', gap: 8 }}>
           <input
             id={id}
-            value={isUpload ? 'Uploaded image' : value}
+            value={isUpload ? t('Uploaded image') : value}
             readOnly={isUpload}
             onChange={(e) => {
               setBroken(false)
               onChange(e.target.value)
             }}
-            placeholder="Paste an image link, or upload"
+            placeholder={t('Paste an image link, or upload')}
             style={{ ...input, color: isUpload ? 'var(--admin-text-muted)' : '#FFFFFF' }}
           />
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
             <label className="admin-btn-secondary" style={{ ...buttonSecondary, height: 34, fontSize: 12.5, opacity: busy ? 0.6 : 1 }}>
               <Icon name="upload" size={15} />
-              {busy ? 'Preparing…' : 'Upload'}
+              {busy ? t('Preparing…') : t('Upload')}
               <input type="file" accept="image/*" onChange={upload} disabled={busy} style={srOnly} />
             </label>
             {value && (
               <button type="button" onClick={() => onChange('')} className="admin-btn-ghost" style={{ ...buttonSecondary, height: 34, fontSize: 12.5, background: 'transparent' }}>
-                Remove
+                {t('Remove')}
               </button>
             )}
           </div>
         </div>
       </div>
-      {broken && value && !isUpload && <p style={{ ...note, color: '#FFFFFF' }}>That link does not load an image. Check the address.</p>}
+      {broken && value && !isUpload && <p style={{ ...note, color: '#FFFFFF' }}>{t('That link does not load an image. Check the address.')}</p>}
       {message && (
         <p role="status" style={{ ...note, color: '#FFFFFF' }}>
           <span aria-hidden="true" style={{ color: message.tone === 'good' ? 'var(--status-good)' : 'var(--status-critical)', marginRight: 6 }}>●</span>
@@ -166,16 +170,16 @@ function StringList({ id, value, onChange }: { id: string; value: string[]; onCh
         <div key={i} style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
           <input
             id={i === 0 ? id : undefined}
-            aria-label={`Item ${i + 1}`}
+            aria-label={tf('Item {n}', { n: i + 1 })}
             value={item}
             onChange={(e) => onChange(value.map((x, j) => (j === i ? e.target.value : x)))}
             style={{ ...input, flex: 1, minWidth: 0 }}
           />
           <OrderButtons index={i} length={value.length} onMove={(to) => onChange(move(value, i, to))} />
-          <SmallIconButton label={`Remove item ${i + 1}`} icon="trash" danger onClick={() => onChange(value.filter((_, j) => j !== i))} />
+          <SmallIconButton label={tf('Remove item {n}', { n: i + 1 })} icon="trash" danger onClick={() => onChange(value.filter((_, j) => j !== i))} />
         </div>
       ))}
-      <AddButton label="Add item" onClick={() => onChange([...value, ''])} />
+      <AddButton label={t('Add item')} onClick={() => onChange([...value, ''])} />
     </div>
   )
 }
@@ -200,11 +204,11 @@ function ObjectList({ id, spec, value, onChange }: { id: string; spec: FieldSpec
               >
                 <Icon name={expanded ? 'chevronDown' : 'chevronRight'} size={15} style={{ color: 'var(--admin-text-muted)' }} />
                 <span style={{ color: 'var(--admin-text-faint)', fontVariantNumeric: 'tabular-nums' }}>{i + 1}.</span>
-                <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{String(item[titleKey] || 'Untitled')}</span>
+                <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{String(item[titleKey] || t('Untitled'))}</span>
               </button>
               <OrderButtons index={i} length={value.length} onMove={(to) => { onChange(move(value, i, to)); setOpen(null) }} />
               <SmallIconButton
-                label={`Remove ${String(item[titleKey] || 'item')}`}
+                label={tf('Remove {name}', { name: String(item[titleKey] || t('item')) })}
                 icon="trash"
                 danger
                 onClick={() => {
@@ -223,7 +227,7 @@ function ObjectList({ id, spec, value, onChange }: { id: string; spec: FieldSpec
         )
       })}
       <AddButton
-        label={`Add to ${spec.label.toLowerCase()}`}
+        label={tf('Add to {name}', { name: t(spec.label) })}
         onClick={() => {
           onChange([...value, blankItem(fields)])
           setOpen(value.length)
@@ -236,8 +240,8 @@ function ObjectList({ id, spec, value, onChange }: { id: string; spec: FieldSpec
 export function OrderButtons({ index, length, onMove }: { index: number; length: number; onMove: (to: number) => void }) {
   return (
     <>
-      <SmallIconButton label="Move up" icon="arrowUp" disabled={index === 0} onClick={() => onMove(index - 1)} />
-      <SmallIconButton label="Move down" icon="arrowDown" disabled={index === length - 1} onClick={() => onMove(index + 1)} />
+      <SmallIconButton label={t('Move up')} icon="arrowUp" disabled={index === 0} onClick={() => onMove(index - 1)} />
+      <SmallIconButton label={t('Move down')} icon="arrowDown" disabled={index === length - 1} onClick={() => onMove(index + 1)} />
     </>
   )
 }

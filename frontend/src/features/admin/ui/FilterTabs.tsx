@@ -1,3 +1,4 @@
+import { t } from '@/features/i18n'
 interface FilterTab<T extends string> {
   id: T
   label: string
@@ -49,7 +50,7 @@ export default function FilterTabs<T extends string>({ tabs, value, onChange, la
               transition: 'background 0.15s, color 0.15s',
             }}
           >
-            {tab.label}
+            {t(tab.label)}
             {typeof tab.count === 'number' && (
               <span
                 style={{

@@ -6,6 +6,7 @@ import Drawer from '../../ui/Drawer'
 import Field, { formGrid } from '../../ui/Field'
 import { buttonGhost, buttonPrimary, input, select } from '../../ui/styles'
 import { isEmail, isPhone } from './validate'
+import { t, tf } from '@/features/i18n'
 
 const partnerTypes: FleetPartner['type'][] = ['Transport Company', 'Vehicle Owner', 'Tour Operator', 'Events Transport']
 const statuses: PartnerStatus[] = ['Active', 'Pending', 'Suspended']
@@ -22,9 +23,9 @@ export default function PartnerForm({ partner, onClose }: PartnerFormProps) {
     <Drawer
       open={open}
       onClose={onClose}
-      label={partner ? `Edit ${partner.name}` : 'Add partner'}
-      title={partner ? 'Edit partner' : 'Add partner'}
-      subtitle={partner ? partner.name : 'A transport company, owner or operator in the network.'}
+      label={partner ? tf('Edit {name}', { name: partner.name }) : t('Add partner')}
+      title={partner ? t('Edit partner') : t('Add partner')}
+      subtitle={partner ? partner.name : t('A transport company, owner or operator in the network.')}
     >
       {open && <PartnerFields key={partner?.id ?? 'new'} partner={partner} onClose={onClose} />}
     </Drawer>
@@ -44,11 +45,11 @@ function PartnerFields({ partner, onClose }: { partner: FleetPartner | null; onC
 
   const rateNumber = Number(rate)
   const errors = {
-    name: name.trim() ? '' : 'Enter the business name.',
-    contactName: contactName.trim() ? '' : 'Enter who to contact.',
-    phone: isPhone(phone) ? '' : 'Enter a phone number, e.g. +251 911 000 000.',
-    email: isEmail(email) ? '' : 'Enter a valid email address.',
-    rate: rate.trim() !== '' && rateNumber >= 0 && rateNumber <= 50 ? '' : 'Enter a percentage from 0 to 50.',
+    name: name.trim() ? '' : t('Enter the business name.'),
+    contactName: contactName.trim() ? '' : t('Enter who to contact.'),
+    phone: isPhone(phone) ? '' : t('Enter a phone number, e.g. +251 911 000 000.'),
+    email: isEmail(email) ? '' : t('Enter a valid email address.'),
+    rate: rate.trim() !== '' && rateNumber >= 0 && rateNumber <= 50 ? '' : t('Enter a percentage from 0 to 50.'),
   }
   const valid = Object.values(errors).every((e) => !e)
   const show = (e: string) => (tried ? e : '')
@@ -70,40 +71,40 @@ function PartnerFields({ partner, onClose }: { partner: FleetPartner | null; onC
       joinedAt: partner?.joinedAt ?? new Date().toISOString(),
     }
     adminActions.savePartner(saved)
-    notify(partner ? `${saved.name} updated` : `${saved.name} added`, 'good')
+    notify(tf(partner ? '{name} updated' : '{name} added', { name: saved.name }), 'good')
     onClose()
   }
 
   return (
     <form onSubmit={submit} noValidate style={{ paddingTop: 16 }}>
       <div className="admin-form-grid" style={formGrid}>
-        <Field label="Business name" htmlFor="pf-name" error={show(errors.name)} style={{ gridColumn: '1 / -1' }}>
+        <Field label={t('Business name')} htmlFor="pf-name" error={show(errors.name)} style={{ gridColumn: '1 / -1' }}>
           <input id="pf-name" value={name} onChange={(e) => setName(e.target.value)} style={input} autoComplete="organization" />
         </Field>
-        <Field label="Type" htmlFor="pf-type">
+        <Field label={t('Type')} htmlFor="pf-type">
           <select id="pf-type" value={type} onChange={(e) => setType(e.target.value as FleetPartner['type'])} style={select}>
-            {partnerTypes.map((t) => <option key={t}>{t}</option>)}
+            {partnerTypes.map((type) => <option key={type} value={type}>{t(type)}</option>)}
           </select>
         </Field>
-        <Field label="Status" htmlFor="pf-status">
+        <Field label={t('Status')} htmlFor="pf-status">
           <select id="pf-status" value={status} onChange={(e) => setStatus(e.target.value as PartnerStatus)} style={select}>
-            {statuses.map((s) => <option key={s}>{s}</option>)}
+            {statuses.map((s) => <option key={s} value={s}>{t(s)}</option>)}
           </select>
         </Field>
-        <Field label="Contact person" htmlFor="pf-contact" error={show(errors.contactName)} style={{ gridColumn: '1 / -1' }}>
+        <Field label={t('Contact person')} htmlFor="pf-contact" error={show(errors.contactName)} style={{ gridColumn: '1 / -1' }}>
           <input id="pf-contact" value={contactName} onChange={(e) => setContactName(e.target.value)} style={input} autoComplete="name" />
         </Field>
-        <Field label="Phone" htmlFor="pf-phone" error={show(errors.phone)}>
+        <Field label={t('Phone')} htmlFor="pf-phone" error={show(errors.phone)}>
           <input id="pf-phone" type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} style={input} autoComplete="tel" />
         </Field>
-        <Field label="Email" htmlFor="pf-email" error={show(errors.email)}>
+        <Field label={t('Email')} htmlFor="pf-email" error={show(errors.email)}>
           <input id="pf-email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} style={input} autoComplete="email" />
         </Field>
         <Field
-          label="Commission"
+          label={t('Commission')}
           htmlFor="pf-rate"
           error={show(errors.rate)}
-          hint="Percentage Addis Limo keeps on each trip. Existing bookings keep the rate they were priced at."
+          hint={t('Percentage Addis Limo keeps on each trip. Existing bookings keep the rate they were priced at.')}
           style={{ gridColumn: '1 / -1' }}
         >
           <div style={{ position: 'relative', maxWidth: 160 }}>
@@ -113,7 +114,7 @@ function PartnerFields({ partner, onClose }: { partner: FleetPartner | null; onC
         </Field>
       </div>
 
-      <FormActions onCancel={onClose} submitLabel={partner ? 'Save changes' : 'Add partner'} />
+      <FormActions onCancel={onClose} submitLabel={partner ? t('Save changes') : t('Add partner')} />
     </form>
   )
 }
@@ -134,7 +135,7 @@ export function FormActions({ onCancel, submitLabel }: { onCancel: () => void; s
         borderTop: '1px solid var(--admin-hairline)',
       }}
     >
-      <button type="button" onClick={onCancel} className="admin-btn-ghost" style={buttonGhost}>Cancel</button>
+      <button type="button" onClick={onCancel} className="admin-btn-ghost" style={buttonGhost}>{t('Cancel')}</button>
       <button type="submit" className="admin-btn" style={buttonPrimary}>{submitLabel}</button>
     </div>
   )

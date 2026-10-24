@@ -1,3 +1,4 @@
+import { t } from '@/features/i18n'
 import { serviceOptions } from '@/features/booking/booking.data'
 import type { Booking, BookingStatus, ServiceId } from '@/types'
 import type {
@@ -54,7 +55,8 @@ export const BOOKING_STATUSES: BookingStatus[] = [
 const serviceLabels = new Map(serviceOptions.map((s) => [s.id, s.label]))
 
 export function serviceLabel(id: ServiceId): string {
-  return serviceLabels.get(id) ?? id
+  const label = serviceLabels.get(id)
+  return label ? t(label) : id
 }
 
 export function indexById<T extends { id: string }>(items: T[]): Map<string, T> {

@@ -1,10 +1,14 @@
+import { getLang, t, tf } from '@/features/i18n'
 import { formatCurrency } from '@/lib/utils'
 import { startOfDay } from './selectors'
 
 /**
  * Formatting for the admin console. Dates use the en-GB day-month order and a
  * 24-hour clock, which is how operations staff in Addis Ababa read a schedule.
+ * In Amharic the same layout uses Amharic day and month names.
  */
+
+export const locale = () => (getLang() === 'am' ? 'am-ET' : 'en-GB')
 
 const DAY = 24 * 60 * 60 * 1000
 
@@ -29,23 +33,23 @@ function trimDecimal(n: number): string {
 }
 
 export function formatTime(iso: string): string {
-  return new Date(iso).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false })
+  return new Date(iso).toLocaleTimeString(locale(), { hour: '2-digit', minute: '2-digit', hour12: false })
 }
 
 export function formatDate(iso: string): string {
-  return new Date(iso).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' })
+  return new Date(iso).toLocaleDateString(locale(), { weekday: 'short', day: 'numeric', month: 'short' })
 }
 
 export function formatLongDate(date: Date = new Date()): string {
-  return date.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
+  return date.toLocaleDateString(locale(), { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
 }
 
 /** "Today", "Tomorrow", "Yesterday", or a short date. */
 export function relativeDay(iso: string, now: Date = new Date()): string {
   const diff = Math.round((startOfDay(new Date(iso)).getTime() - startOfDay(now).getTime()) / DAY)
-  if (diff === 0) return 'Today'
-  if (diff === 1) return 'Tomorrow'
-  if (diff === -1) return 'Yesterday'
+  if (diff === 0) return t('Today')
+  if (diff === 1) return t('Tomorrow')
+  if (diff === -1) return t('Yesterday')
   return formatDate(iso)
 }
 
@@ -55,14 +59,14 @@ export function formatSchedule(iso: string): string {
 
 export function timeAgo(iso: string, now: Date = new Date()): string {
   const minutes = Math.round((now.getTime() - new Date(iso).getTime()) / 60000)
-  if (minutes < 1) return 'just now'
-  if (minutes < 60) return `${minutes} min ago`
+  if (minutes < 1) return t('just now')
+  if (minutes < 60) return tf('{n} min ago', { n: minutes })
   const hours = Math.round(minutes / 60)
-  if (hours < 24) return `${hours} h ago`
+  if (hours < 24) return tf('{n} h ago', { n: hours })
   const days = Math.round(hours / 24)
-  if (days < 30) return `${days} day${days === 1 ? '' : 's'} ago`
+  if (days < 30) return tf(days === 1 ? '{n} day ago' : '{n} days ago', { n: days })
   const months = Math.round(days / 30)
-  return `${months} month${months === 1 ? '' : 's'} ago`
+  return tf(months === 1 ? '{n} month ago' : '{n} months ago', { n: months })
 }
 
 /** `12.4` -> `+12.4%`. */
@@ -71,7 +75,10 @@ export function formatSignedPercent(value: number): string {
   return `${rounded > 0 ? '+' : ''}${rounded}%`
 }
 
-/** `plural(1, 'booking')` is "1 booking"; `plural(3, 'booking')` is "3 bookings". */
+/**
+ * `plural(1, 'booking')` is "1 booking"; `plural(3, 'booking')` is "3 bookings".
+ * The noun goes through `t()`, so both forms need an Amharic entry.
+ */
 export function plural(count: number, one: string, many = `${one}s`): string {
-  return `${count} ${count === 1 ? one : many}`
+  return `${count} ${t(count === 1 ? one : many)}`
 }

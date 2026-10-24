@@ -7,6 +7,7 @@ import Field, { formGrid } from '../../ui/Field'
 import { input, select } from '../../ui/styles'
 import { FormActions } from './PartnerForm'
 import { isEmail, isPhone } from './validate'
+import { t, tf } from '@/features/i18n'
 
 /** ISO timestamp to the `YYYY-MM-DDTHH:mm` a datetime-local input expects, in local time. */
 function toLocalInput(iso: string): string {
@@ -43,14 +44,14 @@ export default function BookingDetailsForm({ booking, onDone }: BookingDetailsFo
   const when = new Date(scheduledAt)
 
   const errors = {
-    customerName: customerName.trim() ? '' : 'Enter the customer’s name.',
-    customerPhone: isPhone(customerPhone) ? '' : 'Enter a phone number.',
-    customerEmail: isEmail(customerEmail) ? '' : 'Enter a valid email address.',
-    pickup: pickup.trim() ? '' : 'Enter the pickup point.',
-    destination: destination.trim() ? '' : 'Enter the destination.',
-    scheduledAt: scheduledAt && !Number.isNaN(when.getTime()) ? '' : 'Choose the pickup date and time.',
-    passengers: Number.isInteger(paxNumber) && paxNumber >= 1 && paxNumber <= 60 ? '' : 'Enter 1 to 60 passengers.',
-    amount: amount.trim() !== '' && amountNumber >= 0 ? '' : 'Enter the price in ETB.',
+    customerName: customerName.trim() ? '' : t('Enter the customer’s name.'),
+    customerPhone: isPhone(customerPhone) ? '' : t('Enter a phone number.'),
+    customerEmail: isEmail(customerEmail) ? '' : t('Enter a valid email address.'),
+    pickup: pickup.trim() ? '' : t('Enter the pickup point.'),
+    destination: destination.trim() ? '' : t('Enter the destination.'),
+    scheduledAt: scheduledAt && !Number.isNaN(when.getTime()) ? '' : t('Choose the pickup date and time.'),
+    passengers: Number.isInteger(paxNumber) && paxNumber >= 1 && paxNumber <= 60 ? '' : t('Enter 1 to 60 passengers.'),
+    amount: amount.trim() !== '' && amountNumber >= 0 ? '' : t('Enter the price in ETB.'),
   }
   const valid = Object.values(errors).every((e) => !e)
   const show = (e: string) => (tried ? e : '')
@@ -71,51 +72,51 @@ export default function BookingDetailsForm({ booking, onDone }: BookingDetailsFo
       amount: amountNumber,
       commission: Math.round(amountNumber * rate),
     })
-    notify(`${booking.id} details saved`, 'good')
+    notify(tf('{name} details saved', { name: booking.id }), 'good')
     onDone()
   }
 
   return (
     <form onSubmit={submit} noValidate style={{ paddingTop: 16 }}>
       <div className="admin-form-grid" style={formGrid}>
-        <Field label="Service" htmlFor="bf-service" style={{ gridColumn: '1 / -1' }}>
+        <Field label={t('Service')} htmlFor="bf-service" style={{ gridColumn: '1 / -1' }}>
           <select id="bf-service" value={serviceId} onChange={(e) => setServiceId(e.target.value as ServiceId)} style={select}>
-            {serviceOptions.map((s) => <option key={s.id} value={s.id}>{s.label}</option>)}
+            {serviceOptions.map((s) => <option key={s.id} value={s.id}>{t(s.label)}</option>)}
           </select>
         </Field>
-        <Field label="Pickup date and time" htmlFor="bf-when" error={show(errors.scheduledAt)}>
+        <Field label={t('Pickup date and time')} htmlFor="bf-when" error={show(errors.scheduledAt)}>
           <input id="bf-when" type="datetime-local" value={scheduledAt} onChange={(e) => setScheduledAt(e.target.value)} style={input} />
         </Field>
-        <Field label="Passengers" htmlFor="bf-pax" error={show(errors.passengers)}>
+        <Field label={t('Passengers')} htmlFor="bf-pax" error={show(errors.passengers)}>
           <input id="bf-pax" type="number" inputMode="numeric" min={1} value={passengers} onChange={(e) => setPassengers(e.target.value)} style={input} />
         </Field>
-        <Field label="Pickup" htmlFor="bf-pickup" error={show(errors.pickup)} style={{ gridColumn: '1 / -1' }}>
+        <Field label={t('Pickup')} htmlFor="bf-pickup" error={show(errors.pickup)} style={{ gridColumn: '1 / -1' }}>
           <input id="bf-pickup" value={pickup} onChange={(e) => setPickup(e.target.value)} style={input} />
         </Field>
-        <Field label="Destination" htmlFor="bf-dest" error={show(errors.destination)} style={{ gridColumn: '1 / -1' }}>
+        <Field label={t('Destination')} htmlFor="bf-dest" error={show(errors.destination)} style={{ gridColumn: '1 / -1' }}>
           <input id="bf-dest" value={destination} onChange={(e) => setDestination(e.target.value)} style={input} />
         </Field>
-        <Field label="Customer name" htmlFor="bf-name" error={show(errors.customerName)} style={{ gridColumn: '1 / -1' }}>
+        <Field label={t('Customer name')} htmlFor="bf-name" error={show(errors.customerName)} style={{ gridColumn: '1 / -1' }}>
           <input id="bf-name" value={customerName} onChange={(e) => setCustomerName(e.target.value)} style={input} />
         </Field>
-        <Field label="Customer phone" htmlFor="bf-phone" error={show(errors.customerPhone)}>
+        <Field label={t('Customer phone')} htmlFor="bf-phone" error={show(errors.customerPhone)}>
           <input id="bf-phone" type="tel" value={customerPhone} onChange={(e) => setCustomerPhone(e.target.value)} style={input} />
         </Field>
-        <Field label="Customer email" htmlFor="bf-email" error={show(errors.customerEmail)}>
+        <Field label={t('Customer email')} htmlFor="bf-email" error={show(errors.customerEmail)}>
           <input id="bf-email" type="email" value={customerEmail} onChange={(e) => setCustomerEmail(e.target.value)} style={input} />
         </Field>
         <Field
-          label="Price (ETB)"
+          label={t('Price (ETB)')}
           htmlFor="bf-amount"
           error={show(errors.amount)}
-          hint={`Commission stays at ${Math.round(rate * 100)}%: ${formatETB(Math.round((amountNumber || 0) * rate))} on this price.`}
+          hint={tf('Commission stays at {rate}%: {amount} on this price.', { rate: Math.round(rate * 100), amount: formatETB(Math.round((amountNumber || 0) * rate)) })}
           style={{ gridColumn: '1 / -1' }}
         >
           <input id="bf-amount" type="number" inputMode="numeric" min={0} step={50} value={amount} onChange={(e) => setAmount(e.target.value)} style={{ ...input, maxWidth: 200 }} />
         </Field>
       </div>
 
-      <FormActions onCancel={onDone} submitLabel="Save details" />
+      <FormActions onCancel={onDone} submitLabel={t('Save details')} />
     </form>
   )
 }

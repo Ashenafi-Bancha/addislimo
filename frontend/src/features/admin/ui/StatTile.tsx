@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 import { formatSignedPercent } from '../format'
 import Icon, { type IconName } from './Icon'
 import { panel } from './styles'
+import { t, tf } from '@/features/i18n'
 
 interface StatTileProps {
   label: string
@@ -103,10 +104,10 @@ export default function StatTile({
                 {down && <Icon name="trendDown" size={13} strokeWidth={2} />}
                 {formatSignedPercent(delta as number)}
               </span>
-              <span className="admin-stat-compared" style={{ color: 'var(--admin-text-faint)' }}>vs {comparedTo}</span>
+              <span className="admin-stat-compared" style={{ color: 'var(--admin-text-faint)' }}>{tf('vs {period}', { period: comparedTo ?? '' })}</span>
             </>
           ) : (
-            <span style={{ color: 'var(--admin-text-faint)' }}>No prior data to compare</span>
+            <span style={{ color: 'var(--admin-text-faint)' }}>{t('No prior data to compare')}</span>
           )}
         </p>
       )}

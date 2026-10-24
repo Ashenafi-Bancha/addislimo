@@ -1,6 +1,7 @@
 import type { CSSProperties, KeyboardEvent } from 'react'
 import Icon from './Icon'
 import { input } from './styles'
+import { t } from '@/features/i18n'
 
 interface SearchFieldProps {
   value: string
@@ -36,7 +37,7 @@ export default function SearchField({ value, onChange, placeholder, onSubmit, st
         <button
           type="button"
           onClick={() => onChange('')}
-          aria-label="Clear search"
+          aria-label={t('Clear search')}
           style={{
             position: 'absolute',
             right: 6,

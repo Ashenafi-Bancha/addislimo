@@ -1,5 +1,4 @@
 import { useSyncExternalStore } from 'react'
-import { am } from './am'
 
 /**
  * The visitor's language. English is the source and the default; Amharic is
@@ -10,6 +9,10 @@ import { am } from './am'
  * subscribes with `useLang`, so a switch re-renders the whole tree (nothing in
  * it is memoised) and every `t()` call picks the new language up, without
  * remounting and losing a half-filled form.
+ *
+ * The Amharic dictionaries are loaded on demand, so English visitors never
+ * download them. Until they arrive the page stays in English; `lang` is the
+ * language actually on screen, not the one asked for.
  */
 
 export type Lang = 'en' | 'am'
@@ -29,28 +32,66 @@ function readStored(): Lang {
   }
 }
 
-let lang: Lang = typeof window === 'undefined' ? 'en' : readStored()
+let wanted: Lang = typeof window === 'undefined' ? 'en' : readStored()
+let lang: Lang = 'en'
+let am: Record<string, string> = {}
+let loading: Promise<void> | null = null
 const listeners = new Set<() => void>()
 
 function apply() {
   if (typeof document !== 'undefined') document.documentElement.lang = lang
+  listeners.forEach((l) => l())
 }
-apply()
+
+function loadAmharic(): Promise<void> {
+  loading ??= Promise.all([import('./am'), import('./am-admin')]).then(
+    ([site, admin]) => {
+      am = { ...admin.amAdmin, ...site.am }
+    },
+    (error) => {
+      loading = null
+      throw error
+    },
+  )
+  return loading
+}
+
+function show(next: Lang) {
+  if (next === 'en') {
+    if (lang !== 'en') {
+      lang = 'en'
+      apply()
+    }
+    return
+  }
+  loadAmharic().then(
+    () => {
+      if (wanted === 'am' && lang !== 'am') {
+        lang = 'am'
+        apply()
+      }
+    },
+    // Offline or a failed deploy: stay in English rather than break the page.
+    () => {},
+  )
+}
+
+if (typeof document !== 'undefined') document.documentElement.lang = 'en'
+show(wanted)
 
 export function getLang(): Lang {
   return lang
 }
 
 export function setLang(next: Lang) {
-  if (next === lang) return
-  lang = next
+  if (next === wanted) return
+  wanted = next
   try {
     window.localStorage.setItem(STORAGE_KEY, next)
   } catch {
     // Private mode or blocked storage: the choice lasts for this visit only.
   }
-  apply()
-  listeners.forEach((l) => l())
+  show(next)
 }
 
 function subscribe(listener: () => void) {

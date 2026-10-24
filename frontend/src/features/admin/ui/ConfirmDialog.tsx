@@ -1,3 +1,4 @@
+import { t } from '@/features/i18n'
 import { useEffect, useRef, type ReactNode } from 'react'
 import Icon from './Icon'
 import { buttonDanger, buttonGhost, buttonPrimary } from './styles'
@@ -27,7 +28,7 @@ export default function ConfirmDialog({
   title,
   children,
   confirmLabel,
-  cancelLabel = 'Cancel',
+  cancelLabel,
   tone = 'danger',
   onConfirm,
   onClose,
@@ -107,7 +108,7 @@ export default function ConfirmDialog({
 
         <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 10, marginTop: 22, flexWrap: 'wrap' }}>
           <button ref={cancelRef} onClick={onClose} className="admin-btn-ghost" style={buttonGhost}>
-            {canConfirm ? cancelLabel : 'OK'}
+            {canConfirm ? (cancelLabel ?? t('Cancel')) : t('OK')}
           </button>
           {canConfirm && (
             <button

@@ -1,6 +1,7 @@
 import { useEffect, useRef, type ReactNode } from 'react'
 import Icon from './Icon'
 import { iconButton } from './styles'
+import { t } from '@/features/i18n'
 
 interface DrawerProps {
   open: boolean
@@ -95,7 +96,7 @@ export default function Drawer({ open, onClose, title, subtitle, children, foote
               </div>
             )}
           </div>
-          <button onClick={onClose} aria-label="Close" style={{ ...iconButton, width: 34, height: 34 }}>
+          <button onClick={onClose} aria-label={t('Close')} style={{ ...iconButton, width: 34, height: 34 }}>
             <Icon name="close" size={16} />
           </button>
         </div>

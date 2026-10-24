@@ -10,6 +10,8 @@ import Icon from '../ui/Icon'
 import SearchField from '../ui/SearchField'
 import { Glyph } from '../ui/StatusBadge'
 import { toneColor } from '../status'
+import LanguageSwitcher from '@/components/ui/LanguageSwitcher'
+import { t, tf } from '@/features/i18n'
 
 interface TopbarProps {
   navigate: (page: Page) => void
@@ -113,7 +115,7 @@ export default function Topbar({ navigate, session, onSignOut, onOpenMenu, compa
       }}
     >
       {onOpenMenu && (
-        <button onClick={onOpenMenu} aria-label="Open menu" className="admin-icon-btn" style={iconBtn}>
+        <button onClick={onOpenMenu} aria-label={t('Open menu')} className="admin-icon-btn" style={iconBtn}>
           <Icon name="menu" size={18} />
         </button>
       )}
@@ -132,8 +134,8 @@ export default function Topbar({ navigate, session, onSignOut, onOpenMenu, compa
           value={query}
           onChange={setQuery}
           onSubmit={submitSearch}
-          placeholder="Search bookings by reference, customer or place"
-          label="Search bookings"
+          placeholder={t('Search bookings by reference, customer or place')}
+          label={t('Search bookings')}
           style={{ width: 'min(420px, 100%)' }}
         />
       )}
@@ -143,7 +145,7 @@ export default function Topbar({ navigate, session, onSignOut, onOpenMenu, compa
       {!compact && (
         <>
           <span
-            title="Changes are kept for this browser session until the booking system is connected."
+            title={t('Changes are kept for this browser session until the booking system is connected.')}
             style={{
               display: 'inline-flex',
               alignItems: 'center',
@@ -160,13 +162,15 @@ export default function Topbar({ navigate, session, onSignOut, onOpenMenu, compa
             }}
           >
             <Icon name="shield" size={13} />
-            Demo data
+            {t('Demo data')}
           </span>
           <span style={{ fontFamily: 'var(--font-body)', fontSize: 12.5, color: 'var(--admin-text-muted)', whiteSpace: 'nowrap' }}>
             {formatLongDate()}
           </span>
         </>
       )}
+
+      {!compact && <LanguageSwitcher compact />}
 
       {/* Notifications */}
       <div ref={bellRef} style={{ position: 'relative' }}>
@@ -175,7 +179,7 @@ export default function Topbar({ navigate, session, onSignOut, onOpenMenu, compa
             setAccountOpen(false)
             setBellOpen((v) => !v)
           }}
-          aria-label={`Notifications, ${attention.length} need attention`}
+          aria-label={tf('Notifications, {n} need attention', { n: attention.length })}
           aria-expanded={bellOpen}
           className="admin-icon-btn"
           style={iconBtn}
@@ -210,9 +214,9 @@ export default function Topbar({ navigate, session, onSignOut, onOpenMenu, compa
         {bellOpen && (
           <div className="admin-pop" style={{ ...popover, width: 360, ...menuPosition }}>
             <div style={{ padding: '14px 16px', borderBottom: '1px solid var(--admin-hairline)' }}>
-              <p style={{ margin: 0, fontFamily: 'var(--font-body)', fontSize: 14, fontWeight: 700, color: '#FFFFFF' }}>Needs attention</p>
+              <p style={{ margin: 0, fontFamily: 'var(--font-body)', fontSize: 14, fontWeight: 700, color: '#FFFFFF' }}>{t('Needs attention')}</p>
               <p style={{ margin: '2px 0 0', fontFamily: 'var(--font-body)', fontSize: 12, color: 'var(--admin-text-muted)' }}>
-                {attention.length === 0 ? 'Nothing waiting on you.' : 'Unconfirmed bookings and trips without a driver.'}
+                {attention.length === 0 ? t('Nothing waiting on you.') : t('Unconfirmed bookings and trips without a driver.')}
               </p>
             </div>
             <div style={{ maxHeight: 320, overflowY: 'auto' }}>
@@ -241,7 +245,7 @@ export default function Topbar({ navigate, session, onSignOut, onOpenMenu, compa
                     </span>
                     <span style={{ minWidth: 0 }}>
                       <span style={{ display: 'block', fontFamily: 'var(--font-body)', fontSize: 13, fontWeight: 600, color: '#FFFFFF' }}>
-                        {pending ? 'Awaiting confirmation' : 'No driver assigned'}
+                        {pending ? t('Awaiting confirmation') : t('No driver assigned')}
                         <span style={{ color: 'var(--admin-text-muted)', fontWeight: 500 }}> · {b.id}</span>
                       </span>
                       <span style={{ display: 'block', fontFamily: 'var(--font-body)', fontSize: 12, color: 'var(--admin-text-muted)', marginTop: 2 }}>
@@ -270,7 +274,7 @@ export default function Topbar({ navigate, session, onSignOut, onOpenMenu, compa
                 textAlign: 'center',
               }}
             >
-              View all bookings
+              {t('View all bookings')}
             </button>
           </div>
         )}
@@ -283,7 +287,7 @@ export default function Topbar({ navigate, session, onSignOut, onOpenMenu, compa
             setBellOpen(false)
             setAccountOpen((v) => !v)
           }}
-          aria-label="Account menu"
+          aria-label={t('Account menu')}
           aria-expanded={accountOpen}
           style={{
             width: 38,
@@ -309,7 +313,7 @@ export default function Topbar({ navigate, session, onSignOut, onOpenMenu, compa
               <p style={{ margin: 0, fontFamily: 'var(--font-body)', fontSize: 13.5, fontWeight: 700, color: '#FFFFFF' }}>{session.name}</p>
               <p style={{ margin: '2px 0 0', fontFamily: 'var(--font-body)', fontSize: 12, color: 'var(--admin-text-muted)' }}>{session.email}</p>
               <p style={{ margin: '6px 0 0', fontFamily: 'var(--font-body)', fontSize: 11, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--admin-text-faint)' }}>
-                {session.role}
+                {t(session.role)}
               </p>
             </div>
             {[
@@ -340,7 +344,7 @@ export default function Topbar({ navigate, session, onSignOut, onOpenMenu, compa
                 }}
               >
                 <Icon name={item.icon} size={16} />
-                {item.label}
+                {t(item.label)}
               </button>
             ))}
           </div>

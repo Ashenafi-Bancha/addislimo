@@ -3,7 +3,7 @@ import type { Page } from '@/app/routes'
 import { useMediaQuery } from '@/hooks'
 import type { Booking } from '@/types'
 import RevenueChart from '../charts/RevenueChart'
-import { formatCompactETB, formatETB, formatSchedule, formatTime, plural } from '../format'
+import { formatCompactETB, formatETB, formatSchedule, formatTime, locale, plural } from '../format'
 import {
   comparisonWindows,
   countByStatus,
@@ -26,6 +26,7 @@ import StatTile from '../ui/StatTile'
 import StatusBadge, { Glyph } from '../ui/StatusBadge'
 import { buttonSecondary, panel, panelHeader, panelSubtitle, panelTitle, tabular } from '../ui/styles'
 import { toneColor } from '../status'
+import { t, tf } from '@/features/i18n'
 
 interface OverviewViewProps {
   navigate: (page: Page) => void
@@ -34,9 +35,9 @@ interface OverviewViewProps {
 
 function greeting(): string {
   const h = new Date().getHours()
-  if (h < 12) return 'Good morning'
-  if (h < 18) return 'Good afternoon'
-  return 'Good evening'
+  if (h < 12) return t('Good morning')
+  if (h < 18) return t('Good afternoon')
+  return t('Good evening')
 }
 
 export default function OverviewView({ navigate, session }: OverviewViewProps) {
@@ -84,8 +85,8 @@ export default function OverviewView({ navigate, session }: OverviewViewProps) {
   const isRoleAccount = /\b(admin|operations|team|desk)\b/i.test(session.name)
   const salutation = isRoleAccount ? greeting() : `${greeting()}, ${session.name.split(' ')[0]}`
 
-  const rangeLabel = (d: Date) => d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })
-  const chartRange = chart.length ? `${rangeLabel(chart[0].date)} to ${rangeLabel(chart[chart.length - 1].date)}` : ''
+  const rangeLabel = (d: Date) => d.toLocaleDateString(locale(), { day: 'numeric', month: 'short' })
+  const chartRange = chart.length ? tf('{from} to {to}', { from: rangeLabel(chart[0].date), to: rangeLabel(chart[chart.length - 1].date) }) : ''
 
   return (
     <>
@@ -93,24 +94,24 @@ export default function OverviewView({ navigate, session }: OverviewViewProps) {
         title={salutation}
         description={
           pending > 0
-            ? `${pending} booking${pending === 1 ? '' : 's'} waiting for confirmation and ${today.length} trip${today.length === 1 ? '' : 's'} on today's schedule.`
-            : `Everything is confirmed. ${today.length} trip${today.length === 1 ? '' : 's'} on today's schedule.`
+            ? tf("{bookings} waiting for confirmation and {trips} on today's schedule.", { bookings: plural(pending, 'booking'), trips: plural(today.length, 'trip') })
+            : tf("Everything is confirmed. {trips} on today's schedule.", { trips: plural(today.length, 'trip') })
         }
         actions={
           <button onClick={() => navigate('admin-bookings')} className="admin-btn-secondary" style={buttonSecondary}>
             <Icon name="bookings" size={16} />
-            All bookings
+            {t('All bookings')}
           </button>
         }
       />
 
       {/* Headline figures */}
       <div className="admin-stat-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 14, marginBottom: 16 }}>
-        <StatTile label="Revenue, last 7 days" value={formatETB(stats.now.revenue)} icon="finance" delta={stats.revenueDelta} comparedTo="previous 7 days" />
-        <StatTile label="Commission earned" value={formatETB(stats.now.commission)} icon="trendUp" delta={stats.commissionDelta} comparedTo="previous 7 days" />
-        <StatTile label="Trips completed" value={String(stats.now.trips)} icon="check" delta={stats.tripsDelta} comparedTo="previous 7 days" />
+        <StatTile label={t('Revenue, last 7 days')} value={formatETB(stats.now.revenue)} icon="finance" delta={stats.revenueDelta} comparedTo={t('previous 7 days')} />
+        <StatTile label={t('Commission earned')} value={formatETB(stats.now.commission)} icon="trendUp" delta={stats.commissionDelta} comparedTo={t('previous 7 days')} />
+        <StatTile label={t('Trips completed')} value={String(stats.now.trips)} icon="check" delta={stats.tripsDelta} comparedTo={t('previous 7 days')} />
         <StatTile
-          label="Awaiting confirmation"
+          label={t('Awaiting confirmation')}
           value={String(pending)}
           icon="clock"
           onClick={() => navigate('admin-bookings')}
@@ -119,13 +120,13 @@ export default function OverviewView({ navigate, session }: OverviewViewProps) {
               {pending > 0 ? (
                 <>
                   <Glyph glyph="clock" color={toneColor.warning} size={12} />
-                  Review in Bookings
+                  {t('Review in Bookings')}
                   <Icon name="chevronRight" size={13} />
                 </>
               ) : (
                 <>
                   <Glyph glyph="check" color={toneColor.good} size={12} />
-                  Nothing to confirm
+                  {t('Nothing to confirm')}
                 </>
               )}
             </p>
@@ -138,12 +139,12 @@ export default function OverviewView({ navigate, session }: OverviewViewProps) {
         <section style={panel} aria-labelledby="ov-revenue">
           <div style={panelHeader}>
             <div>
-              <h2 id="ov-revenue" style={panelTitle}>Revenue, last 14 days</h2>
-              <p style={panelSubtitle}>Completed trips, {chartRange}</p>
+              <h2 id="ov-revenue" style={panelTitle}>{t('Revenue, last 14 days')}</h2>
+              <p style={panelSubtitle}>{tf('Completed trips, {range}', { range: chartRange })}</p>
             </div>
             <div style={{ textAlign: 'right', flexShrink: 0 }}>
               <div style={{ fontFamily: 'var(--font-body)', fontSize: 18, fontWeight: 700, color: '#FFFFFF', whiteSpace: 'nowrap', ...tabular }}>{formatCompactETB(chartTotal)}</div>
-              <div style={panelSubtitle}>14-day total</div>
+              <div style={panelSubtitle}>{t('14-day total')}</div>
             </div>
           </div>
           <div style={{ padding: '8px 16px 12px' }}>
@@ -154,12 +155,12 @@ export default function OverviewView({ navigate, session }: OverviewViewProps) {
         <section style={{ ...panel, display: 'flex', flexDirection: 'column' }} aria-labelledby="ov-today">
           <div style={panelHeader}>
             <div>
-              <h2 id="ov-today" style={panelTitle}>Today's schedule</h2>
-              <p style={panelSubtitle}>{today.length} trip{today.length === 1 ? '' : 's'}</p>
+              <h2 id="ov-today" style={panelTitle}>{t('Today\'s schedule')}</h2>
+              <p style={panelSubtitle}>{plural(today.length, 'trip')}</p>
             </div>
           </div>
           {today.length === 0 ? (
-            <EmptyState icon="clock" title="No trips today" description="Upcoming bookings appear here on the day." />
+            <EmptyState icon="clock" title={t('No trips today')} description={t('Upcoming bookings appear here on the day.')} />
           ) : (
             <ul style={{ listStyle: 'none', margin: 0, padding: '6px 0', flex: 1, overflowY: 'auto', maxHeight: 300 }}>
               {today.map((b) => (
@@ -194,12 +195,12 @@ export default function OverviewView({ navigate, session }: OverviewViewProps) {
         <section style={panel} aria-labelledby="ov-attention">
           <div style={panelHeader}>
             <div>
-              <h2 id="ov-attention" style={panelTitle}>Needs attention</h2>
-              <p style={panelSubtitle}>Unconfirmed, or confirmed with no driver</p>
+              <h2 id="ov-attention" style={panelTitle}>{t('Needs attention')}</h2>
+              <p style={panelSubtitle}>{t('Unconfirmed, or confirmed with no driver')}</p>
             </div>
           </div>
           {attention.length === 0 ? (
-            <EmptyState icon="check" title="All caught up" description="Every open booking is confirmed and assigned." />
+            <EmptyState icon="check" title={t('All caught up')} description={t('Every open booking is confirmed and assigned.')} />
           ) : (
             <ul style={{ listStyle: 'none', margin: 0, padding: '6px 0' }}>
               {attention.slice(0, 5).map((b) => {
@@ -214,7 +215,7 @@ export default function OverviewView({ navigate, session }: OverviewViewProps) {
                       <Glyph glyph={isPending ? 'clock' : 'ring'} color={isPending ? toneColor.warning : toneColor.neutral} size={13} />
                       <span style={{ flex: 1, minWidth: 0 }}>
                         <span style={{ display: 'block', fontFamily: 'var(--font-body)', fontSize: 13.5, fontWeight: 600, color: '#FFFFFF' }}>
-                          {isPending ? 'Confirm booking' : 'Assign a driver'}
+                          {isPending ? t('Confirm booking') : t('Assign a driver')}
                         </span>
                         <span style={{ display: 'block', fontFamily: 'var(--font-body)', fontSize: 12, color: 'var(--admin-text-muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                           {b.id} · {b.customerName} · {formatSchedule(b.scheduledAt)}
@@ -232,8 +233,8 @@ export default function OverviewView({ navigate, session }: OverviewViewProps) {
         <section style={panel} aria-labelledby="ov-status">
           <div style={panelHeader}>
             <div>
-              <h2 id="ov-status" style={panelTitle}>Bookings by status</h2>
-              <p style={panelSubtitle}>{plural(state.bookings.length, 'booking')} in total</p>
+              <h2 id="ov-status" style={panelTitle}>{t('Bookings by status')}</h2>
+              <p style={panelSubtitle}>{tf('{count} in total', { count: plural(state.bookings.length, 'booking') })}</p>
             </div>
           </div>
           <ul style={{ listStyle: 'none', margin: 0, padding: '10px 20px 16px' }}>
@@ -244,7 +245,7 @@ export default function OverviewView({ navigate, session }: OverviewViewProps) {
                 <li key={s} style={{ display: 'grid', gridTemplateColumns: '130px 1fr 28px', alignItems: 'center', gap: 12, padding: '6px 0' }}>
                   <span style={{ display: 'flex', alignItems: 'center', gap: 8, fontFamily: 'var(--font-body)', fontSize: 13, color: 'rgba(255,255,255,0.85)', whiteSpace: 'nowrap' }}>
                     <Glyph glyph={bookingStatusMeta[s].glyph} color={toneColor[bookingStatusMeta[s].tone]} size={11} />
-                    {s}
+                    {t(s)}
                   </span>
                   {/* Meter: the track is a lighter step of the same neutral. */}
                   <span style={{ height: 6, borderRadius: 999, background: 'rgba(255,255,255,0.07)', overflow: 'hidden' }}>
@@ -260,15 +261,15 @@ export default function OverviewView({ navigate, session }: OverviewViewProps) {
         <section style={panel} aria-labelledby="ov-partners">
           <div style={panelHeader}>
             <div>
-              <h2 id="ov-partners" style={panelTitle}>Top partners</h2>
-              <p style={panelSubtitle}>Completed revenue, last 30 days</p>
+              <h2 id="ov-partners" style={panelTitle}>{t('Top partners')}</h2>
+              <p style={panelSubtitle}>{t('Completed revenue, last 30 days')}</p>
             </div>
             <button onClick={() => navigate('admin-partners')} className="admin-btn-secondary" style={{ ...buttonSecondary, height: 32, padding: '0 10px', fontSize: 12.5 }}>
-              View all
+              {t('View all')}
             </button>
           </div>
           {topPartners.length === 0 ? (
-            <EmptyState icon="partners" title="No completed trips yet" />
+            <EmptyState icon="partners" title={t('No completed trips yet')} />
           ) : (
             <ul style={{ listStyle: 'none', margin: 0, padding: '10px 20px 16px' }}>
               {topPartners.map((p) => (

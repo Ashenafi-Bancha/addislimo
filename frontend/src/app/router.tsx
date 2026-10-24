@@ -58,8 +58,7 @@ export function RouterProvider({ children }: { children: ReactNode }) {
 
   const lang = useLang()
   useEffect(() => {
-    // The admin console stays in English; only public page titles translate.
-    const title = routes[page].chrome === 'site' ? t(routes[page].title) : routes[page].title
+    const title = t(routes[page].title)
     document.title = `${title} · ${site.name}`
   }, [page, lang])
 
