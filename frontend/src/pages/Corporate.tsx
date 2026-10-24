@@ -21,7 +21,7 @@ export default function Corporate({ navigate }: Props) {
           <div style={{ display: 'flex', gap: 3, color: 'rgba(255,255,255,0.80)', fontSize: 12, marginBottom: 16 }}>
             {['★','★','★','★','★'].map((s,i)=><span key={i}>{s}</span>)}
           </div>
-          <p className="label-caps" style={{ color: '#FFFFFF', marginBottom: 16 }}>{t('Corporate & Executive')}</p>
+          <p className="label-caps" style={{ color: 'var(--gold)', marginBottom: 16 }}>{t('Corporate & Executive')}</p>
           <h1 style={{
             fontFamily: 'var(--font-display)',
             fontSize: 'clamp(36px, 5vw, 68px)',
@@ -64,7 +64,7 @@ export default function Corporate({ navigate }: Props) {
       <section style={{ padding: '80px 32px', maxWidth: 1280, margin: '0 auto' }}>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '64px 80px', alignItems: 'center' }}>
           <div>
-            <p className="label-caps" style={{ color: '#FFFFFF', marginBottom: 16 }}>{t('Who We Serve')}</p>
+            <p className="label-caps" style={{ color: 'var(--gold)', marginBottom: 16 }}>{t('Who We Serve')}</p>
             <div style={{ display: 'flex', gap: 3, color: 'rgba(255,255,255,0.80)', fontSize: 12, marginBottom: 12 }}>
               {['★','★','★','★','★'].map((s,i)=><span key={i}>{s}</span>)}
             </div>
@@ -101,7 +101,7 @@ export default function Corporate({ navigate }: Props) {
       <section style={{ background: 'var(--surface)', padding: '80px 32px' }}>
         <div style={{ maxWidth: 1280, margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: 56 }}>
-            <p className="label-caps" style={{ color: '#FFFFFF', marginBottom: 12 }}>{t('Service Features')}</p>
+            <p className="label-caps" style={{ color: 'var(--gold)', marginBottom: 12 }}>{t('Service Features')}</p>
             <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 38, fontWeight: 600, color: '#FFFFFF' }}>
               {t('Premium Corporate Transport')}
             </h2>
@@ -127,7 +127,7 @@ export default function Corporate({ navigate }: Props) {
 
       {/* Conference venues */}
       <section style={{ padding: '80px 32px', maxWidth: 1100, margin: '0 auto' }}>
-        <p className="label-caps" style={{ color: '#FFFFFF', marginBottom: 12 }}>{t('Conference & Summit Transport')}</p>
+        <p className="label-caps" style={{ color: 'var(--gold)', marginBottom: 12 }}>{t('Conference & Summit Transport')}</p>
         <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 36, fontWeight: 600, color: '#FFFFFF', marginBottom: 8 }}>
           {t('Arrive Ready for Business.')}
         </h2>
@@ -145,7 +145,7 @@ export default function Corporate({ navigate }: Props) {
       {/* Dashboard preview CTA */}
       <section style={{ background: '#100E0C', padding: '72px 32px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
         <div style={{ maxWidth: 800, margin: '0 auto', textAlign: 'center' }}>
-          <p className="label-caps" style={{ color: '#FFFFFF', marginBottom: 16 }}>{t('Corporate Portal · Coming Soon')}</p>
+          <p className="label-caps" style={{ color: 'var(--gold)', marginBottom: 16 }}>{t('Corporate Portal · Coming Soon')}</p>
           <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 34, fontWeight: 600, color: '#FFFFFF', marginBottom: 16 }}>
             {t('Manage Your Organization\'s Travel')}
           </h2>

@@ -38,7 +38,7 @@ export default function Home({ navigate }: HomeProps) {
         <div className="gutter" style={{ textAlign: 'center', marginBottom: 64, padding: '0 48px' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 16, marginBottom: 20 }}>
             <div style={{ height: 1, width: 48, background: 'linear-gradient(to right, transparent, rgba(212,175,90,0.5))' }} />
-            <p className="label-caps" style={{ color: '#FFFFFF', fontSize: 9, letterSpacing: '0.3em' }}>{copy.partnersEyebrow}</p>
+            <p className="label-caps" style={{ color: 'var(--gold)', fontSize: 9, letterSpacing: '0.3em' }}>{copy.partnersEyebrow}</p>
             <div style={{ height: 1, width: 48, background: 'linear-gradient(to left, transparent, rgba(212,175,90,0.5))' }} />
           </div>
           <h2 style={{

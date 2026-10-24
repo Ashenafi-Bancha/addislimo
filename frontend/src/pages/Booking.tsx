@@ -112,7 +112,7 @@ export default function Booking({ navigate }: Props) {
       <div style={{ maxWidth: 1180, margin: '0 auto', padding: 'clamp(40px, 6vw, 72px) 20px 80px' }}>
         {/* Header */}
         <Reveal style={{ marginBottom: 34, maxWidth: 680 }}>
-          <p className="label-caps" style={{ color: '#FFFFFF', marginBottom: 12 }}>{t('Reservation')}</p>
+          <p className="label-caps" style={{ color: 'var(--gold)', marginBottom: 12 }}>{t('Reservation')}</p>
           <h1
             style={{
               fontFamily: 'var(--font-display)',

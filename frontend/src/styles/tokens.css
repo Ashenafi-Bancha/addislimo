@@ -12,26 +12,33 @@
   --font-display: 'Playfair Display', 'Noto Serif Ethiopic', Georgia, serif;
   --font-body: 'Manrope', 'Noto Sans Ethiopic', system-ui, sans-serif;
 
-  /* Accent system — white/silver */
-  --gold:         #FFFFFF;
-  --gold-light:   #FFFFFF;
-  --gold-bright:  #FFFFFF;
-  --gold-dark:    rgba(255,255,255,0.65);
-  --gold-deep:    rgba(255,255,255,0.38);
-  --gold-muted:   rgba(255,255,255,0.22);
+  /* Accent system — brand gold.
+     Sampled from the client's reference lettering: the letters are #E1AE40,
+     with #F0C96B on the lit edges and #69511E in the shadow. These names were
+     always `--gold-*`; the palette ran white/silver until the client chose
+     gold, which is why this swap touches one file rather than fifty.
+     Gold is for accents only: headings' second line, small caps labels,
+     rules, the primary call to action and hover states. Body text stays
+     white, because gold at paragraph size is hard to read on dark. */
+  --gold:         #E1AE40;
+  --gold-light:   #F0C96B;
+  --gold-bright:  #F7DA9B;
+  --gold-dark:    #BC9135;
+  --gold-deep:    #69511E;
+  --gold-muted:   rgba(225,174,64,0.30);
 
-  /* Gradients — clean white sheen */
-  --gold-gradient:   linear-gradient(135deg, #FFFFFF 0%, rgba(225,225,225,0.92) 50%, #FFFFFF 100%);
-  --gold-gradient-h: linear-gradient(90deg, #FFFFFF 0%, rgba(230,230,230,0.90) 50%, #FFFFFF 100%);
-  --gold-sheen:      #FFFFFF;
+  /* Gradients — struck metal: lit edge, body, shadow. */
+  --gold-gradient:   linear-gradient(135deg, #F0C96B 0%, #E1AE40 48%, #BC9135 100%);
+  --gold-gradient-h: linear-gradient(90deg, #C79A38 0%, #F0C96B 32%, #E1AE40 62%, #C79A38 100%);
+  --gold-sheen:      #F0C96B;
 
   /* Champagne, the one warm accent. Used on the hero vehicle's trim, the
      studio rim light and the hero eyebrow. The site-wide silver stays as it
      is: switching the whole brand to gold is a change to --gold-* above,
      not a change to this token. */
-  --champagne:        #BC9A63;
-  --champagne-soft:   rgba(188,154,99,0.55);
-  --champagne-glow:   rgba(188,154,99,0.18);
+  --champagne:        #E1AE40;
+  --champagne-soft:   rgba(225,174,64,0.55);
+  --champagne-glow:   rgba(225,174,64,0.18);
 
   /* Dark system — warm charcoal, not black.
      Sampled from the hero photograph: its shadows sit warm (16,15,13 in the

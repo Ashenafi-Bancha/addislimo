@@ -29,7 +29,7 @@ export default function ExploreAddis({ navigate }: Props) {
           <div style={{ display: 'flex', gap: 3, color: 'rgba(255,255,255,0.80)', fontSize: 12, marginBottom: 16 }}>
             {['★','★','★','★','★'].map((s,i)=><span key={i}>{s}</span>)}
           </div>
-          <p className="label-caps" style={{ color: '#FFFFFF', marginBottom: 16 }}>{t('Addis Ababa · Ethiopia')}</p>
+          <p className="label-caps" style={{ color: 'var(--gold)', marginBottom: 16 }}>{t('Addis Ababa · Ethiopia')}</p>
           <h1 style={{
             fontFamily: 'var(--font-display)',
             fontSize: 'clamp(36px, 5vw, 68px)',
@@ -149,7 +149,7 @@ export default function ExploreAddis({ navigate }: Props) {
           <div style={{ display: 'flex', gap: 3, color: 'rgba(255,255,255,0.80)', fontSize: 12, marginBottom: 16, justifyContent: 'center' }}>
             {['★','★','★','★','★'].map((s,i)=><span key={i}>{s}</span>)}
           </div>
-          <p className="label-caps" style={{ color: '#FFFFFF', marginBottom: 16 }}>{t('Custom Itinerary')}</p>
+          <p className="label-caps" style={{ color: 'var(--gold)', marginBottom: 16 }}>{t('Custom Itinerary')}</p>
           <h2 style={{
             fontFamily: 'var(--font-display)',
             fontSize: 'clamp(28px, 4vw, 44px)',

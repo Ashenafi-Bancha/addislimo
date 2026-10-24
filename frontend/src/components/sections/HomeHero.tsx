@@ -66,7 +66,13 @@ export default function HomeHero({ navigate }: HomeHeroProps) {
             fontSize: 'clamp(27px, 3.9vw, 53px)',
             fontWeight: 600,
             fontStyle: 'italic',
-            color: 'rgba(255,255,255,0.82)',
+            // The one gold line in the hero, matching every other section's
+            // accent heading. The first three lines stay white so the
+            // headline still reads as type, not as decoration.
+            background: 'var(--gold-gradient-h)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
             letterSpacing: '-0.01em',
             textShadow: '0 2px 30px rgba(0,0,0,0.4)',
           }}
