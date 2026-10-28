@@ -90,7 +90,7 @@ export default function Confirmation({ navigate }: Props) {
           <button
             onClick={() => navigate('home')}
             style={{
-              background: 'var(--gold-gradient)', color: '#0C0B09',
+              background: 'var(--gold-gradient)', color: 'var(--ink)',
               border: 'none', cursor: 'pointer',
               fontFamily: 'var(--font-body)', fontSize: 11, fontWeight: 800,
               letterSpacing: '0.2em', textTransform: 'uppercase',

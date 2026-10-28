@@ -11,7 +11,7 @@ export default function PartnerCard({ name, sub, logo }: Partner) {
   const initials = initialsOf(name)
   return (
     <div style={{
-      background: '#0E0E0E',
+      background: 'var(--surface)',
       border: '1px solid rgba(255,255,255,0.08)',
       borderRadius: 3,
       padding: '20px 28px',
@@ -21,8 +21,8 @@ export default function PartnerCard({ name, sub, logo }: Partner) {
       transition: 'border-color 0.3s, background 0.3s',
       cursor: 'default',
     }}
-      onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(255,255,255,0.25)'; (e.currentTarget as HTMLDivElement).style.background = '#1A1713' }}
-      onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(255,255,255,0.08)'; (e.currentTarget as HTMLDivElement).style.background = '#0E0E0E' }}
+      onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(255,255,255,0.25)'; (e.currentTarget as HTMLDivElement).style.background = 'var(--surface-3)' }}
+      onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(255,255,255,0.08)'; (e.currentTarget as HTMLDivElement).style.background = 'var(--surface)' }}
     >
       {/* Logo / monogram */}
       <div style={{

@@ -24,7 +24,7 @@ export default function TrustStrip() {
     <section
       className="section-tall"
       style={{
-        background: '#100E0C',
+        background: 'var(--charcoal)',
         padding: '84px 48px',
         borderTop: '1px solid rgba(255,255,255,0.08)',
         borderBottom: '1px solid rgba(255,255,255,0.08)',

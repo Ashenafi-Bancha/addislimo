@@ -15,7 +15,7 @@ export default function Nav({ current, navigate }: NavProps) {
   return (
     <header style={{
       position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
-      background: scrolled ? 'rgba(4,4,4,0.98)' : 'rgba(4,4,4,0.75)',
+      background: scrolled ? 'rgba(0,0,0,0.94)' : 'rgba(0,0,0,0.72)',
       backdropFilter: 'blur(16px)',
       WebkitBackdropFilter: 'blur(16px)',
       borderBottom: '1px solid rgba(255,255,255,0.18)',
@@ -68,7 +68,7 @@ export default function Nav({ current, navigate }: NavProps) {
               onClick={() => navigate(primaryCta.page)}
               style={{
                 background: 'var(--gold-gradient)',
-                color: '#0C0B09',
+                color: 'var(--ink)',
                 border: 'none', cursor: 'pointer',
                 fontFamily: 'var(--font-body)', fontSize: 11, fontWeight: 800,
                 letterSpacing: '0.16em', textTransform: 'uppercase',
@@ -93,7 +93,7 @@ export default function Nav({ current, navigate }: NavProps) {
               onClick={() => navigate(primaryCta.page)}
               style={{
                 background: 'var(--gold-gradient)',
-                color: '#0C0B09',
+                color: 'var(--ink)',
                 border: 'none', cursor: 'pointer',
                 fontFamily: 'var(--font-body)', fontSize: 10, fontWeight: 800,
                 letterSpacing: '0.14em', textTransform: 'uppercase',
@@ -113,7 +113,7 @@ export default function Nav({ current, navigate }: NavProps) {
 
       {/* Mobile menu */}
       {open && (
-        <div style={{ background: 'rgba(4,4,4,0.99)', borderTop: '1px solid rgba(255,255,255,0.2)', padding: '20px 32px 28px' }}>
+        <div style={{ background: 'rgba(0,0,0,0.97)', borderTop: '1px solid rgba(255,255,255,0.2)', padding: '20px 32px 28px' }}>
           {links.map(l => (
             <button key={l.page} onClick={() => { navigate(l.page); setOpen(false) }} style={{
               display: 'block', width: '100%', textAlign: 'left',
@@ -126,7 +126,7 @@ export default function Nav({ current, navigate }: NavProps) {
           ))}
           <button onClick={() => { navigate(primaryCta.page); setOpen(false) }} style={{
             marginTop: 18, width: '100%', borderRadius: '50px',
-            background: 'var(--gold-gradient)', color: '#0C0B09',
+            background: 'var(--gold-gradient)', color: 'var(--ink)',
             border: 'none', cursor: 'pointer',
             fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 800,
             letterSpacing: '0.16em', textTransform: 'uppercase', padding: '14px 0',

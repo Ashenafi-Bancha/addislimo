@@ -38,7 +38,7 @@ export default function Corporate({ navigate }: Props) {
             <button
               onClick={() => navigate('booking')}
               style={{
-                background: 'var(--gold-gradient)', color: '#0C0B09',
+                background: 'var(--gold-gradient)', color: 'var(--ink)',
                 border: 'none', cursor: 'pointer',
                 fontFamily: 'var(--font-body)', fontSize: 11, fontWeight: 800,
                 letterSpacing: '0.2em', textTransform: 'uppercase',
@@ -143,7 +143,7 @@ export default function Corporate({ navigate }: Props) {
       </section>
 
       {/* Dashboard preview CTA */}
-      <section style={{ background: '#100E0C', padding: '72px 32px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+      <section style={{ background: 'var(--charcoal)', padding: '72px 32px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
         <div style={{ maxWidth: 800, margin: '0 auto', textAlign: 'center' }}>
           <p className="label-caps" style={{ color: 'var(--gold)', marginBottom: 16 }}>{t('Corporate Portal · Coming Soon')}</p>
           <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 34, fontWeight: 600, color: '#FFFFFF', marginBottom: 16 }}>
@@ -155,7 +155,7 @@ export default function Corporate({ navigate }: Props) {
           <button
             onClick={() => navigate('booking')}
             style={{
-              background: 'var(--gold-gradient)', color: '#0C0B09',
+              background: 'var(--gold-gradient)', color: 'var(--ink)',
               border: 'none', cursor: 'pointer',
               fontFamily: 'var(--font-body)', fontSize: 11, fontWeight: 800,
               letterSpacing: '0.2em', textTransform: 'uppercase',

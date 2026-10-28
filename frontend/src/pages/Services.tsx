@@ -57,7 +57,7 @@ export default function Services({ navigate }: Props) {
               }}
             >
               <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'var(--gold-gradient)' }} />
-              <div style={{ height: 240, overflow: 'hidden', position: 'relative', background: '#0F0E0C' }}>
+              <div style={{ height: 240, overflow: 'hidden', position: 'relative', background: 'var(--surface)' }}>
                 <img
                   src={s.img}
                   alt={s.title}

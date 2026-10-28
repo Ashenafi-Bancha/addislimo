@@ -1,55 +1,64 @@
 /**
- * Design tokens — the black/white/silver palette, type scale and radii.
+ * Design tokens — the logo's palette, type scale and radii.
  *
  * Every component references these through `var(--token)` rather than
  * hard-coding hex values, so a rebrand is a change to this one file.
- * Note: the `--gold-*` names are historical. The palette is currently
- * white/silver; the variable names were kept so the brand can be swapped
- * back to gold without touching a single component.
+ *
+ * Both halves of the palette are measured off the logo artwork rather than
+ * chosen by eye, so the page and the mark are the same two colours:
+ * `tools/sample-brand-colours.py` prints the figures below.
  */
 
 :root {
   --font-display: 'Playfair Display', 'Noto Serif Ethiopic', Georgia, serif;
   --font-body: 'Manrope', 'Noto Sans Ethiopic', system-ui, sans-serif;
 
-  /* Accent system — brand gold.
-     Sampled from the client's reference lettering: the letters are #E1AE40,
-     with #F0C96B on the lit edges and #69511E in the shadow. These names were
-     always `--gold-*`; the palette ran white/silver until the client chose
-     gold, which is why this swap touches one file rather than fifty.
+  /* Accent system — the logo's gold.
+     Measured off the "ADDIS LIMO" lettering: 83,000 gold pixels grouped into
+     the bands a metal gradient falls into, each band reporting the tone that
+     covers the most of it. The letter face is #D89739, the lit edge #ECB555,
+     the specular highlight #FCD878, the shaded side #995809 and the cast
+     shadow #884A04. It is a warmer, more amber gold than the one it replaces,
+     which is what makes the page read as the same metal as the mark.
+     The face gives 8.4:1 on the black page, so it holds up as type.
      Gold is for accents only: headings' second line, small caps labels,
      rules, the primary call to action and hover states. Body text stays
      white, because gold at paragraph size is hard to read on dark. */
-  --gold:         #E1AE40;
-  --gold-light:   #F0C96B;
-  --gold-bright:  #F7DA9B;
-  --gold-dark:    #BC9135;
-  --gold-deep:    #69511E;
-  --gold-muted:   rgba(225,174,64,0.30);
+  --gold:         #D89739;
+  --gold-light:   #ECB555;
+  --gold-bright:  #FCD878;
+  --gold-dark:    #995809;
+  --gold-deep:    #884A04;
+  --gold-muted:   rgba(216,151,57,0.30);
 
-  /* Gradients — struck metal: lit edge, body, shadow. */
-  --gold-gradient:   linear-gradient(135deg, #F0C96B 0%, #E1AE40 48%, #BC9135 100%);
-  --gold-gradient-h: linear-gradient(90deg, #C79A38 0%, #F0C96B 32%, #E1AE40 62%, #C79A38 100%);
-  --gold-sheen:      #F0C96B;
+  /* Gradients — struck metal: highlight, lit edge, face.
+     They stop at the face rather than running down into the shaded side the
+     way the lettering does, because both carry small text: black on the
+     button fill, gold on the page in the hero's second line. The face is the
+     darkest tone that still clears 4.5:1 either way. The shaded and shadow
+     tones above are for rules, borders and depth, never behind type. */
+  --gold-gradient:   linear-gradient(135deg, #FCD878 0%, #ECB555 45%, #D89739 100%);
+  --gold-gradient-h: linear-gradient(90deg, #D89739 0%, #FCD878 32%, #ECB555 62%, #D89739 100%);
+  --gold-sheen:      #FCD878;
 
-  /* Champagne, the one warm accent. Used on the hero vehicle's trim, the
-     studio rim light and the hero eyebrow. The site-wide silver stays as it
-     is: switching the whole brand to gold is a change to --gold-* above,
-     not a change to this token. */
-  --champagne:        #E1AE40;
-  --champagne-soft:   rgba(225,174,64,0.55);
-  --champagne-glow:   rgba(225,174,64,0.18);
+  /* Champagne — the same gold under another name, kept because a handful of
+     components ask for the accent by this one. */
+  --champagne:        #D89739;
+  --champagne-soft:   rgba(216,151,57,0.55);
+  --champagne-glow:   rgba(216,151,57,0.18);
 
-  /* Dark system — warm charcoal, not black.
-     Sampled from the hero photograph: its shadows sit warm (16,15,13 in the
-     foreground, 47,46,45 in the mid tones), never blue. A neutral black page
-     behind that picture reads as a different material; these tones read as
-     the same night. Each step is a little warmer and lighter than the last. */
-  --ink:       #0C0B09;
-  --charcoal:  #121009;
-  --surface:   #17150F;
-  --surface-2: #1E1B16;
-  --surface-3: #241F19;
+  /* Dark system — the logo's black.
+     Four fifths of the logo file is one value, #000000, and that is the field
+     the gold was drawn against, so the page uses it too: the mark sits on the
+     header with nothing behind it to give it away. The steps above it are
+     neutral lifts, not warm ones, because the black they lift from is
+     neutral; they exist so cards and bands still have depth against the page.
+     Anything that must match the page exactly uses --ink. */
+  --ink:       #000000;
+  --charcoal:  #080808;
+  --surface:   #0E0E0E;
+  --surface-2: #151515;
+  --surface-3: #1C1C1C;
   --border:    rgba(255,255,255,0.10);
   --border-hi: rgba(255,255,255,0.22);
 
@@ -71,8 +80,8 @@
   --status-critical: #d03b3b;
 
   /* Admin console surfaces — one step quieter than the marketing site. */
-  --admin-page:      #070707;
-  --admin-sidebar:   #100E0C;
+  --admin-page:      #000000;
+  --admin-sidebar:   #0A0A0A;
   --admin-panel:     linear-gradient(180deg, #121212 0%, #0d0d0d 100%);
   --admin-raised:    #161616;
   --admin-hairline:  rgba(255,255,255,0.08);

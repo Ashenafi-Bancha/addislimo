@@ -149,7 +149,7 @@ export default function HomeHero({ navigate }: HomeHeroProps) {
         style={{
           ...ctaBase,
           background: 'var(--gold-gradient)',
-          color: '#0C0B09',
+          color: 'var(--ink)',
           border: 'none',
           fontWeight: 800,
           padding: isMobile ? '18px 24px' : '16px 40px',
@@ -231,7 +231,7 @@ export default function HomeHero({ navigate }: HomeHeroProps) {
               position: 'absolute',
               inset: 0,
               background:
-                'linear-gradient(180deg, rgba(12,11,9,0.12) 0%, rgba(12,11,9,0.04) 32%, rgba(12,11,9,0.5) 72%, rgba(12,11,9,0.9) 90%, #0C0B09 100%)',
+                'linear-gradient(180deg, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0.04) 32%, rgba(0,0,0,0.5) 72%, rgba(0,0,0,0.9) 90%, var(--ink) 100%)',
             }}
           />
         </div>
@@ -268,9 +268,9 @@ export default function HomeHero({ navigate }: HomeHeroProps) {
       {/* The photograph is already a night scene, so it needs far less
           darkening than a daylight one: enough to hold the headline on the
           left, almost nothing on the right where the skyline reads. */}
-      <div style={{ position: 'absolute', inset: 0, background: 'rgba(9,8,7,0.18)' }} />
-      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(105deg, rgba(9,8,7,0.82) 0%, rgba(9,8,7,0.45) 48%, rgba(9,8,7,0.05) 100%)' }} />
-      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 200, background: 'linear-gradient(to top, #090807 0%, transparent 100%)' }} />
+      <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.18)' }} />
+      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(105deg, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.45) 48%, rgba(0,0,0,0.05) 100%)' }} />
+      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 200, background: 'linear-gradient(to top, var(--ink) 0%, transparent 100%)' }} />
 
       <div
         className="gutter"

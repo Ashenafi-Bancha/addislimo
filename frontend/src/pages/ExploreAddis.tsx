@@ -45,7 +45,7 @@ export default function ExploreAddis({ navigate }: Props) {
           <button
             onClick={() => navigate('booking')}
             style={{
-              background: 'var(--gold-gradient)', color: '#0C0B09',
+              background: 'var(--gold-gradient)', color: 'var(--ink)',
               border: 'none', cursor: 'pointer',
               fontFamily: 'var(--font-body)', fontSize: 11, fontWeight: 800,
               letterSpacing: '0.2em', textTransform: 'uppercase',
@@ -98,7 +98,7 @@ export default function ExploreAddis({ navigate }: Props) {
             >
               {/* Above the photo, so the rule is not clipped by it. */}
               <div style={{ ...cardTopRule(active), zIndex: 2 }} />
-              <div style={{ height: 200, overflow: 'hidden', position: 'relative', background: '#0F0E0C' }}>
+              <div style={{ height: 200, overflow: 'hidden', position: 'relative', background: 'var(--surface)' }}>
                 <img
                   src={d.img}
                   alt={d.name}
@@ -166,7 +166,7 @@ export default function ExploreAddis({ navigate }: Props) {
           <button
             onClick={() => navigate('booking')}
             style={{
-              background: 'var(--gold-gradient)', color: '#0C0B09',
+              background: 'var(--gold-gradient)', color: 'var(--ink)',
               border: 'none', cursor: 'pointer',
               fontFamily: 'var(--font-body)', fontSize: 11, fontWeight: 800,
               letterSpacing: '0.2em', textTransform: 'uppercase',

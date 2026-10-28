@@ -102,13 +102,24 @@ path is missing, or when the repository contradicts this guide.
 
 ## Colour and motion
 
-**The palette is warm charcoal, not black.** It is sampled from the hero
-photograph, whose shadows sit warm (16,15,13 in the foreground, 47,46,45 in
-the mid tones). A neutral black page behind that picture reads as a different
-material. The five steps live in `styles/tokens.css` (`--ink` `#0C0B09`
-through `--surface-3` `#241F19`); change them there, not in a component. The
-admin console keeps its own cooler neutrals on purpose: it is a tool looked at
-for hours, not a brand surface.
+**The palette is the logo's, measured rather than picked.** Both halves come
+out of `assets/images/addis-limo-website-logo.png`: the page is the black the
+mark was drawn on (`--ink` `#000000`, four fifths of that file), and the gold
+is the lettering's own metal, from the `#884A04` cast shadow through the
+`#D89739` letter face to the `#FCD878` highlight. `tools/sample-brand-colours.py`
+prints the figures, so a redrawn logo can be re-measured instead of re-guessed.
+
+The five dark steps (`--ink` through `--surface-3` `#1C1C1C`) are neutral
+lifts above that black, there to give cards and bands an edge against the
+page. Change them in `styles/tokens.css`, never in a component: a literal hex
+in a component is what the token system exists to prevent, and the last sweep
+pulled 68 of them back out.
+
+Gold is an accent, not a body colour: accent headings, small caps labels,
+rules, the primary call to action. The letter face clears 4.5:1 on the page
+and the two shadow tones do not, so those two stay behind decoration, never
+behind type. The admin console keeps its own quieter neutrals on purpose: it
+is a tool looked at for hours, not a brand surface.
 
 **There is no 3D on the site.** A WebGL vehicle hero was built and removed:
 the only convincing version needs a licensed car model, and photography suits

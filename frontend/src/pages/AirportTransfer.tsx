@@ -29,7 +29,7 @@ export default function AirportTransfer({ navigate }: Props) {
           backgroundSize: 'cover', backgroundPosition: 'center 40%',
         }} />
         {/* Dark behind the headline, clearing to the right so the aircraft shows. Phones get an even shade instead (responsive.css). */}
-        <div className="airport-hero-shade" style={{ position: 'absolute', inset: 0, background: 'linear-gradient(90deg, rgba(12,11,9,0.9) 0%, rgba(12,11,9,0.72) 38%, rgba(12,11,9,0.25) 75%, rgba(12,11,9,0.1) 100%)' }} />
+        <div className="airport-hero-shade" style={{ position: 'absolute', inset: 0, background: 'linear-gradient(90deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.72) 38%, rgba(0,0,0,0.25) 75%, rgba(0,0,0,0.1) 100%)' }} />
         <div style={{ position: 'relative', maxWidth: 1280, margin: '0 auto', padding: '80px 32px', width: '100%' }}>
           <div style={{ display: 'flex', gap: 3, color: 'rgba(255,255,255,0.80)', fontSize: 12, marginBottom: 16 }}>
             {['★','★','★','★','★'].map((s,i)=><span key={i}>{s}</span>)}
@@ -94,7 +94,7 @@ export default function AirportTransfer({ navigate }: Props) {
                 <button
                   onClick={() => navigate('booking')}
                   style={{
-                    background: 'var(--gold-gradient)', color: '#0C0B09',
+                    background: 'var(--gold-gradient)', color: 'var(--ink)',
                     border: 'none', cursor: 'pointer',
                     fontFamily: 'var(--font-body)', fontSize: 11, fontWeight: 800,
                     letterSpacing: '0.2em', textTransform: 'uppercase',

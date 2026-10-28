@@ -194,7 +194,7 @@ export default function Booking({ navigate }: Props) {
               key={step}
               className="step-panel"
               style={{
-                background: 'linear-gradient(165deg, #1A1713 0%, #13110E 55%, #0F0E0C 100%)',
+                background: 'linear-gradient(165deg, var(--surface-3) 0%, var(--surface-2) 55%, var(--surface) 100%)',
                 border: '1px solid rgba(255,255,255,0.09)',
                 borderRadius: 18,
                 boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.07), 0 20px 46px rgba(0,0,0,0.5)',
@@ -322,7 +322,7 @@ export default function Booking({ navigate }: Props) {
                 style={{
                   marginLeft: 'auto',
                   background: 'var(--gold-gradient)',
-                  color: '#0C0B09',
+                  color: 'var(--ink)',
                   border: 'none',
                   borderRadius: 999,
                   cursor: 'pointer',
