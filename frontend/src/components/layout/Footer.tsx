@@ -1,5 +1,5 @@
 import type { Page } from '@/app/routes'
-import brandLogo from '@/assets/images/addis-limo-logo-lg.webp'
+import brandLogo from '@/assets/images/addis-limo-logo.webp'
 import { site } from '@/config/site'
 import { useContent } from '@/features/cms'
 import { t } from '@/features/i18n'

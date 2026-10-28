@@ -216,7 +216,7 @@ export default function HomeHero({ navigate }: HomeHeroProps) {
       <section className="hero-full grain" style={{ position: 'relative', display: 'flex', flexDirection: 'column', minHeight: '100vh', overflow: 'hidden' }}>
         {/* The frame matches the source's 16:9 ratio, so `cover` crops nothing
             and the whole photograph is on screen. */}
-        <div style={{ position: 'relative', width: '100%', aspectRatio: '16 / 9', marginTop: 72, flexShrink: 0 }}>
+        <div style={{ position: 'relative', width: '100%', aspectRatio: '16 / 9', marginTop: 'var(--nav-h)', flexShrink: 0 }}>
           <img
             src={hero.image}
             alt={t('The Addis Ababa skyline')}

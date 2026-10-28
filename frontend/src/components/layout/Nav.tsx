@@ -13,7 +13,7 @@ export default function Nav({ current, navigate }: NavProps) {
   const [open, setOpen] = useState(false)
 
   return (
-    <header style={{
+    <header data-scrolled={scrolled} style={{
       position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
       background: scrolled ? 'rgba(0,0,0,0.94)' : 'rgba(0,0,0,0.72)',
       backdropFilter: 'blur(16px)',
@@ -22,26 +22,15 @@ export default function Nav({ current, navigate }: NavProps) {
       transition: 'background 0.3s',
     }}>
       <div className="nav-bar" style={{ maxWidth: 1380, margin: '0 auto', padding: '0 32px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: scrolled ? 64 : 76, transition: 'height 0.3s cubic-bezier(0.22, 1, 0.36, 1)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: scrolled ? 'var(--nav-h-scrolled)' : 'var(--nav-h)', transition: 'height 0.3s cubic-bezier(0.22, 1, 0.36, 1)' }}>
 
           {/* Logo. The artwork carries the name and the tagline, so the header
               sets it alone: a second "Addis Limo" in type beside it would read
-              as the name twice. It shrinks with the bar on scroll. */}
+              as the name twice. Its height is a token (--nav-logo-h), shared
+              with the bar's own height so the two cannot drift apart, and it
+              steps down with the bar on scroll. */}
           <button onClick={() => navigate('home')} aria-label={`${site.name} — ${t('home')}`} style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', padding: 0, flexShrink: 0 }}>
-            <img
-              src={brandLogo}
-              alt={site.name}
-              className="nav-logo"
-              width={427}
-              height={96}
-              style={{
-                height: scrolled ? 36 : 44,
-                width: 'auto',
-                display: 'block',
-                flexShrink: 0,
-                transition: 'height 0.3s cubic-bezier(0.22, 1, 0.36, 1)',
-              }}
-            />
+            <img src={brandLogo} alt={site.name} className="nav-logo" width={711} height={160} fetchPriority="high" />
           </button>
 
           {/* Desktop nav links */}
@@ -63,7 +52,7 @@ export default function Nav({ current, navigate }: NavProps) {
 
           {/* Right: language + CTA */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }} className="hide-mobile">
-            <LanguageSwitcher compact />
+            <LanguageSwitcher />
             <button
               onClick={() => navigate(primaryCta.page)}
               style={{

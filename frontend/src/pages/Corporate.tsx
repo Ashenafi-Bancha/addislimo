@@ -8,7 +8,7 @@ export default function Corporate({ navigate }: Props) {
   const { clients: corporateClients, features: corporateFeatures, venues: corporateVenues } = useContent('corporate')
 
   return (
-    <div style={{ background: 'var(--ink)', minHeight: '100vh', paddingTop: 72 }}>
+    <div style={{ background: 'var(--ink)', minHeight: '100vh', paddingTop: 'var(--nav-h)' }}>
       {/* Hero */}
       <section style={{ position: 'relative', minHeight: 480, display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
         <div style={{

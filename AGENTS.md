@@ -156,8 +156,12 @@ font-family defaults.
 Pages are styled with **inline `style` objects** reading CSS custom properties
 (`var(--ink)`, `var(--gold-gradient)`), inherited from the Figma Make export.
 Match that idiom when editing an existing page; Tailwind classes are fine in
-new components. The `--gold-*` token names are historical — the live palette is
-white/silver.
+new components.
+
+The header is fixed, so a page clears it with `paddingTop: 'var(--nav-h)'`
+rather than a number: `--nav-h` and `--nav-logo-h` (plus their `-scrolled`
+pairs) size the bar and the logo together, and the phone overrides in
+`responsive.css` move the header and all nine pages in one step.
 
 ## Code quality
 

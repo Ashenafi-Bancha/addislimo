@@ -8,7 +8,7 @@ export default function About({ navigate }: Props) {
   const { values: brandValues, partnerTypes } = useContent('about')
 
   return (
-    <div style={{ background: 'var(--ink)', minHeight: '100vh', paddingTop: 72 }}>
+    <div style={{ background: 'var(--ink)', minHeight: '100vh', paddingTop: 'var(--nav-h)' }}>
       {/* Hero */}
       <section style={{
         background: 'var(--surface)',

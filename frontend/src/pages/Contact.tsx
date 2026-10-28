@@ -26,7 +26,7 @@ export default function Contact({ navigate }: Props) {
   const whatsapp = business.whatsapp.replace(/\D/g, '')
 
   return (
-    <div style={{ background: 'var(--ink)', minHeight: '100vh', paddingTop: 72 }}>
+    <div style={{ background: 'var(--ink)', minHeight: '100vh', paddingTop: 'var(--nav-h)' }}>
       {/* Hero */}
       <section className="halo" style={{ position: 'relative', padding: '92px 32px 64px', textAlign: 'center', overflow: 'hidden' }}>
         <div style={{ position: 'relative', maxWidth: 760, margin: '0 auto' }}>

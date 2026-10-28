@@ -113,7 +113,7 @@ export default function AdminLogin({ navigate }: Props) {
       {/* Form. A div, not <main>: SiteLayout already provides the page landmark. */}
       <div style={{ position: 'relative', flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: compact ? '64px 20px 32px' : '48px 40px' }}>
         <div style={{ position: 'absolute', top: compact ? 16 : 24, right: compact ? 16 : 24 }}>
-          <LanguageSwitcher compact />
+          <LanguageSwitcher />
         </div>
         <div style={{ width: '100%', maxWidth: 400 }}>
           {compact && (

@@ -16,7 +16,7 @@ export default function ExploreAddis({ navigate }: Props) {
   const filtered = active === 'all' ? destinations : destinations.filter(d => d.cat === active)
 
   return (
-    <div style={{ background: 'var(--ink)', minHeight: '100vh', paddingTop: 72 }}>
+    <div style={{ background: 'var(--ink)', minHeight: '100vh', paddingTop: 'var(--nav-h)' }}>
       {/* Hero */}
       <section style={{ position: 'relative', minHeight: 460, display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
         <div style={{
@@ -58,7 +58,7 @@ export default function ExploreAddis({ navigate }: Props) {
       </section>
 
       {/* Category filter */}
-      <section style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', background: 'var(--surface)', position: 'sticky', top: 72, zIndex: 50 }}>
+      <section style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', background: 'var(--surface)', position: 'sticky', top: 'var(--nav-h-scrolled)', zIndex: 50 }}>
         <div className="gutter" style={{ maxWidth: 1280, margin: '0 auto', padding: '0 32px' }}>
           <div style={{ display: 'flex', gap: 2, overflowX: 'auto', scrollbarWidth: 'none' }}>
             {categories.map(c => (

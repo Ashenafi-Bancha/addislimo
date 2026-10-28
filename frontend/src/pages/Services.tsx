@@ -11,7 +11,7 @@ export default function Services({ navigate }: Props) {
   const serviceCatalog = useContent('services')
 
   return (
-    <div style={{ background: 'var(--ink)', minHeight: '100vh', paddingTop: 72 }}>
+    <div style={{ background: 'var(--ink)', minHeight: '100vh', paddingTop: 'var(--nav-h)' }}>
       {/* Header */}
       <section style={{
         padding: '72px 32px 64px',

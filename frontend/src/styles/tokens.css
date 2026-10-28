@@ -70,6 +70,14 @@
 
   --radius-pill: 50px;
 
+  /* Header geometry. The header is fixed, so every page clears it with
+     --nav-h rather than repeating a number; the phone override in
+     responsive.css moves the header, the logo and all nine pages together. */
+  --nav-h:                92px;
+  --nav-h-scrolled:       70px;
+  --nav-logo-h:           58px;
+  --nav-logo-h-scrolled:  44px;
+
   /* Status — reserved for state, never for decoration or data series.
      Checked against the dark admin surface (#0f0f0f): all clear 3:1.
      good and critical are nearly identical to a deuteranope (ΔE 4.1), so a

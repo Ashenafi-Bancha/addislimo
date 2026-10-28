@@ -6,7 +6,7 @@ export default function Confirmation({ navigate }: Props) {
   const bookingId = 'AL-' + Math.random().toString(36).substring(2, 8).toUpperCase()
 
   return (
-    <div style={{ background: 'var(--ink)', minHeight: '100vh', paddingTop: 72, display: 'flex', alignItems: 'center' }}>
+    <div style={{ background: 'var(--ink)', minHeight: '100vh', paddingTop: 'var(--nav-h)', display: 'flex', alignItems: 'center' }}>
       <div style={{ maxWidth: 680, margin: '0 auto', padding: '80px 32px', textAlign: 'center', width: '100%' }}>
         {/* Gold checkmark */}
         <div style={{

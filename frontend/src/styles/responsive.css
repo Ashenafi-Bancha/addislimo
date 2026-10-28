@@ -135,11 +135,14 @@
    ───────────────────────────────────────────── */
 
 @media (max-width: 560px) {
+  :root {
+    --nav-h: 80px;
+    --nav-h-scrolled: 70px;
+    --nav-logo-h: 46px;
+    --nav-logo-h-scrolled: 40px;
+  }
   .nav-bar {
     padding: 0 20px !important;
-  }
-  .nav-logo {
-    height: 30px !important;
   }
   .nav-mobile-actions {
     gap: 10px !important;
@@ -332,22 +335,34 @@ video {
   .booking-summary { position: static !important; order: 2; }
 }
 
-/* The language toggle shares the phone header with the logo, the booking
-   button and the menu. On the narrowest phones everything tightens a notch.
-   The logo never shrinks below legibility and never distorts: it keeps its
+/* The language picker shares the phone header with the logo, the booking
+   button and the menu. On the narrowest phones everything tightens a notch:
+   the globe drops its language code, the booking button its padding. The
+   logo never shrinks below legibility and never distorts — it keeps its
    ratio and the bar gives up its padding instead. */
 @media (max-width: 480px) {
+  :root {
+    --nav-h: 74px;
+    --nav-h-scrolled: 66px;
+    --nav-logo-h: 40px;
+    --nav-logo-h-scrolled: 35px;
+  }
   .nav-bar { padding: 0 16px !important; }
-  .nav-logo { height: 26px !important; }
   .nav-mobile-actions { gap: 8px !important; }
   .nav-mobile-cta { padding: 9px 12px !important; }
-  .lang-switch { padding: 2px; }
-  .lang-switch-option { padding: 6px 8px; font-size: 10px; }
+  .lang-trigger { padding: 7px 9px; gap: 4px; }
 }
 
 @media (max-width: 400px) {
-  .nav-bar { padding: 0 12px !important; }
-  .nav-logo { height: 24px !important; }
+  :root {
+    --nav-h: 68px;
+    --nav-h-scrolled: 60px;
+    --nav-logo-h: 34px;
+    --nav-logo-h-scrolled: 31px;
+  }
+  .nav-bar { padding: 0 10px !important; }
+  .nav-mobile-actions { gap: 6px !important; }
+  .lang-trigger-code { display: none; }
 }
 
 /* The language toggle joined the desktop header, so up to 1240px the header

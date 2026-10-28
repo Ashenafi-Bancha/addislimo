@@ -213,7 +213,7 @@ export default function Sidebar({ current, navigate, session, onSignOut, badges,
         {onClose && (
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, padding: '6px 10px' }}>
             <span style={{ fontFamily: 'var(--font-body)', fontSize: 13, color: 'rgba(255,255,255,0.62)' }}>{t('Language')}</span>
-            <LanguageSwitcher compact />
+            <LanguageSwitcher />
           </div>
         )}
 

@@ -20,7 +20,7 @@ export default function AirportTransfer({ navigate }: Props) {
   const activeGroup = airportDestinationGroups.find(g => g.id === group) ?? airportDestinationGroups[0]
 
   return (
-    <div style={{ background: 'var(--ink)', minHeight: '100vh', paddingTop: 72 }}>
+    <div style={{ background: 'var(--ink)', minHeight: '100vh', paddingTop: 'var(--nav-h)' }}>
       {/* Hero */}
       <section style={{ position: 'relative', minHeight: 480, display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
         <div className="airport-hero-photo" style={{

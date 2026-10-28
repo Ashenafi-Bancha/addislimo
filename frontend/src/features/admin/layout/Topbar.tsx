@@ -170,7 +170,7 @@ export default function Topbar({ navigate, session, onSignOut, onOpenMenu, compa
         </>
       )}
 
-      {!compact && <LanguageSwitcher compact />}
+      {!compact && <LanguageSwitcher />}
 
       {/* Notifications */}
       <div ref={bellRef} style={{ position: 'relative' }}>

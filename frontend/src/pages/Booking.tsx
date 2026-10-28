@@ -108,7 +108,7 @@ export default function Booking({ navigate }: Props) {
   ]
 
   return (
-    <div style={{ background: 'var(--ink)', minHeight: '100vh', paddingTop: 72 }}>
+    <div style={{ background: 'var(--ink)', minHeight: '100vh', paddingTop: 'var(--nav-h)' }}>
       <div style={{ maxWidth: 1180, margin: '0 auto', padding: 'clamp(40px, 6vw, 72px) 20px 80px' }}>
         {/* Header */}
         <Reveal style={{ marginBottom: 34, maxWidth: 680 }}>
