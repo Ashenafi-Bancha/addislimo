@@ -18,7 +18,7 @@ export default function About({ navigate }: Props) {
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '64px 80px', alignItems: 'end' }}>
             <div style={{ paddingBottom: 64 }}>
-              <p className="label-caps" style={{ color: '#FFFFFF', marginBottom: 16 }}>{t('About')}</p>
+              <p className="label-caps" style={{ color: 'var(--gold)', marginBottom: 16 }}>{t('About')}</p>
               <h1 style={{
                 fontFamily: 'var(--font-display)',
                 fontSize: 'clamp(36px, 5vw, 60px)',
@@ -48,7 +48,7 @@ export default function About({ navigate }: Props) {
 
       {/* Values */}
       <section style={{ padding: '80px 32px', maxWidth: 1100, margin: '0 auto' }}>
-        <p className="label-caps" style={{ color: '#FFFFFF', marginBottom: 48 }}>{t('What We Stand For')}</p>
+        <p className="label-caps" style={{ color: 'var(--gold)', marginBottom: 48 }}>{t('What We Stand For')}</p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '2px' }}>
           {brandValues.map((v, i) => (
             <Reveal key={i} variant="lift" index={i} style={{ background: 'var(--surface-2)', padding: '40px 32px', position: 'relative', overflow: 'hidden' }}>
@@ -66,7 +66,7 @@ export default function About({ navigate }: Props) {
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '48px 80px', alignItems: 'start' }}>
             <div>
-              <p className="label-caps" style={{ color: '#FFFFFF', marginBottom: 16 }}>{t('Partner Network')}</p>
+              <p className="label-caps" style={{ color: 'var(--gold)', marginBottom: 16 }}>{t('Partner Network')}</p>
               <div style={{ display: 'flex', gap: 3, color: 'rgba(255,255,255,0.80)', fontSize: 12, marginBottom: 12 }}>
                 {['★','★','★','★','★'].map((s,i)=><span key={i}>{s}</span>)}
               </div>
@@ -98,7 +98,7 @@ export default function About({ navigate }: Props) {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
               {partnerTypes.map((p, i) => (
                 <div key={i} style={{ border: '1px solid rgba(255,255,255,0.1)', padding: '28px 24px' }}>
-                  <p className="label-caps" style={{ color: '#FFFFFF', marginBottom: 10, fontSize: 10 }}>{p.type}</p>
+                  <p className="label-caps" style={{ color: 'var(--gold)', marginBottom: 10, fontSize: 10 }}>{p.type}</p>
                   <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.75)', lineHeight: 1.65 }}>{p.desc}</p>
                 </div>
               ))}
@@ -110,7 +110,7 @@ export default function About({ navigate }: Props) {
       {/* Business model note */}
       <section style={{ padding: '72px 32px' }}>
         <div style={{ maxWidth: 700, margin: '0 auto', textAlign: 'center' }}>
-          <p className="label-caps" style={{ color: '#FFFFFF', marginBottom: 16 }}>{t('The Addis Limo Model')}</p>
+          <p className="label-caps" style={{ color: 'var(--gold)', marginBottom: 16 }}>{t('The Addis Limo Model')}</p>
           <p style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontStyle: 'italic', color: 'rgba(255,255,255,0.75)', lineHeight: 1.7 }}>
             {t('“Luxury without being flashy. Technology without feeling complicated. Ethiopian without looking stereotypical.”')}
           </p>

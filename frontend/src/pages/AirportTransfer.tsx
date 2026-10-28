@@ -34,7 +34,7 @@ export default function AirportTransfer({ navigate }: Props) {
           <div style={{ display: 'flex', gap: 3, color: 'rgba(255,255,255,0.80)', fontSize: 12, marginBottom: 16 }}>
             {['★','★','★','★','★'].map((s,i)=><span key={i}>{s}</span>)}
           </div>
-          <p className="label-caps" style={{ color: '#FFFFFF', marginBottom: 16 }}>{t('Bole International Airport')}</p>
+          <p className="label-caps" style={{ color: 'var(--gold)', marginBottom: 16 }}>{t('Bole International Airport')}</p>
           <h1 style={{
             fontFamily: 'var(--font-display)',
             fontSize: 'clamp(36px, 5vw, 68px)',
@@ -54,7 +54,7 @@ export default function AirportTransfer({ navigate }: Props) {
       <section style={{ padding: '0 32px', marginTop: -48, position: 'relative', zIndex: 10 }}>
         <div style={{ maxWidth: 900, margin: '0 auto' }}>
           <div className="booking-glass" style={{ padding: '40px 48px' }}>
-            <p className="label-caps" style={{ color: '#FFFFFF', marginBottom: 4 }}>{t('Airport: Bole International Airport')}</p>
+            <p className="label-caps" style={{ color: 'var(--gold)', marginBottom: 4 }}>{t('Airport: Bole International Airport')}</p>
             <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 600, color: '#FFFFFF', marginBottom: 32 }}>
               {t('Book Your Airport Transfer')}
             </h2>
@@ -112,7 +112,7 @@ export default function AirportTransfer({ navigate }: Props) {
       {/* Process steps */}
       <section style={{ padding: '96px 32px', maxWidth: 1100, margin: '0 auto' }}>
         <div style={{ textAlign: 'center', marginBottom: 56 }}>
-          <p className="label-caps" style={{ color: '#FFFFFF', marginBottom: 12 }}>{t('How It Works')}</p>
+          <p className="label-caps" style={{ color: 'var(--gold)', marginBottom: 12 }}>{t('How It Works')}</p>
           <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 38, fontWeight: 600, color: '#FFFFFF' }}>{t('Four Simple Steps')}</h2>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, marginTop: 16 }}>
             <div style={{ height: 1, width: 56, background: 'linear-gradient(to right, transparent, #FFFFFF)' }} />
@@ -141,7 +141,7 @@ export default function AirportTransfer({ navigate }: Props) {
       <section style={{ background: 'var(--surface)', padding: '80px 32px' }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: 56 }}>
-            <p className="label-caps" style={{ color: '#FFFFFF', marginBottom: 12 }}>{t('Service Features')}</p>
+            <p className="label-caps" style={{ color: 'var(--gold)', marginBottom: 12 }}>{t('Service Features')}</p>
             <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 36, fontWeight: 600, color: '#FFFFFF' }}>{t('Everything Included')}</h2>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, marginTop: 16 }}>
               <div style={{ height: 1, width: 56, background: 'linear-gradient(to right, transparent, #FFFFFF)' }} />
@@ -165,7 +165,7 @@ export default function AirportTransfer({ navigate }: Props) {
 
       {/* Where we take you — tabbed destination groups from the client document */}
       <section style={{ padding: '80px 32px', maxWidth: 1100, margin: '0 auto' }}>
-        <p className="label-caps" style={{ color: '#FFFFFF', marginBottom: 16 }}>{t('Popular Destinations')}</p>
+        <p className="label-caps" style={{ color: 'var(--gold)', marginBottom: 16 }}>{t('Popular Destinations')}</p>
         <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 32, fontWeight: 600, color: '#FFFFFF', marginBottom: 8 }}>{t('Where We Take You')}</h2>
         <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.70)', marginBottom: 32, fontStyle: 'italic' }}>
           {t('Sample destinations. We serve any address in Addis Ababa.')}

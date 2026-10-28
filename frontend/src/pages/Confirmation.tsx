@@ -21,7 +21,7 @@ export default function Confirmation({ navigate }: Props) {
         <div style={{ display: 'flex', gap: 3, color: 'rgba(255,255,255,0.80)', fontSize: 14, marginBottom: 16, justifyContent: 'center' }}>
           {['★','★','★','★','★'].map((s,i)=><span key={i}>{s}</span>)}
         </div>
-        <p className="label-caps" style={{ color: '#FFFFFF', marginBottom: 16 }}>{t('Booking Submitted')}</p>
+        <p className="label-caps" style={{ color: 'var(--gold)', marginBottom: 16 }}>{t('Booking Submitted')}</p>
         <h1 style={{
           fontFamily: 'var(--font-display)',
           fontSize: 'clamp(32px, 5vw, 52px)',
@@ -48,7 +48,7 @@ export default function Confirmation({ navigate }: Props) {
           position: 'relative', overflow: 'hidden',
         }}>
           <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'var(--gold-gradient)' }} />
-          <p className="label-caps" style={{ color: '#FFFFFF', marginBottom: 20, fontSize: 9 }}>{t('Booking Reference')}</p>
+          <p className="label-caps" style={{ color: 'var(--gold)', marginBottom: 20, fontSize: 9 }}>{t('Booking Reference')}</p>
           <div style={{
             fontFamily: 'var(--font-display)',
             fontSize: 32, fontWeight: 700, color: '#FFFFFF',

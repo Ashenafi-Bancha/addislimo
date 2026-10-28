@@ -19,7 +19,7 @@ export default function Services({ navigate }: Props) {
         background: 'var(--surface)',
       }}>
         <div style={{ maxWidth: 1280, margin: '0 auto' }}>
-          <p className="label-caps" style={{ color: '#FFFFFF', marginBottom: 16 }}>{t('Our Services')}</p>
+          <p className="label-caps" style={{ color: 'var(--gold)', marginBottom: 16 }}>{t('Our Services')}</p>
           <h1 style={{
             fontFamily: 'var(--font-display)',
             fontSize: 'clamp(36px, 5vw, 64px)',

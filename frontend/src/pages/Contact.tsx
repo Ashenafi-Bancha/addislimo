@@ -31,7 +31,7 @@ export default function Contact({ navigate }: Props) {
       <section className="halo" style={{ position: 'relative', padding: '92px 32px 64px', textAlign: 'center', overflow: 'hidden' }}>
         <div style={{ position: 'relative', maxWidth: 760, margin: '0 auto' }}>
           <Reveal>
-            <p className="label-caps" style={{ color: '#FFFFFF', marginBottom: 14 }}>{t('Talk to us')}</p>
+            <p className="label-caps" style={{ color: 'var(--gold)', marginBottom: 14 }}>{t('Talk to us')}</p>
           </Reveal>
           <Reveal index={1}>
             <h1
