@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import type { Page } from '@/app/routes'
+import brandLogo from '@/assets/images/addis-limo-logo.webp'
 import { mainNav as links, primaryCta, site } from '@/config/site'
 import { useScrolled } from '@/hooks'
 import LanguageSwitcher from '@/components/ui/LanguageSwitcher'
@@ -20,42 +21,27 @@ export default function Nav({ current, navigate }: NavProps) {
       borderBottom: '1px solid rgba(255,255,255,0.18)',
       transition: 'background 0.3s',
     }}>
-      <div style={{ maxWidth: 1380, margin: '0 auto', padding: '0 32px' }}>
+      <div className="nav-bar" style={{ maxWidth: 1380, margin: '0 auto', padding: '0 32px' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: scrolled ? 64 : 76, transition: 'height 0.3s cubic-bezier(0.22, 1, 0.36, 1)' }}>
 
-          {/* Logo */}
-          <button onClick={() => navigate('home')} style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 12 }}>
-            {/* Circular emblem */}
-            <div style={{ position: 'relative', width: 48, height: 48, flexShrink: 0 }}>
-              <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-                <circle cx="24" cy="24" r="22.5" stroke="url(#nc1)" strokeWidth="1.4"/>
-                <circle cx="24" cy="24" r="18" stroke="url(#nc2)" strokeWidth="0.6" strokeDasharray="2 3"/>
-                <text x="24" y="30" textAnchor="middle" fontFamily="'Playfair Display',serif" fontSize="14" fontWeight="700" fill="url(#nt1)" letterSpacing="1">{site.monogram}</text>
-                <defs>
-                  <linearGradient id="nc1" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
-                    <stop stopColor="#FFFFFF"/><stop offset=".5" stopColor="rgba(200,200,200,0.9)"/><stop offset="1" stopColor="rgba(180,180,180,0.7)"/>
-                  </linearGradient>
-                  <linearGradient id="nc2" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
-                    <stop stopColor="rgba(200,200,200,0.9)" stopOpacity=".6"/><stop offset="1" stopColor="rgba(180,180,180,0.7)" stopOpacity=".3"/>
-                  </linearGradient>
-                  <linearGradient id="nt1" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
-                    <stop stopColor="#FFFFFF"/><stop offset=".5" stopColor="rgba(200,200,200,0.9)"/><stop offset="1" stopColor="#FFFFFF"/>
-                  </linearGradient>
-                </defs>
-              </svg>
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-              <span className="nav-brand-name" style={{
-                fontFamily: 'var(--font-display)', fontSize: 17, fontWeight: 700,
-                letterSpacing: '0.18em', textTransform: 'uppercase', whiteSpace: 'nowrap',
-                background: 'var(--gold-gradient-h)',
-                WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
-                lineHeight: 1,
-              }}>{site.name.toUpperCase()}</span>
-              <span className="nav-brand-tagline" style={{ fontFamily: 'var(--font-body)', fontSize: 8, fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.78)' }}>
-                {t(site.tagline)}
-              </span>
-            </div>
+          {/* Logo. The artwork carries the name and the tagline, so the header
+              sets it alone: a second "Addis Limo" in type beside it would read
+              as the name twice. It shrinks with the bar on scroll. */}
+          <button onClick={() => navigate('home')} aria-label={`${site.name} — ${t('home')}`} style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', padding: 0, flexShrink: 0 }}>
+            <img
+              src={brandLogo}
+              alt={site.name}
+              className="nav-logo"
+              width={427}
+              height={96}
+              style={{
+                height: scrolled ? 36 : 44,
+                width: 'auto',
+                display: 'block',
+                flexShrink: 0,
+                transition: 'height 0.3s cubic-bezier(0.22, 1, 0.36, 1)',
+              }}
+            />
           </button>
 
           {/* Desktop nav links */}

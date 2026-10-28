@@ -129,26 +129,20 @@
 
 /* ─────────────────────────────────────────────
    Header
-   The booking button now shares the bar with the brand mark, so the lockup
-   sheds its tagline and tightens up rather than wrapping onto three lines.
+   The logo shares the bar with the booking button and the language toggle, so
+   it steps down with the screen rather than squeezing the two beside it. It is
+   never hidden: it is the only thing naming the business up there.
    ───────────────────────────────────────────── */
 
 @media (max-width: 560px) {
-  .nav-brand-name {
-    font-size: 14px !important;
-    letter-spacing: 0.12em !important;
+  .nav-bar {
+    padding: 0 20px !important;
   }
-  .nav-brand-tagline {
-    display: none !important;
+  .nav-logo {
+    height: 30px !important;
   }
   .nav-mobile-actions {
     gap: 10px !important;
-  }
-}
-
-@media (max-width: 380px) {
-  .nav-brand-name {
-    font-size: 12.5px !important;
   }
 }
 
@@ -338,10 +332,13 @@ video {
   .booking-summary { position: static !important; order: 2; }
 }
 
-/* The language toggle shares the phone header with the brand, the booking
-   button and the menu. On the narrowest phones everything tightens a notch,
-   and the wordmark gives way to the AL emblem, which still reads as the brand. */
+/* The language toggle shares the phone header with the logo, the booking
+   button and the menu. On the narrowest phones everything tightens a notch.
+   The logo never shrinks below legibility and never distorts: it keeps its
+   ratio and the bar gives up its padding instead. */
 @media (max-width: 480px) {
+  .nav-bar { padding: 0 16px !important; }
+  .nav-logo { height: 26px !important; }
   .nav-mobile-actions { gap: 8px !important; }
   .nav-mobile-cta { padding: 9px 12px !important; }
   .lang-switch { padding: 2px; }
@@ -349,7 +346,8 @@ video {
 }
 
 @media (max-width: 400px) {
-  .nav-brand-name { display: none !important; }
+  .nav-bar { padding: 0 12px !important; }
+  .nav-logo { height: 24px !important; }
 }
 
 /* The language toggle joined the desktop header, so up to 1240px the header

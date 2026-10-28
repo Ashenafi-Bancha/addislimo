@@ -10,7 +10,7 @@ import type { Page } from '@/app/routes'
 
 export const site = {
   name: 'Addis Limo',
-  /** Rendered under the logo mark. */
+  /** Used in copy; the logo artwork carries its own "Premium Chauffeur Service". */
   tagline: 'Premium Transportation',
   /**
    * The client's strapline, from page 1 of their service document. Their
@@ -18,7 +18,6 @@ export const site = {
    * spelling and capitalisation are corrected here for display.
    */
   slogan: 'Experience the capital city of Africa in class.',
-  monogram: 'AL',
   description:
     'Premium chauffeur and transportation platform in Addis Ababa offering reliable booking, partner-managed luxury vehicles, and seamless service for travelers and businesses.',
   city: 'Addis Ababa',

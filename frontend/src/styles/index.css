@@ -211,8 +211,8 @@ body {
 /* ── Amharic ──
    Ge'ez script has no capitals and does not take wide tracking: the spaced-out
    uppercase labels that suit Latin text pull Amharic words apart. The inline
-   styles set letter-spacing everywhere, hence !important. The Latin wordmark
-   keeps its tracking. */
-html:lang(am) body *:not(.nav-brand-name) {
+   styles set letter-spacing everywhere, hence !important. The wordmark is part
+   of the logo artwork, so it is untouched either way. */
+html:lang(am) body * {
   letter-spacing: normal !important;
 }

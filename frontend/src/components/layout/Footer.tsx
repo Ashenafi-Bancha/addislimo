@@ -1,4 +1,5 @@
 import type { Page } from '@/app/routes'
+import brandLogo from '@/assets/images/addis-limo-logo-lg.webp'
 import { site } from '@/config/site'
 import { useContent } from '@/features/cms'
 import { t } from '@/features/i18n'
@@ -21,26 +22,18 @@ export default function Footer({ navigate }: FooterProps) {
 
           {/* ── Brand column ── */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-            <svg width="52" height="52" viewBox="0 0 64 64" fill="none" style={{ marginBottom: 2 }}>
-              <circle cx="32" cy="32" r="30" stroke="url(#ftCircle)" strokeWidth="1.2"/>
-              <text x="32" y="43" textAnchor="middle" fontFamily="'Playfair Display',serif" fontSize="26" fontWeight="700" fill="url(#ftLetter)">{site.monogram}</text>
-              <defs>
-                <linearGradient id="ftCircle" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
-                  <stop stopColor="#FFFFFF"/><stop offset=".5" stopColor="#FFFFFF"/><stop offset="1" stopColor="rgba(255,255,255,0.65)"/>
-                </linearGradient>
-                <linearGradient id="ftLetter" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
-                  <stop stopColor="#FFFFFF"/><stop offset=".5" stopColor="#FFFFFF"/><stop offset="1" stopColor="#FFFFFF"/>
-                </linearGradient>
-              </defs>
-            </svg>
-            <span style={{
-              fontFamily: 'var(--font-display)', fontSize: 18, fontWeight: 700,
-              letterSpacing: '0.2em', textTransform: 'uppercase',
-              background: 'var(--gold-gradient-h)',
-              WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
-            }}>Addis Limo</span>
+            {/* As in the header, the logo stands on its own: it already says
+                the name and "Premium Chauffeur Service". */}
+            <img
+              src={brandLogo}
+              alt={site.name}
+              className="footer-logo"
+              width={711}
+              height={160}
+              style={{ height: 60, width: 'auto', display: 'block', marginBottom: 2, maxWidth: '100%', objectFit: 'contain', objectPosition: 'left' }}
+            />
             <span style={{ fontSize: 8, fontWeight: 700, letterSpacing: '0.28em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.45)' }}>
-              {business.tagline} · {site.city}
+              {t(site.city)}, {t(site.country)}
             </span>
             <p style={{ fontFamily: 'var(--font-display)', fontStyle: 'italic', fontSize: 13, color: 'var(--ivory-muted)', lineHeight: 1.6, marginTop: 2 }}>
               {business.slogan}
