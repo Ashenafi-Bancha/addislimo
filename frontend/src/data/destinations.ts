@@ -7,10 +7,15 @@
  * Authentic Shopping, Family activities, Malls, Architecture, Entertainment,
  * cultural restaurant, Food and drink.
  *
- * Descriptions are written for the site; the client did not supply copy. Photography
- * is placeholder Unsplash imagery assigned per category — swap `imagePool` for
- * real photography when the client supplies it.
+ * Descriptions are written for the site; the client did not supply copy.
+ * Photography is placeholder Unsplash imagery assigned per category, except
+ * where the client has supplied a real photograph: `photos` below names those
+ * by destination, and a named photo always wins over the pool. Adding one is
+ * a line in that map, so the pool shrinks as real pictures arrive.
  */
+
+import abrehotLibrary from '@/assets/images/abrehot-library.webp'
+import adwaMuseum from '@/assets/images/adwa-museum.webp'
 
 export type Category =
   | 'all'
@@ -81,6 +86,18 @@ const imagePool: Record<'heritage' | 'nature' | 'city' | 'dining', string[]> = {
   ],
 }
 
+/**
+ * The client's own photographs, keyed by the destination's exact name.
+ *
+ * Both are among the most visited places in the city, so they were the first
+ * two to be shot. They are cropped to the ratio the pool is requested at and
+ * sized for the card at 2x, which is why 5 MB of source PNG ships as 169 kB.
+ */
+const photos: Record<string, string> = {
+  'Abrehot Library': abrehotLibrary,
+  'Adwa Museum': adwaMuseum,
+}
+
 type Entry = Omit<Destination, 'img' | 'cat'>
 
 function build(
@@ -89,7 +106,11 @@ function build(
   entries: Entry[],
 ): Destination[] {
   const pool = imagePool[mood]
-  return entries.map((entry, i) => ({ ...entry, cat, img: pool[i % pool.length] }))
+  return entries.map((entry, i) => ({
+    ...entry,
+    cat,
+    img: photos[entry.name] ?? pool[i % pool.length],
+  }))
 }
 
 /* ── Museum & Historical Landmark Tours (document p.3) ── */
