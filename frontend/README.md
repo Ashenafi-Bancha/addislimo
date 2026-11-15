@@ -107,9 +107,14 @@ Things that are deliberately unfinished, waiting on the client:
 - Social links point at bare domains.
 - Some partner logos hot-link to Clearbit; they fall back to a monogram when
   the request fails.
-- Fleet and destination photography is Unsplash placeholder imagery, assigned
-  per category by `imagePool` in `data/destinations.ts`.
+- Fleet photography is Unsplash placeholder imagery. Destination photography
+  is too, except where `photos` in `data/destinations.ts` names a real one:
+  Abrehot Library and the Adwa Museum have theirs.
 - Vehicle classes in the booking wizard use emoji instead of photos.
+- A submitted booking is not stored anywhere. The confirmation screen hands
+  it to WhatsApp, the reader's mail app or the phone, whichever the client has
+  a number for (`features/booking/request.ts`). It becomes `POST /bookings`
+  when the backend lands, with these channels kept as the fallback.
 - The admin console runs on seed data in memory: edits, additions and
   deletions last until the page is reloaded. Its sign-in is a UI gate with one
   prototype account (`admin@addislimo.com` / `admin@2026`), which the UI never
@@ -117,7 +122,6 @@ Things that are deliberately unfinished, waiting on the client:
 - Website Content edits are saved in the admin's browser only. Visitors see
   them after **Export** and a commit of the file to
   `src/features/cms/published.json`, or once the backend stores them.
-- `contact` is routed to the About page; there is no dedicated contact page yet.
 
 ## Admin console
 

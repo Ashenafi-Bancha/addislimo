@@ -3,11 +3,13 @@ import { contact } from '@/config/site'
 /**
  * The trust strip that sits directly under the home hero.
  *
- * The figures are rounded claims requested by the client rather than live
- * counts. For reference, the catalogue currently holds 11 services
- * (`data/service-catalog.ts`) and 69 destinations (`data/destinations.ts`),
- * so "70+" is one entry ahead of what the site actually lists — worth either
- * adding a destination or confirming the real number with the client.
+ * The figures are rounded claims requested by the client, but they are
+ * checked against the catalogue rather than taken on trust: it holds 11
+ * services (`data/service-catalog.ts`) and 69 destinations
+ * (`data/destinations.ts`). "70+" used to sit one entry ahead of what the
+ * site actually lists, which is the kind of small overstatement a visitor can
+ * disprove by counting the cards, so it now says "69". Raise it when the
+ * catalogue does.
  */
 
 export interface TrustBadge {
@@ -28,7 +30,7 @@ export const trustBadges: TrustBadge[] = [
   },
   {
     icon: '◉',
-    value: '70+',
+    value: '69',
     label: 'Curated Experiences',
     desc: 'Museums, parks, hiking, markets, malls and cultural dining.',
   },

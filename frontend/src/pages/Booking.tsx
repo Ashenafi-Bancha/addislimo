@@ -2,6 +2,7 @@ import { useMemo, useState, type CSSProperties, type ReactNode } from 'react'
 import type { Page } from '@/app/routes'
 import Reveal from '@/components/ui/Reveal'
 import { serviceOptions, stepLabels, vehicleOptions } from '@/features/booking/booking.data'
+import { newReference, rememberRequest } from '@/features/booking/request'
 import { useContent } from '@/features/cms'
 import { t, tf } from '@/features/i18n'
 
@@ -19,8 +20,11 @@ type Step = 1 | 2 | 3 | 4 | 5
  * field they belong to and only after the reader has tried to move on, and a
  * running summary so nobody has to scroll back to check what they chose.
  *
- * Nothing is submitted anywhere yet. `submit` hands over to the confirmation
- * page; it becomes `POST /bookings` (see `lib/api/endpoints.ts`).
+ * `submit` stamps the booking with a reference and hands it to the
+ * confirmation page, which is where the reader sends it to the dispatch desk
+ * — by WhatsApp, by mail or by phone. See `features/booking/request.ts` for
+ * why delivery is a handoff rather than a silent POST. It becomes
+ * `POST /bookings` (see `lib/api/endpoints.ts`) once the backend exists.
  */
 export default function Booking({ navigate }: Props) {
   const business = useContent('business')
@@ -86,7 +90,26 @@ export default function Booking({ navigate }: Props) {
 
   const submit = () => {
     setTried((t) => ({ ...t, 5: true }))
-    if ([1, 2, 3, 4, 5].every((n) => stepValid(n as Step))) navigate('confirmation')
+    if (![1, 2, 3, 4, 5].every((n) => stepValid(n as Step))) return
+    // The labels, not the ids: this is read by a dispatcher, not by code.
+    rememberRequest({
+      reference: newReference(),
+      submittedAt: new Date().toISOString(),
+      service: serviceLabel,
+      pickup: pickup.trim(),
+      destination: destination.trim(),
+      date,
+      time,
+      passengers,
+      luggage,
+      vehicle: vehicleLabel,
+      firstName: firstName.trim(),
+      lastName: lastName.trim(),
+      email: email.trim(),
+      phone: phone.trim(),
+      notes,
+    })
+    navigate('confirmation')
   }
 
   const serviceLabel = t(serviceOptions.find((s) => s.id === service)?.label ?? '')

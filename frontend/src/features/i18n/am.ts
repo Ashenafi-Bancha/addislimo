@@ -763,24 +763,40 @@ export const am: Record<string, string> = {
   'Enter a valid email address.': 'ትክክለኛ የኢሜይል አድራሻ ያስገቡ።',
   'Enter a reachable phone number.': 'የሚሠራ ስልክ ቁጥር ያስገቡ።',
 
-  /* ── Confirmation ── */
-  'Booking Submitted': 'ጥያቄዎ ተልኳል',
-  'Your Journey Is': 'ጉዞዎ',
-  'Confirmed.': 'ተረጋግጧል።',
-  'Thank you for choosing Addis Limo. Your booking request has been received and our team will confirm your chauffeur and vehicle shortly.':
-    'አዲስ ሊሞን ስለመረጡ እናመሰግናለን። የቦታ ማስያዝ ጥያቄዎ ደርሶናል፤ ቡድናችን ሹፌርዎንና ተሽከርካሪዎን በቅርቡ ያረጋግጣል።',
-  'Booking Reference': 'የማስያዣ ቁጥር',
-  Status: 'ሁኔታ',
-  'Pending Confirmation': 'ማረጋገጫ በመጠባበቅ ላይ',
-  'Driver Status': 'የሹፌር ሁኔታ',
-  'Being Assigned': 'በመመደብ ላይ',
-  'Expected Response': 'የሚጠበቅ ምላሽ',
-  'Within 2 hours': 'በ2 ሰዓት ውስጥ',
-  'Contact Method': 'የመገናኛ መንገድ',
-  'Email / WhatsApp': 'ኢሜይል / ዋትስአፕ',
-  'Our team is reviewing your booking and will contact you shortly.':
-    'ቡድናችን ቦታ ማስያዝዎን እየገመገመ ነው፤ በቅርቡ ያገኝዎታል።',
+  /* ── Confirmation: sending the request ── */
+  'One step left': 'አንድ እርምጃ ቀርቷል',
+  'Send us your': 'ጥያቄዎን',
+  'request.': 'ይላኩልን።',
+  'Your booking is ready, with every detail filled in. Choose how to reach our dispatch desk and we confirm the vehicle, the chauffeur and the price before anything is final.':
+    'ቦታ ማስያዝዎ ከሁሉም ዝርዝሮች ጋር ተዘጋጅቷል። የመላኪያ ዴስካችንን የሚያገኙበትን መንገድ ይምረጡ፤ ከመጨረሱ በፊት ተሽከርካሪውን፣ ሹፌሩንና ዋጋውን እናረጋግጣለን።',
+  'Send on WhatsApp': 'በዋትስአፕ ይላኩ',
+  'Fastest. Opens with your booking written out, ready to send.':
+    'ፈጣኑ መንገድ። ቦታ ማስያዝዎ ተጽፎ፣ ለመላክ ተዘጋጅቶ ይከፈታል።',
+  'Send by email': 'በኢሜይል ይላኩ',
+  'Opens your mail app with the booking addressed to {email}.':
+    'የኢሜይል መተግበሪያዎን ይከፍታል፤ ቦታ ማስያዝዎ ወደ {email} ተዘጋጅቷል።',
+  'Call {phone}': '{phone} ይደውሉ',
+  'Dispatch answers {hours}. Quote your reference.':
+    'የመላኪያ ዴስክ {hours} ይመልሳል። የማስያዣ ቁጥርዎን ይጥቀሱ።',
+  'Opened. Send the message and dispatch will confirm shortly.':
+    'ተከፍቷል። መልእክቱን ይላኩ፤ የመላኪያ ዴስኩ በቅርቡ ያረጋግጣል።',
+  'Booking copied. Paste it wherever you like.':
+    'ቦታ ማስያዝዎ ተቀድቷል። በፈለጉት ቦታ ይለጥፉት።',
+  'Your reference': 'የማስያዣ ቁጥርዎ',
+  'Copy details': 'ዝርዝሩን ቅዳ',
+  'Nothing is charged here. Dispatch confirms the vehicle, the chauffeur and the price with you first.':
+    'እዚህ ምንም ክፍያ አይፈጸምም። የመላኪያ ዴስኩ ተሽከርካሪውን፣ ሹፌሩንና ዋጋውን አስቀድሞ ከእርስዎ ጋር ያረጋግጣል።',
+  '{p} passenger(s), {l} bag(s)': '{p} ተሳፋሪ(ዎች)፣ {l} ሻንጣ(ዎች)',
+  Notes: 'ማስታወሻዎች',
+  Name: 'ስም',
+  Phone: 'ስልክ',
   'Return Home': 'ወደ መነሻ ይመለሱ',
+
+  /* Reached by opening the confirmation address without a booking. */
+  'Nothing to send': 'የሚላክ ነገር የለም',
+  'We do not have a booking open.': 'ክፍት የሆነ ቦታ ማስያዝ የለንም።',
+  'Bookings are held for the visit that made them, so this page is empty after the tab is closed. Start again and it takes a minute.':
+    'ቦታ ማስያዝ ለተደረገበት ጉብኝት ብቻ ይቆያል፤ ስለዚህ ትሩ ከተዘጋ በኋላ ይህ ገጽ ባዶ ይሆናል። እንደገና ቢጀምሩ አንድ ደቂቃ ይወስዳል።',
 
   /* ── Contact ── */
   'Contact Addis Limo': 'አዲስ ሊሞን ያግኙ',

@@ -95,8 +95,18 @@ customers are sent to it:
       authentication (`POST /auth/login` in `frontend/src/lib/api/endpoints.ts`).
 - [ ] **Fill in the placeholders** listed in `frontend/README.md`: the phone
       and WhatsApp numbers, social links, and licensed photography and logos.
-- [ ] **Confirm the "70+" figure** in `frontend/src/data/trust.ts`; the
-      catalogue lists 69 destinations.
+- [x] **Confirm the "70+" figure** in `frontend/src/data/trust.ts`. It now
+      reads 69, which is what the catalogue lists. Raise it when the catalogue
+      grows, not before.
+- [ ] **Give dispatch a WhatsApp number and a phone line.** A submitted
+      booking reaches the business through whichever of the three channels has
+      a number filled in (`frontend/src/features/booking/request.ts`). Email
+      always works; WhatsApp and the phone card only appear once
+      `whatsapp` and `phoneHref` are set in Website Content, and WhatsApp is
+      how most of Addis will want to send it.
+- [ ] **Make sure info@addislimo.com is a mailbox somebody reads.** Until the
+      backend exists it is where every booking and every contact message
+      lands.
 - [ ] **Turn on auto-renew** for addislimo.com in AletCloud. It is currently
       off, and the registration runs to 4 September 2027.
 
