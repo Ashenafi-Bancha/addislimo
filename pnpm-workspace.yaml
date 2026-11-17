@@ -1,7 +1,6 @@
 # Addis Limo — pnpm workspace.
 #
-# `backend` is intentionally NOT listed yet: the folder is a documented
-# placeholder with no package.json. Add it here the day we scaffold the
-# Node/Express API so a single `pnpm install` at the root covers both apps.
+# One `pnpm install` at the root covers both apps.
 packages:
   - 'frontend'
+  - 'backend'

@@ -8,7 +8,7 @@ This is a pnpm workspace holding two applications:
 | Package               | Path        | Status                                     |
 | --------------------- | ----------- | ------------------------------------------ |
 | `@addislimo/frontend` | `frontend/` | **Live.** React 19 + Vite 8 + Tailwind v4. |
-| _(backend)_           | `backend/`  | **Not started.** Node + Express + Postgres. |
+| API                   | `backend/`  | Node 22 + Express 5 + PostgreSQL. Built and tested; the frontend does not call it yet. |
 
 The frontend runs inside Figma Make: `.figma/make/dev` starts it, and
 `.figma/make/deploy` publishes the `dist/` this repo's build produces. Those
@@ -39,7 +39,7 @@ The dev server binds `0.0.0.0:$PORT` (default `8443`).
 ```
 addislimo/
 ├── frontend/            # the React app — see frontend/README.md
-├── backend/             # placeholder; see backend/README.md
+├── backend/             # the API: bookings, dispatch, fleet, finance, auth
 ├── docs/                # architecture and conventions
 ├── .figma/make/         # Figma Make harness — dev, build, deploy hooks
 ├── dist/                # build output (git-ignored, published by Figma)
@@ -67,7 +67,7 @@ Looking for something to change? Start here.
 
 - [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — how the two apps fit together.
 - [`frontend/README.md`](frontend/README.md) — frontend structure and conventions.
-- [`backend/README.md`](backend/README.md) — the API plan and database sketch.
+- [`backend/README.md`](backend/README.md) — the API: how to run it, the rules it enforces, and how to wire the frontend to it.
 - [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) — deploying to Vercel, connecting
   addislimo.com, and the checklist before going public.
 - [`docs/PHOTOGRAPHY.md`](docs/PHOTOGRAPHY.md) — how to shoot the fleet and

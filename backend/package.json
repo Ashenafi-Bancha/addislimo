@@ -1,0 +1,35 @@
+{
+  "name": "@addislimo/backend",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Addis Limo API \u2014 Node 22, Express 5 and PostgreSQL.",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "node --watch --env-file-if-exists=.env --experimental-strip-types src/server.ts",
+    "start": "node --env-file-if-exists=.env --experimental-strip-types src/server.ts",
+    "build": "tsc --noEmit",
+    "typecheck": "tsc --noEmit",
+    "migrate": "node --env-file-if-exists=.env --experimental-strip-types src/db/migrate.ts",
+    "seed": "node --env-file-if-exists=.env --experimental-strip-types src/db/seed.ts",
+    "reset": "node --env-file-if-exists=.env --experimental-strip-types src/db/migrate.ts --reset",
+    "test": "node --env-file-if-exists=.env.test --experimental-strip-types --test tests/domain.test.ts tests/api.test.ts"
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "pg": "^8.13.1",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/cookie-parser": "^1.4.8",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.10.2",
+    "@types/pg": "^8.11.10",
+    "typescript": "^5.7.2"
+  }
+}

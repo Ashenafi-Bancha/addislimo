@@ -1,8 +1,8 @@
 # Addis Limo
 
-A pnpm workspace holding a **frontend** (live) and a **backend** (not started
-— `backend/` is a documented placeholder with no code). Premium chauffeur and
-transportation platform for Addis Ababa.
+A pnpm workspace holding a **frontend** (live) and a **backend** (built and
+tested, not yet wired to the frontend). Premium chauffeur and transportation
+platform for Addis Ababa.
 
 The frontend is a React + Vite + Tailwind CSS app running inside Figma Make.
 
@@ -36,8 +36,11 @@ path is missing, or when the repository contradicts this guide.
 - `docs/ARCHITECTURE.md` — how the pieces fit together
 - `docs/CLIENT-BRIEF.md` — the client's service PDF mapped to the files that
   own each item. **Read it before changing service or destination content**
-- `backend/README.md` — the planned Node/Express/Postgres API. **Do not start
-  building it unless asked**
+- `backend/` — the Node 22 / Express 5 / PostgreSQL API. Bookings, dispatch,
+  fleet, customers, finance, content and real admin authentication, with 61
+  tests. Nothing in the frontend calls it yet: see "Wiring the frontend to it"
+  in `backend/README.md`. **Read that file before changing anything under
+  `backend/`** — the rules it enforces are written down there
 
 ### `frontend/`
 
@@ -135,12 +138,19 @@ lot off. See `frontend/README.md` for the rules.
 
 ## Dependencies
 
+Frontend:
+
 - Runtime: React 19 and React DOM 19
 - Styling: Tailwind CSS v4 with the `@tailwindcss/vite` plugin
 - Build tooling: Vite 8, TypeScript 5.7, `@vitejs/plugin-react`
 - Formatting: oxfmt (run from the workspace root)
 
 There is deliberately **no router library** — see `src/app/router.tsx`.
+
+Backend: Express 5, `pg` and `zod`, and nothing else. Node runs the
+TypeScript directly with `--experimental-strip-types`, so there is no build
+step — which also means no enums and no constructor parameter properties,
+because both emit runtime code that type stripping refuses.
 
 ## Styling
 
