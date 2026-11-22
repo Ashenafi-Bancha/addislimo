@@ -38,6 +38,26 @@ describe('booking status transitions', () => {
     }
   })
 
+  /**
+   * Dispatch assigns a driver to a booking that is still Pending, and that
+   * assignment is the confirmation - see the comment on TRANSITIONS. The
+   * booking still cannot reach the road without a partner and a driver, which
+   * the guards below cover.
+   */
+  it('lets a Pending booking be assigned directly', () => {
+    assert.ok(canTransition('Pending', 'Assigned'))
+    assert.doesNotThrow(() =>
+      assertTransition('Pending', 'Assigned', { partnerId: 'p-1', driverId: 'd-1' }),
+    )
+  })
+
+  it('still refuses to assign a Pending booking with no partner', () => {
+    assert.throws(
+      () => assertTransition('Pending', 'Assigned', { partnerId: null, driverId: null }),
+      /partner/i,
+    )
+  })
+
   it('refuses to skip the middle of the trip', () => {
     assert.equal(canTransition('Pending', 'Completed'), false)
     assert.equal(canTransition('Pending', 'In Progress'), false)
@@ -84,7 +104,7 @@ describe('booking status transitions', () => {
 
   it('names the ways out when it refuses', () => {
     assert.throws(() => assertTransition('Pending', 'Completed', { partnerId: 'p', driverId: 'd' }), {
-      message: /Confirmed, Cancelled/,
+      message: /It can become: Confirmed, Assigned, Cancelled\./,
     })
   })
 

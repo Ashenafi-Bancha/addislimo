@@ -2,7 +2,8 @@ import { useMemo, useState, type CSSProperties, type ReactNode } from 'react'
 import type { Page } from '@/app/routes'
 import Reveal from '@/components/ui/Reveal'
 import { serviceOptions, stepLabels, vehicleOptions } from '@/features/booking/booking.data'
-import { newReference, rememberRequest } from '@/features/booking/request'
+import { submitBooking } from '@/features/booking/submit'
+import { ApiError } from '@/lib/api'
 import { useContent } from '@/features/cms'
 import { t, tf } from '@/features/i18n'
 
@@ -30,6 +31,9 @@ export default function Booking({ navigate }: Props) {
   const business = useContent('business')
   const [step, setStep] = useState<Step>(1)
   const [tried, setTried] = useState<Record<number, boolean>>({})
+  const [sending, setSending] = useState(false)
+  /** A refusal from the server, shown under the button rather than swallowed. */
+  const [sendError, setSendError] = useState('')
 
   const [service, setService] = useState('')
   const [pickup, setPickup] = useState('')
@@ -88,28 +92,44 @@ export default function Booking({ navigate }: Props) {
     if (step > 1) go((step - 1) as Step)
   }
 
-  const submit = () => {
+  const submit = async () => {
     setTried((t) => ({ ...t, 5: true }))
+    setSendError('')
     if (![1, 2, 3, 4, 5].every((n) => stepValid(n as Step))) return
-    // The labels, not the ids: this is read by a dispatcher, not by code.
-    rememberRequest({
-      reference: newReference(),
-      submittedAt: new Date().toISOString(),
-      service: serviceLabel,
-      pickup: pickup.trim(),
-      destination: destination.trim(),
-      date,
-      time,
-      passengers,
-      luggage,
-      vehicle: vehicleLabel,
-      firstName: firstName.trim(),
-      lastName: lastName.trim(),
-      email: email.trim(),
-      phone: phone.trim(),
-      notes,
-    })
-    navigate('confirmation')
+
+    setSending(true)
+    try {
+      // Ids for the API, labels for the human-readable handoff: whichever way
+      // this travels, it carries what that reader needs.
+      await submitBooking({
+        serviceId: service,
+        serviceLabel,
+        pickup: pickup.trim(),
+        destination: destination.trim(),
+        date,
+        time,
+        passengers,
+        luggage,
+        vehicleClass: vehicle,
+        vehicleLabel,
+        firstName: firstName.trim(),
+        lastName: lastName.trim(),
+        email: email.trim(),
+        phone: phone.trim(),
+        notes,
+      })
+      navigate('confirmation')
+    } catch (error) {
+      // Only a 4xx reaches here: the booking itself is wrong, so say so and
+      // leave every field as it was rather than losing five steps of typing.
+      setSendError(
+        error instanceof ApiError
+          ? error.message
+          : t('That could not be sent. Check the details and try again.'),
+      )
+    } finally {
+      setSending(false)
+    }
   }
 
   const serviceLabel = t(serviceOptions.find((s) => s.id === service)?.label ?? '')
@@ -340,7 +360,8 @@ export default function Booking({ navigate }: Props) {
 
               <button
                 type="button"
-                onClick={step < 5 ? next : submit}
+                onClick={step < 5 ? next : () => void submit()}
+                disabled={sending}
                 className="booking-next shine shine-dark press"
                 style={{
                   marginLeft: 'auto',
@@ -356,11 +377,19 @@ export default function Booking({ navigate }: Props) {
                   textTransform: 'uppercase',
                   padding: '16px 34px',
                   boxShadow: '0 4px 28px rgba(255,255,255,0.16)',
+                  opacity: sending ? 0.7 : 1,
                 }}
               >
-                {step < 5 ? t('Continue →') : t('Request this booking')}
+                {step < 5 ? t('Continue →') : sending ? t('Sending…') : t('Request this booking')}
               </button>
             </div>
+
+            {sendError && (
+              <p role="alert" style={{ margin: '14px 0 0', fontSize: 13, lineHeight: 1.6, color: '#FFFFFF' }}>
+                <span aria-hidden="true" style={{ color: 'var(--status-critical)', marginRight: 8 }}>●</span>
+                {sendError}
+              </p>
+            )}
 
             {/* Said once, under the final action, rather than buried in a panel. */}
             {step === 5 && (

@@ -169,19 +169,27 @@ docker run -d --name addislimo-test-db -e POSTGRES_USER=test \
 Without those variables the integration suite skips and the unit tests still
 run.
 
-## Wiring the frontend to it
+## How the frontend uses it
 
-Not done yet. The frontend still renders the mock data in `frontend/src/data`
-and the in-memory store in `features/admin/store.ts`; this API exists and is
-tested, but nothing calls it.
+`VITE_API_URL` decides. Set it and the site talks to this server; leave it
+empty and the site runs on its own, which is what the deployed build does
+until this is live. Both paths are real, and the one difference a visitor can
+see is stated on screen rather than hidden.
 
-1. `frontend/.env.local`: `VITE_API_URL=http://localhost:4100/api`
-2. Replace the mock imports with calls through `frontend/src/lib/api`. The
-   paths are already in `lib/api/endpoints.ts` and match what is mounted here.
-3. `features/admin/store.ts` is the seam: each action is named after the call
-   that replaces it.
-4. `features/admin/session.ts` calls `POST /auth/login` instead of comparing a
-   hard-coded password.
+| | `VITE_API_URL` set | empty |
+| --- | --- | --- |
+| Booking form | `POST /bookings`, a row and a server-issued reference | kept in the browser, handed to WhatsApp or mail |
+| Confirmation | "We have your request" | "Send us your request" |
+| Admin sign-in | `POST /auth/login`, scrypt, httpOnly cookie | the prototype gate, one hard-coded account |
+| Admin data | loaded from here, writes go back | seed data, resets on reload |
+
+The three seams: `features/booking/submit.ts` chooses how a booking travels,
+`features/admin/session.ts` chooses what sign-in means, and
+`features/admin/store.ts` keeps the shape its fifteen views expect while
+writing through to `features/admin/api.ts` underneath. Writes are optimistic
+and roll back if this server refuses, showing the refusal as a toast — which
+is how a dispatcher finds out the driver they picked was claimed a second ago
+by someone else.
 
 ## Deploying
 

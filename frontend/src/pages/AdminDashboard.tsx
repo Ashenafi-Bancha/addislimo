@@ -3,7 +3,7 @@ import { useRouter } from '@/app/router'
 import { isAdminConsolePage, type Page } from '@/app/routes'
 import AdminShell from '@/features/admin/layout/AdminShell'
 import { sectionForPage } from '@/features/admin/nav'
-import { getSession, signOut, type AdminSession } from '@/features/admin/session'
+import { getSession, restoreSession, signOut, type AdminSession } from '@/features/admin/session'
 import { adminActions } from '@/features/admin/store'
 import BookingDrawer from '@/features/admin/views/BookingDrawer'
 import BookingsView from '@/features/admin/views/BookingsView'
@@ -26,16 +26,44 @@ interface Props {
  */
 export default function AdminDashboard({ navigate }: Props) {
   const { page } = useRouter()
-  const [session] = useState<AdminSession | null>(getSession)
+  const [session, setSession] = useState<AdminSession | null>(getSession)
 
   // Not signed in: go to the sign-in page instead of flashing the console.
   useEffect(() => {
     if (!session) navigate('admin-login')
   }, [session, navigate])
 
+  /**
+   * Ask the server who this browser is, then load the console's data.
+   *
+   * The session cookie is httpOnly, so what is in sessionStorage is a name to
+   * put in the corner, not proof of anything: an expired or revoked session
+   * only shows up by asking. Doing it here means a stale tab left open
+   * overnight lands on the sign-in page rather than on an empty console.
+   */
+  useEffect(() => {
+    let cancelled = false
+    void (async () => {
+      const current = await restoreSession()
+      if (cancelled) return
+      if (!current) {
+        setSession(null)
+        navigate('admin-login')
+        return
+      }
+      setSession(current)
+      await adminActions.refresh()
+    })()
+    return () => {
+      cancelled = true
+    }
+  }, [navigate])
+
   const handleSignOut = useCallback(() => {
-    signOut()
+    void signOut()
     adminActions.closeBooking()
+    adminActions.reset()
+    setSession(null)
     navigate('admin-login')
   }, [navigate])
 

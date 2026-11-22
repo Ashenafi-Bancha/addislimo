@@ -37,10 +37,13 @@ path is missing, or when the repository contradicts this guide.
 - `docs/CLIENT-BRIEF.md` — the client's service PDF mapped to the files that
   own each item. **Read it before changing service or destination content**
 - `backend/` — the Node 22 / Express 5 / PostgreSQL API. Bookings, dispatch,
-  fleet, customers, finance, content and real admin authentication, with 61
-  tests. Nothing in the frontend calls it yet: see "Wiring the frontend to it"
-  in `backend/README.md`. **Read that file before changing anything under
-  `backend/`** — the rules it enforces are written down there
+  fleet, customers, finance, content and real admin authentication, with 63
+  tests. The frontend calls it when `VITE_API_URL` is set and runs on its own
+  when it is not; see "How the frontend uses it" in `backend/README.md`.
+  **Read that file before changing anything under `backend/`** — the rules it
+  enforces are written down there
+- `compose.yaml` — the local PostgreSQL. `docs/RUNBOOK.md` is the sequence for
+  bringing the whole system up
 
 ### `frontend/`
 
@@ -85,8 +88,9 @@ path is missing, or when the repository contradicts this guide.
   every figure, and `layout/`, `ui/`, `views/`. Every `/admin/*` route renders
   `pages/AdminDashboard.tsx`. See the "Admin console" section of
   `frontend/README.md` before changing it
-- `src/lib/api/` — `fetch` wrapper and endpoint map for the future backend;
-  nothing calls it yet
+- `src/lib/api/` — `fetch` wrapper and endpoint map for the backend. Used by
+  `features/booking/submit.ts`, `features/admin/session.ts` and
+  `features/admin/api.ts`; every call is a no-op unless `VITE_API_URL` is set
 - `src/lib/utils/`, `src/hooks/` — small shared helpers, including the
   motion hooks `useReveal`, `useTilt` (3D pointer tilt), `useParallax` and
   `useReducedMotion`

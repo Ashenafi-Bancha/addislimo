@@ -48,6 +48,10 @@ export default function Confirmation({ navigate }: Props) {
 
   const channels = channelsFor(request, business)
   const send = (via: string) => setSentVia(via)
+  // Dispatch already has it, or it is still on this device and the reader
+  // sends it. The screen says whichever is true; claiming the first when the
+  // second is the case is the failure this page exists to avoid.
+  const delivered = request.delivered === true
 
   const copy = async () => {
     try {
@@ -67,24 +71,39 @@ export default function Confirmation({ navigate }: Props) {
           <div style={{ display: 'flex', gap: 3, color: 'rgba(255,255,255,0.8)', fontSize: 13, marginBottom: 16, justifyContent: 'center' }}>
             {['★','★','★','★','★'].map((s, i) => <span key={i}>{s}</span>)}
           </div>
-          <p className="label-caps" style={{ color: 'var(--gold)', marginBottom: 14 }}>{t('One step left')}</p>
+          <p className="label-caps" style={{ color: 'var(--gold)', marginBottom: 14 }}>
+            {delivered ? t('Booking received') : t('One step left')}
+          </p>
           <h1 style={{
             fontFamily: 'var(--font-display)',
             fontSize: 'clamp(30px, 5vw, 50px)',
             fontWeight: 700, lineHeight: 1.1, marginBottom: 16, color: '#FFFFFF',
           }}>
-            {t('Send us your')}{' '}
+            {delivered ? t('We have your') : t('Send us your')}{' '}
             <em style={{ fontWeight: 600, background: 'var(--gold-gradient-h)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
               {t('request.')}
             </em>
           </h1>
           <p style={{ fontSize: 15.5, color: 'rgba(255,255,255,0.72)', lineHeight: 1.75, maxWidth: 520, margin: '0 auto' }}>
-            {t('Your booking is ready, with every detail filled in. Choose how to reach our dispatch desk and we confirm the vehicle, the chauffeur and the price before anything is final.')}
+            {delivered
+              ? t('It is with our dispatch desk now. We confirm the vehicle, the chauffeur and the price with you before anything is final. Quote your reference if you call.')
+              : t('Your booking is ready, with every detail filled in. Choose how to reach our dispatch desk and we confirm the vehicle, the chauffeur and the price before anything is final.')}
           </p>
         </div>
 
+        {delivered && (
+          <p style={{
+            textAlign: 'center', fontSize: 13, color: 'rgba(255,255,255,0.55)',
+            margin: '0 0 20px', lineHeight: 1.7,
+          }}>
+            {t('Nothing else is needed. If you would rather talk it through, these reach us directly.')}
+          </p>
+        )}
+
         {/* The channels. WhatsApp first: it is how most of Addis gets hold of
-            a business, and it reaches a phone rather than an inbox. */}
+            a business, and it reaches a phone rather than an inbox. When the
+            booking is already with dispatch these are a way to talk to a
+            person, not the thing that delivers it. */}
         <div style={{ display: 'grid', gap: 12, marginBottom: 36 }}>
           {channels.whatsapp && (
             <a href={channels.whatsapp} target="_blank" rel="noopener noreferrer" onClick={() => send('whatsapp')} style={{ ...channelCard, background: 'rgba(37,211,102,0.10)', borderColor: 'rgba(37,211,102,0.38)' }}>
@@ -94,8 +113,12 @@ export default function Confirmation({ navigate }: Props) {
                 </svg>
               </span>
               <span>
-                <strong style={channelTitle}>{t('Send on WhatsApp')}</strong>
-                <span style={channelNote}>{t('Fastest. Opens with your booking written out, ready to send.')}</span>
+                <strong style={channelTitle}>{delivered ? t('Talk to us on WhatsApp') : t('Send on WhatsApp')}</strong>
+                <span style={channelNote}>
+                  {delivered
+                    ? t('Opens with your booking written out, in case you want to add anything.')
+                    : t('Fastest. Opens with your booking written out, ready to send.')}
+                </span>
               </span>
               <span aria-hidden="true" style={channelArrow}>→</span>
             </a>

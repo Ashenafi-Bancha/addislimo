@@ -60,7 +60,7 @@ export default function BookingsView() {
       if (scope === 'past' && at >= Date.now()) return false
       if (!q) return true
       const driver = b.driverId ? drivers.get(b.driverId)?.name ?? '' : ''
-      return [b.id, b.customerName, b.customerEmail, b.customerPhone, b.pickup, b.destination, driver, serviceLabel(b.serviceId), partners.get(b.partnerId)?.name ?? '']
+      return [b.id, b.customerName, b.customerEmail, b.customerPhone, b.pickup, b.destination, driver, serviceLabel(b.serviceId), partners.get(b.partnerId ?? '')?.name ?? '']
         .join(' ')
         .toLowerCase()
         .includes(q)
@@ -97,7 +97,7 @@ export default function BookingsView() {
       { header: 'Pickup', value: (b) => b.pickup },
       { header: 'Destination', value: (b) => b.destination },
       { header: 'Passengers', value: (b) => b.passengers },
-      { header: 'Partner', value: (b) => partners.get(b.partnerId)?.name ?? '' },
+      { header: 'Partner', value: (b) => partners.get(b.partnerId ?? '')?.name ?? '' },
       { header: 'Driver', value: (b) => (b.driverId ? drivers.get(b.driverId)?.name ?? '' : '') },
       { header: 'Amount (ETB)', value: (b) => b.amount },
       { header: 'Commission (ETB)', value: (b) => b.commission },

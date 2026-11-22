@@ -42,7 +42,12 @@ export const OPEN_STATUSES: readonly BookingStatus[] = [
 ]
 
 const TRANSITIONS: Record<BookingStatus, readonly BookingStatus[]> = {
-  Pending: ['Confirmed', 'Cancelled'],
+  // Assigned is reachable straight from Pending because that is how dispatch
+  // actually works: giving a trip a driver is the act that confirms it, and
+  // the console's drawer moves a booking there the moment one is chosen.
+  // Forcing a separate Confirm step first would mean a dispatcher ticking a
+  // box to say what they had just done.
+  Pending: ['Confirmed', 'Assigned', 'Cancelled'],
   Confirmed: ['Assigned', 'Cancelled'],
   Assigned: ['Driver En Route', 'Confirmed', 'Cancelled'],
   'Driver En Route': ['In Progress', 'Assigned', 'Cancelled'],

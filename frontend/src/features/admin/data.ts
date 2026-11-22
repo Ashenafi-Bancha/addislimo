@@ -65,7 +65,7 @@ export const seedVehicles: FleetVehicle[] = [
   { id: 'v-01', partnerId: 'p-bole-exec', make: 'Toyota', model: 'Land Cruiser', year: 2023, plate: 'AA 3-B20958', vehicleClass: 'suv', seats: 4, status: 'Available' },
 ]
 
-const rows: (Omit<Booking, 'createdAt' | 'commission'> & { leadDays: number })[] = [
+const rows: (Omit<Booking, 'createdAt' | 'commission' | 'commissionRate'> & { leadDays: number })[] = [
   {
     id: 'AL-XK9281',
     customerName: 'Almaz Bekele',
@@ -76,6 +76,8 @@ const rows: (Omit<Booking, 'createdAt' | 'commission'> & { leadDays: number })[]
     destination: 'Sheraton Addis',
     scheduledAt: onDay(-1, '08:30'),
     passengers: 2,
+    luggage: 2,
+    vehicleClass: 'suv',
     partnerId: 'p-bole-exec',
     driverId: 'd-01',
     vehicleId: 'v-01',
@@ -88,11 +90,18 @@ const rows: (Omit<Booking, 'createdAt' | 'commission'> & { leadDays: number })[]
 
 const rateByPartner = new Map(seedPartners.map((p) => [p.id, p.commissionRate]))
 
-export const seedBookings: Booking[] = rows.map(({ leadDays, ...row }) => ({
-  ...row,
-  createdAt: new Date(new Date(row.scheduledAt).getTime() - leadDays * DAY).toISOString(),
-  commission: Math.round((row.amount * (rateByPartner.get(row.partnerId) ?? 10)) / 100),
-}))
+export const seedBookings: Booking[] = rows.map(({ leadDays, ...row }) => {
+  // The rate the trip was priced at, kept on the booking the way the API
+  // stores it: changing a partner's rate later must not rewrite what was
+  // already earned.
+  const rate = row.partnerId ? rateByPartner.get(row.partnerId) ?? 10 : 10
+  return {
+    ...row,
+    createdAt: new Date(new Date(row.scheduledAt).getTime() - leadDays * DAY).toISOString(),
+    commission: Math.round((row.amount * rate) / 100),
+    commissionRate: rate,
+  }
+})
 
 export const seedSettings: AdminSettings = {
   defaultCommissionRate: 12,

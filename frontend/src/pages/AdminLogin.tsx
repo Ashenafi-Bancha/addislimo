@@ -4,6 +4,7 @@ import type { Page } from '@/app/routes'
 import BrandMark from '@/components/ui/BrandMark'
 import { site } from '@/config/site'
 import { getSession, signIn } from '@/features/admin/session'
+import { ApiError } from '@/lib/api'
 import Icon, { type IconName } from '@/features/admin/ui/Icon'
 import { buttonPrimary, fieldLabel, input } from '@/features/admin/ui/styles'
 import { useMediaQuery } from '@/hooks'
@@ -32,7 +33,7 @@ export default function AdminLogin({ navigate }: Props) {
     if (getSession()) navigate('admin')
   }, [navigate])
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     setError('')
     if (!email.trim() || !password) {
@@ -40,14 +41,21 @@ export default function AdminLogin({ navigate }: Props) {
       return
     }
     setLoading(true)
-    // A short pause so the button state is visible; the real check will be a
-    // network call to POST /auth/login.
-    window.setTimeout(() => {
-      const session = signIn(email, password)
-      setLoading(false)
+    try {
+      const session = await signIn(email, password)
       if (session) navigate('admin')
       else setError(t('That email and password do not match an admin account.'))
-    }, 600)
+    } catch (error) {
+      // The server's own wording, which distinguishes a wrong password from
+      // an account locked after too many attempts.
+      setError(
+        error instanceof ApiError
+          ? error.message
+          : t('We could not reach the sign-in service. Check your connection and try again.'),
+      )
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -131,7 +139,7 @@ export default function AdminLogin({ navigate }: Props) {
             {t('Use your Addis Limo Admin account.')}
           </p>
 
-          <form onSubmit={handleSubmit} noValidate style={{ display: 'grid', gap: 18 }}>
+          <form onSubmit={(e) => void handleSubmit(e)} noValidate style={{ display: 'grid', gap: 18 }}>
             <div>
               <label htmlFor="admin-email" style={fieldLabel}>{t('Email address')}</label>
               <div style={{ position: 'relative' }}>

@@ -121,8 +121,14 @@ either is busy, change `PORT` in `backend/.env` and the published port in
 or with `SESSION_SECRET` unset — on purpose, so a broken configuration fails
 on the first line instead of on the first request. The message says which.
 
-**The website loads but has no data.** Expected today: the frontend does not
-call the API yet. See "What is not connected" in `backend/README.md`.
+**A change to the API does not take effect.** `pnpm dev:api` watches and
+restarts; `pnpm start` does not. Use `dev:api` while working.
+
+**The website works but nothing reaches the database.** Check
+`frontend/.env.local` has `VITE_API_URL=http://localhost:4100/api`, and that
+Vite was restarted after it was written — Vite reads env files at startup.
+Without it the site runs standalone by design: the booking form hands the
+request to WhatsApp or mail and the console shows sample data.
 
 ## Resetting to a clean demo state
 

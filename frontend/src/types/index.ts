@@ -93,8 +93,11 @@ export interface Booking {
   /** ISO timestamp of when the booking was made. */
   createdAt: string
   passengers: number
-  /** Fleet partner fulfilling the trip. */
-  partnerId: string
+  luggage: number
+  /** The class the customer picked, before dispatch chooses an actual car. */
+  vehicleClass: VehicleClassId | null
+  /** Fleet partner fulfilling the trip. `null` until dispatch gives it to one. */
+  partnerId: string | null
   /** `null` until dispatch assigns one. */
   driverId: string | null
   vehicleId: string | null
@@ -105,8 +108,15 @@ export interface Booking {
    * default commission rate later does not rewrite it.
    */
   commission: number
+  /** The rate the commission was worked out at, kept for the audit trail. */
+  commissionRate: number
   status: BookingStatus
   notes?: string
+  /** How the request arrived. */
+  source?: 'website' | 'whatsapp' | 'phone' | 'email' | 'admin'
+  cancelledReason?: string | null
+  updatedAt?: string
+  completedAt?: string | null
 }
 
 /** A partner hotel, airline or fleet operator shown as social proof. */

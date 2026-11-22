@@ -19,6 +19,13 @@ export interface BookingRequest {
   reference: string
   /** ISO timestamp of the moment the reader submitted. */
   submittedAt: string
+  /**
+   * True when the API accepted it, so dispatch already has the booking and
+   * the confirmation screen can say so. False when it is still sitting in
+   * this browser waiting to be sent by WhatsApp, mail or phone. See
+   * `submit.ts`.
+   */
+  delivered?: boolean
   service: string
   pickup: string
   destination: string

@@ -80,14 +80,20 @@ function BookingEditor({ booking }: { booking: Booking }) {
 function DispatchEditor({ booking, onEditDetails, onDelete }: { booking: Booking; onEditDetails: () => void; onDelete: () => void }) {
   const state = useAdminStore()
   const [status, setStatus] = useState<BookingStatus>(booking.status)
+  const [partnerId, setPartnerId] = useState(booking.partnerId ?? '')
   const [driverId, setDriverId] = useState(booking.driverId ?? '')
   const [vehicleId, setVehicleId] = useState(booking.vehicleId ?? '')
   const [notes, setNotes] = useState(booking.notes ?? '')
   const [confirmingCancel, setConfirmingCancel] = useState(false)
 
-  const partner = useMemo(() => indexById(state.partners).get(booking.partnerId), [state.partners, booking.partnerId])
-  const drivers = useMemo(() => state.drivers.filter((d) => d.partnerId === booking.partnerId), [state.drivers, booking.partnerId])
-  const vehicles = useMemo(() => state.vehicles.filter((v) => v.partnerId === booking.partnerId), [state.vehicles, booking.partnerId])
+  const partner = useMemo(() => indexById(state.partners).get(partnerId), [state.partners, partnerId])
+  const drivers = useMemo(() => state.drivers.filter((d) => d.partnerId === partnerId), [state.drivers, partnerId])
+  const vehicles = useMemo(() => state.vehicles.filter((v) => v.partnerId === partnerId), [state.vehicles, partnerId])
+  // Only an active partner can take new work, which is what the API enforces.
+  const availablePartners = useMemo(
+    () => state.partners.filter((p) => p.status === 'Active' || p.id === booking.partnerId),
+    [state.partners, booking.partnerId],
+  )
   const driverState = useMemo(() => driverStatuses(state), [state])
   const vehicleState = useMemo(() => vehicleStatuses(state), [state])
 
@@ -101,6 +107,7 @@ function DispatchEditor({ booking, onEditDetails, onDelete }: { booking: Booking
 
   const dirty =
     status !== booking.status ||
+    partnerId !== (booking.partnerId ?? '') ||
     driverId !== (booking.driverId ?? '') ||
     vehicleId !== (booking.vehicleId ?? '') ||
     notes !== (booking.notes ?? '')
@@ -111,6 +118,7 @@ function DispatchEditor({ booking, onEditDetails, onDelete }: { booking: Booking
   const save = () => {
     adminActions.updateBooking(booking.id, {
       status: finalStatus,
+      partnerId: partnerId || null,
       driverId: driverId || null,
       vehicleId: vehicleId || null,
       notes: notes.trim() || undefined,
@@ -182,6 +190,35 @@ function DispatchEditor({ booking, onEditDetails, onDelete }: { booking: Booking
         />
 
         <div style={{ display: 'grid', gap: 14, marginTop: 14 }}>
+          <div>
+            <label htmlFor="bd-partner" style={fieldLabel}>{t('Partner')}</label>
+            <select
+              id="bd-partner"
+              value={partnerId}
+              onChange={(e) => {
+                // A driver and a vehicle belong to the partner they came
+                // from, so moving the trip clears both rather than leaving a
+                // pairing the server would refuse.
+                setPartnerId(e.target.value)
+                setDriverId('')
+                setVehicleId('')
+              }}
+              disabled={closed}
+              style={select}
+            >
+              <option value="">{t('Not yet assigned')}</option>
+              {availablePartners.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.name}
+                </option>
+              ))}
+            </select>
+            {!partnerId && (
+              <p style={{ margin: '6px 0 0', fontSize: 12, color: 'var(--admin-text-muted)' }}>
+                {t('Bookings from the website arrive here first. Give this trip to a partner to pick a driver and a vehicle.')}
+              </p>
+            )}
+          </div>
           <div>
             <label htmlFor="bd-driver" style={fieldLabel}>{t('Driver')}</label>
             <select id="bd-driver" value={driverId} onChange={(e) => setDriverId(e.target.value)} disabled={closed} style={select}>
