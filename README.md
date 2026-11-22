@@ -67,6 +67,9 @@ Looking for something to change? Start here.
 
 - [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — how the two apps fit together.
 - [`frontend/README.md`](frontend/README.md) — frontend structure and conventions.
+- [`docs/RUNBOOK.md`](docs/RUNBOOK.md) — bringing the whole system up on one
+  machine: the four commands, what working looks like, and what to do when
+  it is not.
 - [`backend/README.md`](backend/README.md) — the API: how to run it, the rules it enforces, and how to wire the frontend to it.
 - [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) — deploying to Vercel, connecting
   addislimo.com, and the checklist before going public.

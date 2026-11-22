@@ -1,0 +1,71 @@
+# The database the API runs on, locally.
+#
+# One command instead of a remembered `docker run` with eight flags:
+#
+#   docker compose up -d        start it (and after a reboot, it starts itself)
+#   docker compose down         stop it, keeping the data
+#   docker compose down -v      stop it and throw the data away
+#
+# The credentials here are local-only and deliberately dull. Production uses a
+# managed PostgreSQL and a DATABASE_URL set in the host's environment, never
+# this file.
+#
+# Port 5437 rather than 5432: this machine already runs PostgreSQL 18 as a
+# Windows service on 5432, and several other projects' containers on
+# 5433-5436. Nothing here needs to fight them for a port.
+
+services:
+  db:
+    image: postgres:18-alpine
+    container_name: addislimo-postgres
+    # Comes back by itself after a reboot, which is the point: a demo should
+    # not begin with "give me a second, I need to start the database".
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: addislimo
+      POSTGRES_PASSWORD: addislimo_local_dev
+      POSTGRES_DB: addislimo
+    ports:
+      - '5437:5432'
+    volumes:
+      # A named volume, so `docker compose down` does not take the seeded
+      # bookings with it.
+      #
+      # Mounted at /var/lib/postgresql, not .../data: the postgres:18 image
+      # changed where it keeps the cluster so that a future `pg_upgrade
+      # --link` does not have to cross a mount boundary. Mounting the old path
+      # makes the container refuse to start.
+      - addislimo-db:/var/lib/postgresql
+    healthcheck:
+      # `pnpm migrate` run straight after `up -d` would otherwise race the
+      # database's own startup; with this, `up --wait` returns when it is
+      # genuinely ready to accept a connection.
+      test: ['CMD-SHELL', 'pg_isready -U addislimo -d addislimo']
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 5s
+
+  # The integration tests drop and rebuild the schema, so they get their own
+  # database and never point at the one holding demo bookings. Opt in:
+  #   docker compose --profile test up -d
+  db-test:
+    image: postgres:18-alpine
+    container_name: addislimo-test-db
+    profiles: ['test']
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: test
+    ports:
+      - '5438:5432'
+    # No volume on purpose: nothing in here is meant to survive.
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U test -d test']
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  addislimo-db:
